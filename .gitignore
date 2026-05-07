@@ -52,8 +52,13 @@ next-env.d.ts
 
 # playwright snapshots from local QA
 .playwright-mcp/
+*-snapshot.md
+after-rename-click.md
+github-*.md
+github-secret-form.md
 day1-home.jpg
 day1-home-1280.png
+day1-staging-live.jpg
 
 # screenshots from manual auditing
 audit-*.png

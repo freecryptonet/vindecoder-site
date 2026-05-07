@@ -2,11 +2,29 @@ import Link from "next/link";
 import { VinSearchForm } from "@/components/VinSearchForm";
 import { BrandLogo } from "@/components/BrandLogo";
 import { Card } from "@/components/Card";
+import { RecallItem } from "@/components/RecallItem";
+import { JsonLd } from "@/components/JsonLd";
 import { TOP_US_MAKES } from "@/lib/makes";
+import { getHomepageRecentRecalls } from "@/lib/nhtsa";
+import { websiteJsonLd, organizationJsonLd } from "@/lib/seo";
 
-export default function HomePage() {
+export const revalidate = 3600;
+
+function formatDate(raw: string): string {
+  if (!raw) return "";
+  const d = new Date(raw);
+  if (Number.isNaN(d.getTime())) return raw;
+  return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+}
+
+export default async function HomePage() {
+  const recentRecalls = await getHomepageRecentRecalls(5);
+
   return (
     <>
+      <JsonLd data={websiteJsonLd()} />
+      <JsonLd data={organizationJsonLd()} />
+
       <section className="border-b border-border bg-surface-alt">
         <div className="container-page py-14 md:py-20">
           <div className="mx-auto max-w-3xl text-center">
@@ -23,6 +41,47 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {recentRecalls.length > 0 ? (
+        <section className="container-page py-12">
+          <div className="flex items-baseline justify-between gap-4">
+            <h2 className="text-h2 text-slate-950">Recent NHTSA recalls</h2>
+            <Link
+              href="/recalls"
+              className="text-sm font-medium text-brand-blue hover:underline"
+            >
+              View all →
+            </Link>
+          </div>
+          <p className="mt-1 text-sm text-muted">
+            Latest open-recall campaigns for popular US-market vehicles.
+            Updates hourly from{" "}
+            <a
+              href="https://www.nhtsa.gov/"
+              className="underline hover:text-slate-950"
+              rel="noopener"
+            >
+              NHTSA
+            </a>
+            .
+          </p>
+          <ul className="mt-6 overflow-hidden rounded-card border border-border bg-surface">
+            {recentRecalls.map((r) => (
+              <li key={r.NHTSACampaignNumber}>
+                <RecallItem
+                  recall={{
+                    campaignId: r.NHTSACampaignNumber,
+                    title: `${r.ModelYear} ${r.Make} ${r.Model} — ${r.Component}`,
+                    components: r.Component ? [r.Component] : undefined,
+                    date: formatDate(r.ReportReceivedDate),
+                    href: `/recalls/${r.NHTSACampaignNumber}`,
+                  }}
+                />
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       <section className="container-page py-12">
         <h2 className="text-h2 text-slate-950">Browse by make</h2>
