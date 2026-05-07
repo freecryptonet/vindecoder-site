@@ -457,6 +457,73 @@ export async function getModelYearAggregates(
   }
 }
 
+/**
+ * Recent recall campaigns flattened across every cached year. Dedupes by
+ * NHTSACampaignNumber and sorts newest first. Useful as the /recalls index
+ * seed before the dedicated recalls_cache table lands.
+ */
+export interface CachedRecallSummary {
+  campaignNumber: string;
+  make: string;
+  model: string;
+  modelYear: string;
+  component: string;
+  date: string;
+  summary: string;
+}
+
+export async function getRecentRecallsFromCache(
+  limit = 30,
+): Promise<CachedRecallSummary[]> {
+  const sql = getDb();
+  if (!sql) return [];
+  try {
+    const rows = await sql`
+      SELECT recalls_data, make, model, year
+      FROM vehicle_cache
+      WHERE recalls_data IS NOT NULL AND recalls_count > 0
+      ORDER BY last_fetched DESC
+      LIMIT 200
+    `;
+    const seen = new Set<string>();
+    const flat: CachedRecallSummary[] = [];
+    for (const r of rows) {
+      const arr = Array.isArray(r.recalls_data) ? (r.recalls_data as unknown[]) : [];
+      for (const raw of arr) {
+        const item = raw as {
+          NHTSACampaignNumber?: string;
+          Component?: string;
+          Summary?: string;
+          ReportReceivedDate?: string;
+          Make?: string;
+          Model?: string;
+          ModelYear?: string;
+        };
+        const cn = item.NHTSACampaignNumber;
+        if (!cn || seen.has(cn)) continue;
+        seen.add(cn);
+        flat.push({
+          campaignNumber: cn,
+          make: (item.Make as string) || (r.make as string) || "",
+          model: (item.Model as string) || (r.model as string) || "",
+          modelYear: (item.ModelYear as string) || (r.year as string) || "",
+          component: item.Component || "",
+          date: item.ReportReceivedDate || "",
+          summary: item.Summary || "",
+        });
+      }
+    }
+    flat.sort((a, b) => {
+      const da = new Date(a.date).getTime() || 0;
+      const db = new Date(b.date).getTime() || 0;
+      return db - da;
+    });
+    return flat.slice(0, limit);
+  } catch {
+    return [];
+  }
+}
+
 /** All cached vehicle rows for sitemap generation. */
 export async function getCachedVehicles(
   limit = 5000,

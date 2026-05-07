@@ -9,6 +9,7 @@
 
 const VPIC_BASE = "https://vpic.nhtsa.dot.gov/api/vehicles";
 const RECALLS_BASE = "https://api.nhtsa.gov/recalls/recallsByVehicle";
+const RECALL_CAMPAIGN_BASE = "https://api.nhtsa.gov/recalls/campaignNumber";
 const COMPLAINTS_BASE = "https://api.nhtsa.gov/complaints/complaintsByVehicle";
 const RATINGS_BASE = "https://api.nhtsa.gov/SafetyRatings";
 const VEHICLES_BY_YMMT = "https://api.nhtsa.gov/vehicles/byYmmt";
@@ -250,6 +251,69 @@ export async function getRecalls(
     return data.results ?? [];
   } catch {
     return [];
+  }
+}
+
+export interface RecallCampaign {
+  campaignNumber: string;
+  manufacturer: string;
+  modelYears: string[];
+  makes: string[];
+  models: string[];
+  reportReceivedDate: string;
+  component: string;
+  summary: string;
+  consequence: string;
+  remedy: string;
+  notes: string;
+  potentialUnitsAffected: number;
+  parkIt: boolean;
+  parkOutside: boolean;
+  overTheAirUpdate: boolean;
+  affected: RecallResult[];
+}
+
+/**
+ * Fetch one campaign by NHTSA campaign number (e.g. "23V123000") and
+ * aggregate across every affected make/model/year. Returns null if the
+ * campaign isn't found.
+ */
+export async function getRecallCampaign(
+  campaignNumber: string,
+): Promise<RecallCampaign | null> {
+  const url = `${RECALL_CAMPAIGN_BASE}?campaignNumber=${encodeURIComponent(
+    campaignNumber.toUpperCase(),
+  )}`;
+  try {
+    const data = await fetchJson<{ Count: number; results: RecallResult[] }>(url, {
+      revalidate: 86400 * 7,
+    });
+    const rows = data.results ?? [];
+    if (rows.length === 0) return null;
+    const first = rows[0];
+    const makes = Array.from(new Set(rows.map((r) => r.Make).filter(Boolean)));
+    const models = Array.from(new Set(rows.map((r) => r.Model).filter(Boolean)));
+    const modelYears = Array.from(new Set(rows.map((r) => r.ModelYear).filter(Boolean))).sort();
+    return {
+      campaignNumber: first.NHTSACampaignNumber,
+      manufacturer: first.Manufacturer,
+      makes,
+      models,
+      modelYears,
+      reportReceivedDate: first.ReportReceivedDate,
+      component: first.Component,
+      summary: first.Summary,
+      consequence: first.Consequence,
+      remedy: first.Remedy,
+      notes: first.Notes ?? "",
+      potentialUnitsAffected: first.PotentialNumberofUnitsAffected ?? 0,
+      parkIt: !!first.parkIt,
+      parkOutside: !!first.parkOutSide,
+      overTheAirUpdate: !!first.overTheAirUpdate,
+      affected: rows,
+    };
+  } catch {
+    return null;
   }
 }
 
