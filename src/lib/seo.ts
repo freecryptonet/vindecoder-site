@@ -38,3 +38,45 @@ export function organizationJsonLd() {
     logo: `${SITE}/icon.png`,
   };
 }
+
+export function breadcrumbJsonLd(crumbs: { name: string; url?: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: crumbs.map((c, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: c.name,
+      ...(c.url ? { item: c.url } : {}),
+    })),
+  };
+}
+
+export interface VehicleJsonLdInput {
+  vin: string;
+  year: string | number;
+  make: string;
+  model: string;
+  trim?: string;
+  bodyClass?: string;
+  fuelType?: string;
+  driveType?: string;
+  url: string;
+}
+
+export function vehicleJsonLd(v: VehicleJsonLdInput) {
+  const name = `${v.year} ${v.make} ${v.model}${v.trim ? ` ${v.trim}` : ""}`;
+  return {
+    "@context": "https://schema.org",
+    "@type": "Vehicle",
+    name,
+    vehicleIdentificationNumber: v.vin,
+    brand: { "@type": "Brand", name: v.make },
+    model: v.model,
+    modelDate: String(v.year),
+    ...(v.bodyClass ? { bodyType: v.bodyClass } : {}),
+    ...(v.fuelType ? { fuelType: v.fuelType } : {}),
+    ...(v.driveType ? { driveWheelConfiguration: v.driveType } : {}),
+    url: v.url,
+  };
+}
