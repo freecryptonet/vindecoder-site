@@ -54,18 +54,25 @@ export function slugify(text: string): string {
 }
 
 /**
- * Reverse a slug into a display-friendly model name. Heuristic: ≤3-char
- * pure-alpha tokens become uppercase ("MKC", "RSX", "WRX"), digit-only
- * tokens stay as-is, mixed tokens capitalize each letter run ("4Runner",
- * "350Z"). Multi-token slugs get joined by spaces ("model-3" → "Model 3").
+ * Reverse a slug into a display-friendly model name. Heuristic order:
+ *   1. ≤3-char pure-alpha tokens → uppercase ("MKC", "RSX", "WRX")
+ *   2. Short letters-then-digits codes (≤4 letter prefix) → uppercase
+ *      ("LR2", "M3", "Q5", "RS6", "XC60", "GT500", "AMG63"). NHTSA returns
+ *      these all-caps but slug roundtrip would lowercase them, so this
+ *      rule restores the casing for model codes.
+ *   3. Digit-only tokens stay as-is.
+ *   4. Otherwise capitalize each letter run ("4Runner", "350Z").
+ *   Multi-token slugs join by spaces ("model-3" → "Model 3").
  */
 export function formatModelName(slug: string): string {
   return slug
     .split("-")
     .map((tok) => {
       if (!tok) return tok;
-      if (/^\d+$/.test(tok)) return tok;
       if (tok.length <= 3 && /^[a-z]+$/i.test(tok)) return tok.toUpperCase();
+      const lettersDigits = tok.match(/^([a-z]+)(\d+)$/i);
+      if (lettersDigits && lettersDigits[1].length <= 4) return tok.toUpperCase();
+      if (/^\d+$/.test(tok)) return tok;
       return tok.replace(/[a-z]+/gi, (s) => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase());
     })
     .join(" ");
