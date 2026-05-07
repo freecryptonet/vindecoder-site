@@ -6,6 +6,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbJsonLd } from "@/lib/seo";
 import { getRecentRecallsFromCache } from "@/lib/db";
 import { getHomepageRecentRecalls } from "@/lib/nhtsa";
+import { formatNhtsaDate } from "@/lib/utils";
 
 const SITE = "https://vindecoder.site";
 
@@ -18,13 +19,6 @@ export const metadata: Metadata = {
     "Latest open recall campaigns from the National Highway Traffic Safety Administration. Search by VIN, make, or campaign ID.",
   alternates: { canonical: "/recalls" },
 };
-
-function formatDate(raw: string): string {
-  if (!raw) return "";
-  const d = new Date(raw);
-  if (Number.isNaN(d.getTime())) return raw;
-  return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
-}
 
 export default async function RecallsIndexPage() {
   // Prefer cached aggregate (fast, broad). Fall back to live NHTSA sweep on
@@ -81,7 +75,7 @@ export default async function RecallsIndexPage() {
                     <span className="vin-mono text-xs font-semibold text-brand-red">
                       {e.campaignNumber}
                     </span>
-                    <time className="text-xs text-muted">{formatDate(e.date)}</time>
+                    <time className="text-xs text-muted">{formatNhtsaDate(e.date)}</time>
                   </div>
                   <p className="mt-1 text-sm font-semibold text-slate-950">
                     {e.modelYear} {e.make} {e.model} — {e.component || "Open recall"}

@@ -8,7 +8,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbJsonLd } from "@/lib/seo";
 import { getRecallCampaign } from "@/lib/nhtsa";
 import { TOP_US_MAKES } from "@/lib/makes";
-import { slugify } from "@/lib/utils";
+import { slugify, formatNhtsaDate } from "@/lib/utils";
 
 const SITE = "https://vindecoder.site";
 
@@ -34,13 +34,6 @@ export async function generateMetadata({
     description: `${c.component}. ${c.summary.slice(0, 140)}`,
     alternates: { canonical: `/recalls/${upper}` },
   };
-}
-
-function formatDate(raw: string): string {
-  if (!raw) return "";
-  const d = new Date(raw);
-  if (Number.isNaN(d.getTime())) return raw;
-  return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
 
 export default async function RecallDetailPage({
@@ -91,7 +84,7 @@ export default async function RecallDetailPage({
           <p className="vin-mono text-sm font-semibold text-brand-red">{upper}</p>
           <h1 className="mt-1 text-h1-page text-slate-950">{c.component || "NHTSA Recall"}</h1>
           <p className="mt-2 text-sm text-muted">
-            Issued {formatDate(c.reportReceivedDate)} by {c.manufacturer}
+            Issued {formatNhtsaDate(c.reportReceivedDate)} by {c.manufacturer}
             {c.potentialUnitsAffected ? ` · ~${c.potentialUnitsAffected.toLocaleString()} affected units` : ""}
           </p>
         </header>

@@ -19,7 +19,7 @@ import {
   yearFaqs,
   type YearEditorialInput,
 } from "@/lib/yearEditorial";
-import { formatModelName, isValidModelYear, slugify } from "@/lib/utils";
+import { formatModelName, formatNhtsaDate, isValidModelYear, slugify } from "@/lib/utils";
 
 const SITE = "https://vindecoder.site";
 
@@ -62,17 +62,6 @@ export async function generateMetadata({
     alternates: { canonical: `/makes/${m.slug}/${model}/${year}` },
     robots: { index: true, follow: true },
   };
-}
-
-function formatDate(raw: string): string {
-  if (!raw) return "";
-  const d = new Date(raw);
-  if (Number.isNaN(d.getTime())) return raw;
-  return d.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
 }
 
 export default async function YearReliabilityPage({
@@ -188,7 +177,7 @@ export default async function YearReliabilityPage({
                       campaignId: r.NHTSACampaignNumber,
                       title: r.Component || r.Summary.slice(0, 90),
                       components: r.Component ? [r.Component] : undefined,
-                      date: formatDate(r.ReportReceivedDate),
+                      date: formatNhtsaDate(r.ReportReceivedDate),
                     }}
                   />
                 </li>
@@ -214,7 +203,7 @@ export default async function YearReliabilityPage({
                   <ComplaintItem
                     complaint={{
                       odiNumber: String(c.odiNumber),
-                      date: formatDate(c.dateComplaintFiled || c.dateOfIncident),
+                      date: formatNhtsaDate(c.dateComplaintFiled || c.dateOfIncident),
                       summary: c.summary,
                       flags: {
                         crash: c.crash,
@@ -274,7 +263,7 @@ export default async function YearReliabilityPage({
                     </span>
                     <span className="text-xs text-muted">
                       {i.status}
-                      {i.openDate ? ` · ${formatDate(i.openDate)}` : ""}
+                      {i.openDate ? ` · ${formatNhtsaDate(i.openDate)}` : ""}
                     </span>
                   </div>
                   <p className="mt-1 text-sm font-medium text-slate-950">

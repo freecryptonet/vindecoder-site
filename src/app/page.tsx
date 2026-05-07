@@ -7,15 +7,9 @@ import { JsonLd } from "@/components/JsonLd";
 import { TOP_US_MAKES } from "@/lib/makes";
 import { getHomepageRecentRecalls } from "@/lib/nhtsa";
 import { websiteJsonLd, organizationJsonLd } from "@/lib/seo";
+import { formatNhtsaDate } from "@/lib/utils";
 
 export const revalidate = 3600;
-
-function formatDate(raw: string): string {
-  if (!raw) return "";
-  const d = new Date(raw);
-  if (Number.isNaN(d.getTime())) return raw;
-  return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
-}
 
 export default async function HomePage() {
   const recentRecalls = await getHomepageRecentRecalls(5);
@@ -73,7 +67,7 @@ export default async function HomePage() {
                     campaignId: r.NHTSACampaignNumber,
                     title: `${r.ModelYear} ${r.Make} ${r.Model} — ${r.Component}`,
                     components: r.Component ? [r.Component] : undefined,
-                    date: formatDate(r.ReportReceivedDate),
+                    date: formatNhtsaDate(r.ReportReceivedDate),
                     href: `/recalls/${r.NHTSACampaignNumber}`,
                   }}
                 />

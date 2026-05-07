@@ -12,7 +12,7 @@ import { VinDisplay } from "@/components/VinDisplay";
 import { VinSearchForm } from "@/components/VinSearchForm";
 import { JsonLd } from "@/components/JsonLd";
 import { getVinPageData } from "@/lib/nhtsa";
-import { isValidVin, titleCase } from "@/lib/utils";
+import { isValidVin, titleCase, formatNhtsaDate } from "@/lib/utils";
 import { breadcrumbJsonLd, vehicleJsonLd } from "@/lib/seo";
 
 const SITE = "https://vindecoder.site";
@@ -53,17 +53,6 @@ export async function generateMetadata({
     alternates: { canonical: `/vin-decoder/${upper}` },
     robots: { index: true, follow: true },
   };
-}
-
-function formatDate(raw: string): string {
-  if (!raw) return "";
-  const d = new Date(raw);
-  if (Number.isNaN(d.getTime())) return raw;
-  return d.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
 }
 
 export default async function VinResultPage({
@@ -203,7 +192,7 @@ export default async function VinResultPage({
                       campaignId: r.NHTSACampaignNumber,
                       title: r.Component || r.Summary.slice(0, 90),
                       components: r.Component ? [r.Component] : undefined,
-                      date: formatDate(r.ReportReceivedDate),
+                      date: formatNhtsaDate(r.ReportReceivedDate),
                     }}
                   />
                 </li>
@@ -230,7 +219,7 @@ export default async function VinResultPage({
                   <ComplaintItem
                     complaint={{
                       odiNumber: String(c.odiNumber),
-                      date: formatDate(c.dateComplaintFiled || c.dateOfIncident),
+                      date: formatNhtsaDate(c.dateComplaintFiled || c.dateOfIncident),
                       summary: c.summary,
                       flags: {
                         crash: c.crash,
@@ -312,7 +301,7 @@ export default async function VinResultPage({
                       </span>
                       <span className="text-xs text-muted">
                         {i.status}
-                        {i.openDate ? ` · ${formatDate(i.openDate)}` : ""}
+                        {i.openDate ? ` · ${formatNhtsaDate(i.openDate)}` : ""}
                       </span>
                     </div>
                     <p className="mt-1 text-sm font-medium text-slate-950">

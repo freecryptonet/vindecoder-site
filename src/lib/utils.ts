@@ -77,3 +77,52 @@ export function isValidModelYear(year: string | number): boolean {
   if (!Number.isFinite(y)) return false;
   return y >= 1975 && y <= new Date().getFullYear() + 2;
 }
+
+/**
+ * Format a date string from NHTSA / EPA into US locale ("Apr 11, 2020").
+ *
+ * NHTSA returns dates inconsistently: some campaigns come back as MM/DD/YYYY
+ * (US), others as DD/MM/YYYY (DD-first). `new Date()` rejects DD-first
+ * strings as Invalid Date, so the raw string would leak into the UI.
+ *
+ * Strategy: pre-parse slash-separated dates ourselves, decide the format
+ * from whether the first chunk is > 12 (must be a day), then build a
+ * proper Date. Falls back to native Date parsing for ISO and other
+ * recognized shapes; returns the raw string if everything fails.
+ */
+export function formatNhtsaDate(raw: string | null | undefined): string {
+  if (!raw) return "";
+  const m = raw.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (m) {
+    const a = parseInt(m[1], 10);
+    const b = parseInt(m[2], 10);
+    const yr = parseInt(m[3], 10);
+    let month: number;
+    let day: number;
+    if (a > 12) {
+      // First chunk can't be a month → DD/MM/YYYY.
+      day = a;
+      month = b;
+    } else if (b > 12) {
+      // Second chunk can't be a day-of-month → MM/DD/YYYY.
+      month = a;
+      day = b;
+    } else {
+      // Ambiguous (both ≤ 12). NHTSA's US-API default is MM/DD.
+      month = a;
+      day = b;
+    }
+    const d = new Date(Date.UTC(yr, month - 1, day));
+    if (!Number.isNaN(d.getTime())) {
+      return d.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        timeZone: "UTC",
+      });
+    }
+  }
+  const d = new Date(raw);
+  if (Number.isNaN(d.getTime())) return raw;
+  return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+}
