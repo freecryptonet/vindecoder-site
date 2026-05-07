@@ -44,3 +44,36 @@ export function titleCase(s: string): string {
     .map((w) => (ACRONYMS.has(w.toUpperCase()) ? w.toUpperCase() : w[0]?.toUpperCase() + w.slice(1)))
     .join(" ");
 }
+
+/** URL-safe slug. "Mercedes-Benz" → "mercedes-benz", "F-150" → "f-150". */
+export function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+/**
+ * Reverse a slug into a display-friendly model name. Heuristic: ≤3-char
+ * pure-alpha tokens become uppercase ("MKC", "RSX", "WRX"), digit-only
+ * tokens stay as-is, mixed tokens capitalize each letter run ("4Runner",
+ * "350Z"). Multi-token slugs get joined by spaces ("model-3" → "Model 3").
+ */
+export function formatModelName(slug: string): string {
+  return slug
+    .split("-")
+    .map((tok) => {
+      if (!tok) return tok;
+      if (/^\d+$/.test(tok)) return tok;
+      if (tok.length <= 3 && /^[a-z]+$/i.test(tok)) return tok.toUpperCase();
+      return tok.replace(/[a-z]+/gi, (s) => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase());
+    })
+    .join(" ");
+}
+
+/** True if year string is a plausible model year (1975 … now+2). */
+export function isValidModelYear(year: string | number): boolean {
+  const y = typeof year === "number" ? year : parseInt(year, 10);
+  if (!Number.isFinite(y)) return false;
+  return y >= 1975 && y <= new Date().getFullYear() + 2;
+}

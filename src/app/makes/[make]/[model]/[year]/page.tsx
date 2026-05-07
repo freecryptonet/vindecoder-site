@@ -1,0 +1,368 @@
+import { notFound } from "next/navigation";
+import Link from "next/link";
+import type { Metadata } from "next";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { Card } from "@/components/Card";
+import { MetricCard } from "@/components/MetricCard";
+import { RecallItem } from "@/components/RecallItem";
+import { ComplaintItem } from "@/components/ComplaintItem";
+import { SafetyStars } from "@/components/SafetyStars";
+import { VinSearchForm } from "@/components/VinSearchForm";
+import { JsonLd } from "@/components/JsonLd";
+import { TOP_US_MAKES } from "@/lib/makes";
+import { getYearPageData } from "@/lib/nhtsa";
+import { getModelYearAggregates } from "@/lib/db";
+import { breadcrumbJsonLd } from "@/lib/seo";
+import {
+  faqPageJsonLd,
+  yearEditorialIntro,
+  yearFaqs,
+  type YearEditorialInput,
+} from "@/lib/yearEditorial";
+import { formatModelName, isValidModelYear, slugify } from "@/lib/utils";
+
+const SITE = "https://vindecoder.site";
+
+// 24h ISR — same TTL as DB cache reads, so a hit is essentially instant.
+export const revalidate = 86400;
+
+type Params = { make: string; model: string; year: string };
+
+function findMake(slug: string) {
+  return TOP_US_MAKES.find((m) => m.slug === slug.toLowerCase());
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<Params>;
+}): Promise<Metadata> {
+  const { make, model, year } = await params;
+  const m = findMake(make);
+  if (!m || !isValidModelYear(year)) {
+    return { title: "Not found | VinDecoder", robots: { index: false } };
+  }
+  const display = formatModelName(model);
+  const data = await getYearPageData(m.name, display, year).catch(() => null);
+  if (!data) {
+    return {
+      title: `${year} ${m.name} ${display} | VinDecoder`,
+      alternates: { canonical: `/makes/${m.slug}/${model}/${year}` },
+    };
+  }
+  const star = data.safetyRatings[0]?.OverallRating;
+  const bits: string[] = [
+    `${data.recalls.length} Recall${data.recalls.length === 1 ? "" : "s"}`,
+    `${data.complaints.length} Complaint${data.complaints.length === 1 ? "" : "s"}`,
+  ];
+  if (star && /^[1-5]$/.test(star)) bits.push(`${star}-Star Safety`);
+  return {
+    title: `${year} ${m.name} ${display} — ${bits.join(", ")}`,
+    description: `${year} ${m.name} ${display}: ${data.recalls.length} NHTSA recalls, ${data.complaints.length} owner complaints${star && /^[1-5]$/.test(star) ? `, ${star}-star safety rating` : ""}. Free reliability report.`,
+    alternates: { canonical: `/makes/${m.slug}/${model}/${year}` },
+    robots: { index: true, follow: true },
+  };
+}
+
+function formatDate(raw: string): string {
+  if (!raw) return "";
+  const d = new Date(raw);
+  if (Number.isNaN(d.getTime())) return raw;
+  return d.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+export default async function YearReliabilityPage({
+  params,
+}: {
+  params: Promise<Params>;
+}) {
+  const { make: makeSlug, model: modelSlug, year } = await params;
+  const m = findMake(makeSlug);
+  if (!m) notFound();
+  if (!isValidModelYear(year)) notFound();
+
+  const display = formatModelName(modelSlug);
+  const url = `${SITE}/makes/${m.slug}/${modelSlug}/${year}`;
+
+  const [data, siblings] = await Promise.all([
+    getYearPageData(m.name, display, year),
+    getModelYearAggregates(m.name, display),
+  ]);
+
+  const { recalls, complaints, safetyRatings, investigations, mfrComms, epa } = data;
+  const rawStar = safetyRatings[0]?.OverallRating;
+  const star = rawStar && /^[1-5]$/.test(rawStar) ? rawStar : null;
+
+  const editorialInput: YearEditorialInput = {
+    year,
+    make: m.name,
+    model: display,
+    recallsCount: recalls.length,
+    complaintsCount: complaints.length,
+    safetyRating: star,
+    investigationsCount: investigations.length,
+    mfrCommsCount: mfrComms.length,
+    topComponents: deriveTopComponents(recalls, complaints),
+  };
+  const intro = yearEditorialIntro(editorialInput);
+  const faqs = yearFaqs(editorialInput);
+
+  return (
+    <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", url: SITE },
+          { name: "Makes", url: `${SITE}/makes` },
+          { name: m.name, url: `${SITE}/makes/${m.slug}` },
+          { name: display, url: `${SITE}/makes/${m.slug}/${modelSlug}` },
+          { name: year, url },
+        ])}
+      />
+      <JsonLd data={faqPageJsonLd(faqs)} />
+
+      <div className="container-page py-8">
+        <Breadcrumbs
+          items={[
+            { href: "/", label: "Home" },
+            { href: "/makes", label: "Makes" },
+            { href: `/makes/${m.slug}`, label: m.name },
+            { href: `/makes/${m.slug}/${modelSlug}`, label: display },
+            { label: year },
+          ]}
+        />
+
+        <header className="mt-6">
+          <h1 className="text-h1-page text-slate-950 md:text-4xl">
+            {year} {m.name} {display}
+          </h1>
+          <p className="mt-3 max-w-3xl text-base text-slate-950">{intro}</p>
+        </header>
+
+        <section className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">
+          <MetricCard
+            count={recalls.length}
+            label="Recalls"
+            tone="red"
+            summary={recalls.length > 0 ? "Open NHTSA campaigns" : "No active recalls"}
+            href={recalls.length > 0 ? "#recalls" : undefined}
+          />
+          <MetricCard
+            count={complaints.length}
+            label="Complaints"
+            tone="orange"
+            summary={complaints.length > 0 ? `${complaints.length} owner reports` : "No NHTSA complaints"}
+            href={complaints.length > 0 ? "#complaints" : undefined}
+          />
+          <MetricCard
+            count={star ? `${star}★` : "—"}
+            label="Safety"
+            tone="blue"
+            summary={star ? "NHTSA 5-Star rating" : "Not rated by NHTSA"}
+            href={star ? "#safety" : undefined}
+          />
+          <MetricCard
+            count={investigations.length}
+            label="Investigations"
+            tone="purple"
+            summary={
+              investigations.length > 0 ? "Active or closed defect probes" : "No defect investigations"
+            }
+            href={investigations.length > 0 ? "#investigations" : undefined}
+          />
+        </section>
+
+        {recalls.length > 0 ? (
+          <section id="recalls" className="mt-12">
+            <h2 className="text-h2 text-slate-950">
+              Recall campaigns ({recalls.length})
+            </h2>
+            <ul className="mt-4 overflow-hidden rounded-card border border-border bg-surface">
+              {recalls.slice(0, 15).map((r) => (
+                <li key={r.NHTSACampaignNumber}>
+                  <RecallItem
+                    recall={{
+                      campaignId: r.NHTSACampaignNumber,
+                      title: r.Component || r.Summary.slice(0, 90),
+                      components: r.Component ? [r.Component] : undefined,
+                      date: formatDate(r.ReportReceivedDate),
+                    }}
+                  />
+                </li>
+              ))}
+            </ul>
+            {recalls.length > 15 ? (
+              <p className="mt-3 text-sm text-muted">
+                Showing 15 of {recalls.length} recalls.
+              </p>
+            ) : null}
+          </section>
+        ) : null}
+
+        {complaints.length > 0 ? (
+          <section id="complaints" className="mt-12">
+            <h2 className="text-h2 text-slate-950">Recent complaints ({complaints.length})</h2>
+            <p className="mt-1 text-sm text-muted">
+              Most recent NHTSA owner complaints. Full clustering ships day-5.
+            </p>
+            <ul className="mt-4 overflow-hidden rounded-card border border-border bg-surface">
+              {complaints.slice(0, 10).map((c) => (
+                <li key={c.odiNumber}>
+                  <ComplaintItem
+                    complaint={{
+                      odiNumber: String(c.odiNumber),
+                      date: formatDate(c.dateComplaintFiled || c.dateOfIncident),
+                      summary: c.summary,
+                      flags: {
+                        crash: c.crash,
+                        fire: c.fire,
+                        injury: c.numberOfInjuries > 0,
+                      },
+                    }}
+                  />
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
+
+        {safetyRatings.length > 0 ? (
+          <section id="safety" className="mt-12">
+            <h2 className="text-h2 text-slate-950">NHTSA safety ratings</h2>
+            <div className="mt-4 grid gap-3 md:grid-cols-2">
+              {safetyRatings.map((s) => (
+                <Card key={s.VehicleId}>
+                  <h3 className="text-h3 text-slate-950">{s.VehicleDescription}</h3>
+                  <div className="mt-3 flex items-center gap-2">
+                    <span className="text-xs uppercase tracking-wider text-muted">
+                      Overall
+                    </span>
+                    <SafetyStars rating={s.OverallRating} size="md" />
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </section>
+        ) : null}
+
+        {epa && epa.combinedMin > 0 ? (
+          <section className="mt-12">
+            <h2 className="text-h2 text-slate-950">EPA fuel economy</h2>
+            <div className="mt-4 grid grid-cols-3 gap-3">
+              <MpgCard label="City" min={epa.cityMin} max={epa.cityMax} />
+              <MpgCard label="Highway" min={epa.highwayMin} max={epa.highwayMax} />
+              <MpgCard label="Combined" min={epa.combinedMin} max={epa.combinedMax} />
+            </div>
+          </section>
+        ) : null}
+
+        {investigations.length > 0 ? (
+          <section id="investigations" className="mt-12">
+            <h2 className="text-h2 text-slate-950">Defect investigations</h2>
+            <ul className="mt-4 space-y-2">
+              {investigations.slice(0, 5).map((i) => (
+                <li
+                  key={i.investigationNumber || i.subject}
+                  className="rounded-card border border-border bg-surface p-4"
+                >
+                  <div className="flex items-baseline justify-between gap-3">
+                    <span className="vin-mono text-xs font-semibold text-[#7C3AED]">
+                      {i.investigationNumber || "—"}
+                    </span>
+                    <span className="text-xs text-muted">
+                      {i.status}
+                      {i.openDate ? ` · ${formatDate(i.openDate)}` : ""}
+                    </span>
+                  </div>
+                  <p className="mt-1 text-sm font-medium text-slate-950">
+                    {i.subject}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
+
+        {siblings.length > 1 ? (
+          <section className="mt-12">
+            <h2 className="text-h2 text-slate-950">Other {m.name} {display} years</h2>
+            <ul className="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-6">
+              {siblings.map((s) => (
+                <li key={s.year}>
+                  <Link
+                    href={`/makes/${m.slug}/${slugify(display)}/${s.year}`}
+                    className={`block rounded-card border bg-surface px-3 py-2 text-center text-sm font-semibold tabular-nums transition-colors ${
+                      s.year === year
+                        ? "border-slate-950 text-slate-950"
+                        : "border-border text-slate-950 hover:border-slate-950"
+                    }`}
+                  >
+                    {s.year}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
+
+        <section className="mt-12">
+          <h2 className="text-h2 text-slate-950">Frequently asked</h2>
+          <dl className="mt-4 space-y-4">
+            {faqs.map((f, i) => (
+              <div key={i} className="rounded-card border border-border bg-surface p-5">
+                <dt className="text-h3 text-slate-950">{f.question}</dt>
+                <dd className="mt-2 text-sm text-muted">{f.answer}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+
+        <section className="mt-16 border-t border-border pt-10 text-center">
+          <h2 className="text-h2 text-slate-950">Check this year&rsquo;s VIN</h2>
+          <div className="mx-auto mt-6 max-w-2xl">
+            <VinSearchForm size="default" />
+          </div>
+        </section>
+      </div>
+    </>
+  );
+}
+
+function MpgCard({ label, min, max }: { label: string; min: number; max: number }) {
+  const display = min === max ? `${min}` : `${min}–${max}`;
+  return (
+    <Card className="text-center">
+      <p className="text-xs uppercase tracking-wider text-muted">{label}</p>
+      <p className="mt-1 text-3xl font-bold text-brand-blue">
+        {display}
+        <span className="ml-1 text-sm font-medium text-muted">mpg</span>
+      </p>
+    </Card>
+  );
+}
+
+function deriveTopComponents(
+  recalls: { Component: string }[],
+  complaints: { components: string }[],
+): string[] {
+  const counts = new Map<string, number>();
+  for (const r of recalls) {
+    if (!r.Component) continue;
+    const key = r.Component.split(":")[0].trim();
+    if (!key) continue;
+    counts.set(key, (counts.get(key) ?? 0) + 1);
+  }
+  for (const c of complaints) {
+    if (!c.components) continue;
+    const key = c.components.split(":")[0].trim();
+    if (!key) continue;
+    counts.set(key, (counts.get(key) ?? 0) + 1);
+  }
+  return Array.from(counts.entries())
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 3)
+    .map(([k]) => k.toLowerCase());
+}

@@ -560,7 +560,172 @@ import {
   getCachedVehicle,
   saveVehicleCache,
   initializeDatabase,
+  getCachedModelYears,
+  saveModelYearsCache,
 } from "./db";
+
+// ============================================================
+// vPIC Makes & Models
+// ============================================================
+
+export interface ModelInfo {
+  modelId: number;
+  modelName: string;
+  makeId: number;
+  makeName: string;
+}
+
+export async function getModelsForMake(make: string): Promise<ModelInfo[]> {
+  const url = `${VPIC_BASE}/GetModelsForMake/${encodeURIComponent(make)}?format=json`;
+  try {
+    const data = await fetchJson<{
+      Results: { Model_ID: number; Model_Name: string; Make_ID: number; Make_Name: string }[];
+    }>(url, { revalidate: 86400 });
+    return (data.Results ?? []).map((m) => ({
+      modelId: m.Model_ID,
+      modelName: m.Model_Name,
+      makeId: m.Make_ID,
+      makeName: m.Make_Name,
+    }));
+  } catch {
+    return [];
+  }
+}
+
+export async function getModelsForMakeYear(
+  make: string,
+  year: string | number,
+): Promise<ModelInfo[]> {
+  const url = `${VPIC_BASE}/GetModelsForMakeYear/make/${encodeURIComponent(
+    make,
+  )}/modelyear/${encodeURIComponent(String(year))}?format=json`;
+  try {
+    const data = await fetchJson<{
+      Results: { Model_ID: number; Model_Name: string; Make_ID: number; Make_Name: string }[];
+    }>(url, { revalidate: 86400 });
+    return (data.Results ?? []).map((m) => ({
+      modelId: m.Model_ID,
+      modelName: m.Model_Name,
+      makeId: m.Make_ID,
+      makeName: m.Make_Name,
+    }));
+  } catch {
+    return [];
+  }
+}
+
+const looseModelKey = (s: string) => s.toLowerCase().replace(/[\s.\-_]+/g, "");
+
+/**
+ * Find every year NHTSA's vPIC GetModelsForMakeYear endpoint lists this
+ * model. DB-cached for 30 days because the underlying call sweeps ~50 years
+ * × parallel batches and overwhelming NHTSA from a hot make page would hurt.
+ *
+ * Loose-key match: NHTSA stores 'D-Series' / 'ST.REGIS' / 'W-Series' but
+ * slug→formatModelName produces 'D Series' / 'ST REGIS' / 'W Series'.
+ * Stripping punctuation lets both representations resolve.
+ */
+export async function getValidYearsForModel(
+  make: string,
+  model: string,
+): Promise<string[]> {
+  const cached = await getCachedModelYears(make, model);
+  if (cached) return cached;
+
+  const currentYear = new Date().getFullYear();
+  const years: string[] = [];
+  for (let y = currentYear + 1; y >= 1981; y--) years.push(String(y));
+
+  const target = looseModelKey(model);
+  const valid: string[] = [];
+
+  for (let i = 0; i < years.length; i += 10) {
+    const batch = years.slice(i, i + 10);
+    const results = await Promise.all(
+      batch.map(async (year) => {
+        const models = await getModelsForMakeYear(make, year);
+        return models.some((m) => looseModelKey(m.modelName) === target) ? year : null;
+      }),
+    );
+    valid.push(...results.filter((y): y is string => y !== null));
+    // Bail once we have data and hit a fully-empty batch (model is out of production)
+    if (valid.length > 0 && results.every((r) => r === null)) break;
+  }
+
+  valid.sort((a, b) => parseInt(b, 10) - parseInt(a, 10));
+  await saveModelYearsCache(make, model, valid);
+  return valid;
+}
+
+// ============================================================
+// Year-page data loader (parallel sibling of getVinPageData, no VIN)
+// ============================================================
+
+export interface YearPageData {
+  recalls: RecallResult[];
+  complaints: ComplaintResult[];
+  safetyRatings: SafetyRatingResult[];
+  investigations: InvestigationResult[];
+  mfrComms: MfrCommResult[];
+  epa: EpaFuelEconomy | null;
+  fromCache: boolean;
+}
+
+export async function getYearPageData(
+  make: string,
+  model: string,
+  year: string,
+): Promise<YearPageData> {
+  await initializeDatabase().catch(() => undefined);
+
+  const cached = await getCachedVehicle(make, model, year);
+  if (cached) {
+    return {
+      recalls: (cached.recalls_data as RecallResult[]) ?? [],
+      complaints: (cached.complaints_data as ComplaintResult[]) ?? [],
+      safetyRatings: (cached.safety_data as SafetyRatingResult[]) ?? [],
+      investigations: (cached.investigations_data as InvestigationResult[]) ?? [],
+      mfrComms: (cached.mfr_comms_data as MfrCommResult[]) ?? [],
+      epa: (cached.epa_data as EpaFuelEconomy) ?? null,
+      fromCache: true,
+    };
+  }
+
+  const [recalls, complaints, safetyRatings, safety, epa] = await Promise.all([
+    getRecalls(make, model, year),
+    getComplaints(make, model, year),
+    getSafetyRatings(make, model, year),
+    getSafetyIssues(make, model, year),
+    getEpaFuelEconomy(make, model, year),
+  ]);
+
+  await saveVehicleCache({
+    make,
+    model,
+    year,
+    recalls_count: recalls.length,
+    complaints_count: complaints.length,
+    safety_rating: safetyRatings[0]?.OverallRating ?? null,
+    investigations_count: safety.investigations.length,
+    mfr_comms_count: safety.mfrComms.length,
+    recalls_data: recalls,
+    complaints_data: complaints,
+    safety_data: safetyRatings,
+    investigations_data: safety.investigations,
+    mfr_comms_data: safety.mfrComms,
+    epa_data: epa,
+  });
+
+  return {
+    recalls,
+    complaints,
+    safetyRatings,
+    investigations: safety.investigations,
+    mfrComms: safety.mfrComms,
+    epa,
+    fromCache: false,
+  };
+}
 
 /**
  * Load everything the VIN result page needs. Tries the 7-day DB cache first,

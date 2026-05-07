@@ -146,6 +146,20 @@ export async function initializeDatabase(): Promise<void> {
         INDEX idx_404_last_seen (last_seen DESC)
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     `;
+
+    // model_years_cache — answers "what years did NHTSA list this model?".
+    // Day-4 added: backs /makes/[make]/[model] without sweeping every model
+    // year on every request. 30-day TTL.
+    await sql`
+      CREATE TABLE IF NOT EXISTS model_years_cache (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        make VARCHAR(100) NOT NULL,
+        model VARCHAR(100) NOT NULL,
+        valid_years JSON NOT NULL,
+        last_fetched TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE KEY uniq_model_years_make_model (make, model)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `;
   })();
   return schemaInitPromise;
 }
@@ -313,5 +327,157 @@ export async function saveVehicleCache(d: SaveVehicleData): Promise<void> {
     `;
   } catch {
     // best-effort
+  }
+}
+
+// ============================================================
+// Model years cache (30-day TTL)
+// ============================================================
+
+const MODEL_YEARS_CACHE_DAYS = 30;
+
+export async function getCachedModelYears(
+  make: string,
+  model: string,
+): Promise<string[] | null> {
+  const sql = getDb();
+  if (!sql) return null;
+  try {
+    const rows = await sql`
+      SELECT valid_years, last_fetched FROM model_years_cache
+      WHERE make = ${make} AND model = ${model}
+      LIMIT 1
+    `;
+    if (rows.length === 0) return null;
+    const last = new Date(rows[0].last_fetched as string);
+    const days = (Date.now() - last.getTime()) / (1000 * 60 * 60 * 24);
+    if (days > MODEL_YEARS_CACHE_DAYS) return null;
+    const v = rows[0].valid_years;
+    if (Array.isArray(v)) return v as string[];
+    if (typeof v === "string") {
+      try {
+        return JSON.parse(v) as string[];
+      } catch {
+        return null;
+      }
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+export async function saveModelYearsCache(
+  make: string,
+  model: string,
+  validYears: string[],
+): Promise<void> {
+  const sql = getDb();
+  if (!sql) return;
+  try {
+    await sql`
+      INSERT INTO model_years_cache (make, model, valid_years, last_fetched)
+      VALUES (${make}, ${model}, ${JSON.stringify(validYears)}, NOW())
+      ON DUPLICATE KEY UPDATE
+        valid_years = VALUES(valid_years),
+        last_fetched = NOW()
+    `;
+  } catch {
+    // best-effort
+  }
+}
+
+// ============================================================
+// Aggregates for /makes/[make] and /makes/[make]/[model]
+// ============================================================
+
+/**
+ * Top vehicle/year combos for a make, ranked by surfaced problem volume so
+ * the make page deep-links the highest-content year hubs we've already
+ * cached. Skips empty rows.
+ */
+export async function getTopVehicleYearsForMake(
+  make: string,
+  limit = 12,
+): Promise<{ model: string; year: string; recalls: number; complaints: number }[]> {
+  const sql = getDb();
+  if (!sql) return [];
+  try {
+    const rows = await sql`
+      SELECT model, year, recalls_count, complaints_count
+      FROM vehicle_cache
+      WHERE make = ${make}
+        AND has_data = TRUE
+        AND (recalls_count > 0 OR complaints_count > 0)
+      ORDER BY (complaints_count + recalls_count * 5) DESC
+      LIMIT ${limit}
+    `;
+    return rows.map((r) => ({
+      model: (r.model as string) || "",
+      year: (r.year as string) || "",
+      recalls: Number(r.recalls_count) || 0,
+      complaints: Number(r.complaints_count) || 0,
+    }));
+  } catch {
+    return [];
+  }
+}
+
+export interface ModelYearAggregateRow {
+  year: string;
+  recalls: number;
+  complaints: number;
+  hasData: boolean;
+}
+
+/** Year-by-year cached counts for a single (make, model). */
+export async function getModelYearAggregates(
+  make: string,
+  model: string,
+): Promise<ModelYearAggregateRow[]> {
+  const sql = getDb();
+  if (!sql) return [];
+  try {
+    const rows = await sql`
+      SELECT year, recalls_count, complaints_count, has_data
+      FROM vehicle_cache
+      WHERE make = ${make}
+        AND model = ${model}
+        AND year BETWEEN '1975' AND ${String(new Date().getFullYear() + 2)}
+      ORDER BY year DESC
+    `;
+    return rows.map((r) => ({
+      year: r.year as string,
+      recalls: Number(r.recalls_count) || 0,
+      complaints: Number(r.complaints_count) || 0,
+      hasData: !!r.has_data,
+    }));
+  } catch {
+    return [];
+  }
+}
+
+/** All cached vehicle rows for sitemap generation. */
+export async function getCachedVehicles(
+  limit = 5000,
+): Promise<{ make: string; model: string; year: string; lastFetched: Date }[]> {
+  const sql = getDb();
+  if (!sql) return [];
+  try {
+    const rows = await sql`
+      SELECT make, model, year, last_fetched
+      FROM vehicle_cache
+      WHERE has_data = TRUE
+      ORDER BY last_fetched DESC
+      LIMIT ${limit}
+    `;
+    return rows.map((r) => ({
+      make: r.make as string,
+      model: r.model as string,
+      year: r.year as string,
+      lastFetched: r.last_fetched instanceof Date ? r.last_fetched : new Date(String(r.last_fetched)),
+    }));
+  } catch {
+    return [];
   }
 }
