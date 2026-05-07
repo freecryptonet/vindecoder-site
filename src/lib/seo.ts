@@ -53,7 +53,8 @@ export function breadcrumbJsonLd(crumbs: { name: string; url?: string }[]) {
 }
 
 export interface VehicleJsonLdInput {
-  vin: string;
+  /** Optional — only the per-VIN result page sets this. Year hubs omit. */
+  vin?: string;
   year: string | number;
   make: string;
   model: string;
@@ -70,7 +71,7 @@ export function vehicleJsonLd(v: VehicleJsonLdInput) {
     "@context": "https://schema.org",
     "@type": "Vehicle",
     name,
-    vehicleIdentificationNumber: v.vin,
+    ...(v.vin ? { vehicleIdentificationNumber: v.vin } : {}),
     brand: { "@type": "Brand", name: v.make },
     model: v.model,
     modelDate: String(v.year),

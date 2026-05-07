@@ -12,7 +12,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { TOP_US_MAKES } from "@/lib/makes";
 import { getYearPageData } from "@/lib/nhtsa";
 import { getModelYearAggregates } from "@/lib/db";
-import { breadcrumbJsonLd } from "@/lib/seo";
+import { breadcrumbJsonLd, vehicleJsonLd } from "@/lib/seo";
 import {
   faqPageJsonLd,
   yearEditorialIntro,
@@ -110,6 +110,14 @@ export default async function YearReliabilityPage({
           { name: display, url: `${SITE}/makes/${m.slug}/${modelSlug}` },
           { name: year, url },
         ])}
+      />
+      <JsonLd
+        data={vehicleJsonLd({
+          year,
+          make: m.name,
+          model: display,
+          url,
+        })}
       />
       <JsonLd data={faqPageJsonLd(faqs)} />
 
