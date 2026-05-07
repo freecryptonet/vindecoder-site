@@ -9,7 +9,7 @@ import { ComplaintItem } from "@/components/ComplaintItem";
 import { SafetyStars } from "@/components/SafetyStars";
 import { VinSearchForm } from "@/components/VinSearchForm";
 import { JsonLd } from "@/components/JsonLd";
-import { TOP_US_MAKES } from "@/lib/makes";
+import { findMake } from "@/lib/makes";
 import { getYearPageData } from "@/lib/nhtsa";
 import { getModelYearAggregates } from "@/lib/db";
 import { breadcrumbJsonLd, vehicleJsonLd } from "@/lib/seo";
@@ -27,10 +27,6 @@ const SITE = "https://vindecoder.site";
 export const revalidate = 86400;
 
 type Params = { make: string; model: string; year: string };
-
-function findMake(slug: string) {
-  return TOP_US_MAKES.find((m) => m.slug === slug.toLowerCase());
-}
 
 export async function generateMetadata({
   params,

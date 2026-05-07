@@ -6,7 +6,7 @@ import { Card } from "@/components/Card";
 import { JsonLd } from "@/components/JsonLd";
 import { VinSearchForm } from "@/components/VinSearchForm";
 import { breadcrumbJsonLd } from "@/lib/seo";
-import { TOP_US_MAKES } from "@/lib/makes";
+import { findMake } from "@/lib/makes";
 import { getValidYearsForModel } from "@/lib/nhtsa";
 import { getModelYearAggregates } from "@/lib/db";
 import { formatModelName, slugify } from "@/lib/utils";
@@ -16,10 +16,6 @@ const SITE = "https://vindecoder.site";
 export const revalidate = 86400;
 
 type Params = { make: string; model: string };
-
-function findMake(slug: string) {
-  return TOP_US_MAKES.find((m) => m.slug === slug.toLowerCase());
-}
 
 export async function generateMetadata({
   params,

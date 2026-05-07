@@ -7,7 +7,7 @@ import { BrandLogo } from "@/components/BrandLogo";
 import { VinSearchForm } from "@/components/VinSearchForm";
 import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbJsonLd } from "@/lib/seo";
-import { TOP_US_MAKES } from "@/lib/makes";
+import { ALL_US_MAKES, findMake } from "@/lib/makes";
 import { getModelsForMake } from "@/lib/nhtsa";
 import { getTopVehicleYearsForMake } from "@/lib/db";
 import { slugify, formatModelName, titleCase } from "@/lib/utils";
@@ -18,11 +18,6 @@ const SITE = "https://vindecoder.site";
 export const revalidate = 86400;
 
 type Params = { make: string };
-
-function findMake(slug: string) {
-  const lower = slug.toLowerCase();
-  return TOP_US_MAKES.find((m) => m.slug === lower);
-}
 
 export async function generateMetadata({
   params,
@@ -40,7 +35,7 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams(): Promise<Params[]> {
-  return TOP_US_MAKES.map((m) => ({ make: m.slug }));
+  return ALL_US_MAKES.map((m) => ({ make: m.slug }));
 }
 
 export default async function MakePage({

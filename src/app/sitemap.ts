@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { TOP_US_MAKES } from "@/lib/makes";
+import { ALL_US_MAKES } from "@/lib/makes";
 import { GUIDES } from "@/lib/guides";
 import { getCachedVehicles } from "@/lib/db";
 import { slugify } from "@/lib/utils";
@@ -40,8 +40,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
   }
 
-  // 18 make hubs.
-  for (const m of TOP_US_MAKES) {
+  // Make hubs (top + extended passenger).
+  for (const m of ALL_US_MAKES) {
     out.push({
       url: `${SITE}/makes/${m.slug}`,
       lastModified: now,
@@ -57,7 +57,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const cached = await getCachedVehicles(5000).catch(() => []);
   const seen = new Set<string>();
   for (const v of cached) {
-    const makeSlug = TOP_US_MAKES.find((m) => m.name.toLowerCase() === v.make.toLowerCase())?.slug;
+    const makeSlug = ALL_US_MAKES.find((m) => m.name.toLowerCase() === v.make.toLowerCase())?.slug;
     if (!makeSlug) continue;
     if (!/^\d{4}$/.test(v.year)) continue;
     const path = `/makes/${makeSlug}/${slugify(v.model)}/${v.year}`;

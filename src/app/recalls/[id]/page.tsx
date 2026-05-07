@@ -7,7 +7,7 @@ import { VinSearchForm } from "@/components/VinSearchForm";
 import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbJsonLd } from "@/lib/seo";
 import { getRecallCampaign } from "@/lib/nhtsa";
-import { TOP_US_MAKES } from "@/lib/makes";
+import { ALL_US_MAKES } from "@/lib/makes";
 import { slugify, formatNhtsaDate } from "@/lib/utils";
 
 const SITE = "https://vindecoder.site";
@@ -48,7 +48,7 @@ export default async function RecallDetailPage({
   if (!c) notFound();
 
   const url = `${SITE}/recalls/${upper}`;
-  const knownMakes = new Set(TOP_US_MAKES.map((m) => m.name.toLowerCase()));
+  const knownMakes = new Set(ALL_US_MAKES.map((m) => m.name.toLowerCase()));
   const yearLinks = c.modelYears.flatMap((y) =>
     c.makes.flatMap((mk) =>
       c.models.map((md) => ({
