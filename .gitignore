@@ -57,6 +57,11 @@ next-env.d.ts
 after-rename-click.md
 github-*.md
 github-secret-form.md
+ga4-*.yml
+gsc-*.yml
+after-*.yml
+delete-*.yml
+websites-list.yml
 day*-*.jpg
 day*-*.png
 apex-*.jpg
