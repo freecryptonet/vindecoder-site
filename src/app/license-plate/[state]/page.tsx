@@ -139,7 +139,7 @@ export default async function StateLicensePlatePage({
 
             <section>
               <h2 className="text-h2 text-slate-950">
-                {s.dmvName} &mdash; contact &amp; online portal
+                {`${s.dmvName} — contact & online portal`}
               </h2>
               <p className="mt-2 text-base leading-relaxed">
                 The official online portal for vehicle services in {s.name}:{" "}
