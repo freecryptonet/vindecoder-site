@@ -26,7 +26,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { make } = await params;
   const m = findMake(make);
-  if (!m) return { title: "Make not found | VinDecoder", robots: { index: false } };
+  if (!m) return { title: "Make not found", robots: { index: false } };
   return {
     title: `${m.name} VIN Decoder — Free ${m.name} VIN Lookup, Recalls, Specs`,
     description: `Decode any ${m.name} VIN. Browse ${m.name} models and model-year reliability hubs powered by NHTSA recalls, complaints, and safety ratings.`,

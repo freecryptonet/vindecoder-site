@@ -23,7 +23,7 @@ export async function generateMetadata({
   const { state } = await params;
   const s = findState(state);
   if (!s) {
-    return { title: "Unknown state | VinDecoder", robots: { index: false } };
+    return { title: "Unknown state", robots: { index: false } };
   }
   return {
     title: `${s.name} License Plate Lookup — DMV Resources & What's Legal`,

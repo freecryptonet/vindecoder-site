@@ -31,12 +31,12 @@ export async function generateMetadata({
   const { vin } = await params;
   const upper = vin.toUpperCase();
   if (!isValidVin(upper)) {
-    return { title: "VIN not recognized | VinDecoder", robots: { index: false } };
+    return { title: "VIN not recognized", robots: { index: false } };
   }
   const data = await getVinPageData(upper).catch(() => null);
   if (!data || !data.vinDecode.make) {
     return {
-      title: `VIN ${upper} | VinDecoder`,
+      title: `VIN ${upper}`,
       description: `Decode ${upper} with NHTSA. Recalls, complaints, safety ratings, and TSBs.`,
       alternates: { canonical: `/vin-decoder/${upper}` },
     };

@@ -24,7 +24,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { make, model } = await params;
   const m = findMake(make);
-  if (!m) return { title: "Not found | VinDecoder", robots: { index: false } };
+  if (!m) return { title: "Not found", robots: { index: false } };
   const display = formatModelName(model);
   return {
     title: `${m.name} ${display} VIN Decoder — All Years, Recalls, Specs`,

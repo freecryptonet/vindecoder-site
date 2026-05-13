@@ -36,13 +36,13 @@ export async function generateMetadata({
   const { make, model, year } = await params;
   const m = findMake(make);
   if (!m || !isValidModelYear(year)) {
-    return { title: "Not found | VinDecoder", robots: { index: false } };
+    return { title: "Not found", robots: { index: false } };
   }
   const display = formatModelName(model);
   const data = await getYearPageData(m.name, display, year).catch(() => null);
   if (!data) {
     return {
-      title: `${year} ${m.name} ${display} | VinDecoder`,
+      title: `${year} ${m.name} ${display}`,
       alternates: { canonical: `/makes/${m.slug}/${model}/${year}` },
     };
   }

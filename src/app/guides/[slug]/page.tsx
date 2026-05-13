@@ -22,9 +22,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const g = findGuide(slug);
-  if (!g) return { title: "Guide not found | VinDecoder", robots: { index: false } };
+  if (!g) return { title: "Guide not found", robots: { index: false } };
   return {
-    title: `${g.title} | VinDecoder Guides`,
+    title: { absolute: `${g.title} — VinDecoder Guides` },
     description: g.description,
     alternates: { canonical: `/guides/${g.slug}` },
   };

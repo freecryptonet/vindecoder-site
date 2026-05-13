@@ -22,11 +22,11 @@ export async function generateMetadata({
   const upper = code.toUpperCase();
   const manufacturer = UNIVERSAL_WMI_MAP[upper];
   if (!manufacturer) {
-    return { title: "WMI not found | VinDecoder", robots: { index: false } };
+    return { title: "WMI not found", robots: { index: false } };
   }
   const { country } = lookupWmiRegion(upper);
   return {
-    title: `WMI ${upper} — ${manufacturer}, ${country} | VIN Year Chart`,
+    title: `WMI ${upper} — ${manufacturer}, ${country}`,
     description: `WMI ${upper} identifies vehicles built by ${manufacturer} in ${country}. ISO 3779 World Manufacturer Identifier reference.`,
     alternates: { canonical: `/wmi/${upper}` },
   };

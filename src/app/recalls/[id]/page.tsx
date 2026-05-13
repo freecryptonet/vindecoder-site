@@ -26,13 +26,13 @@ export async function generateMetadata({
   const upper = id.toUpperCase();
   const c = await getRecallCampaign(upper).catch(() => null);
   if (!c) {
-    return { title: `Recall ${upper} — Not Found | VinDecoder`, robots: { index: false } };
+    return { title: `Recall ${upper} — Not Found`, robots: { index: false } };
   }
   const ymm = `${c.modelYears.join(", ")} ${c.makes.join(", ")} ${c.models.join(", ")}`.trim();
   const component = c.component || "Open recall campaign";
   const summary = (c.summary || "").slice(0, 140);
   return {
-    title: `${ymm} Recall ${upper} — ${component} | VinDecoder`,
+    title: `${ymm} Recall ${upper} — ${component}`,
     description: summary ? `${component}. ${summary}` : component,
     alternates: { canonical: `/recalls/${upper}` },
   };
