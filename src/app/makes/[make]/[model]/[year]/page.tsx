@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { Card } from "@/components/Card";
 import { MetricCard } from "@/components/MetricCard";
+import { BrandLogo } from "@/components/BrandLogo";
 import { RecallItem } from "@/components/RecallItem";
 import { ComplaintItem } from "@/components/ComplaintItem";
 import { SafetyStars } from "@/components/SafetyStars";
