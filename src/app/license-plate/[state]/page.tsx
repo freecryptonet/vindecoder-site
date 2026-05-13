@@ -120,7 +120,8 @@ export default async function StateLicensePlatePage({
                   <a
                     className="underline hover:text-slate-950"
                     href="https://vehiclehistory.bja.ojp.gov/nmvtis_vehiclehistory"
-                    rel="noopener"
+                    rel="noopener noreferrer"
+                    target="_blank"
                   >
                     NMVTIS
                   </a>{" "}
@@ -138,13 +139,14 @@ export default async function StateLicensePlatePage({
 
             <section>
               <h2 className="text-h2 text-slate-950">
-                {s.dmvName} contact &amp; online portal
+                {s.dmvName} &mdash; contact &amp; online portal
               </h2>
               <p className="mt-2 text-base leading-relaxed">
                 The official online portal for vehicle services in {s.name}:{" "}
                 <a
                   href={s.dmvUrl}
-                  rel="noopener"
+                  rel="noopener noreferrer"
+                  target="_blank"
                   className="underline hover:text-slate-950"
                 >
                   {s.dmvUrl.replace(/^https?:\/\//, "").replace(/\/$/, "")}
@@ -194,7 +196,8 @@ export default async function StateLicensePlatePage({
                 <a
                   className="underline hover:text-slate-950"
                   href="https://vehiclehistory.bja.ojp.gov/nmvtis_approved_providers"
-                  rel="noopener"
+                  rel="noopener noreferrer"
+                  target="_blank"
                 >
                   NMVTIS-approved provider
                 </a>

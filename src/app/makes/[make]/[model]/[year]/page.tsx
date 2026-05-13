@@ -179,7 +179,7 @@ export default async function YearReliabilityPage({
                   <RecallItem
                     recall={{
                       campaignId: r.NHTSACampaignNumber,
-                      title: r.Component || r.Summary.slice(0, 90),
+                      title: r.Component || (r.Summary || "").slice(0, 90) || r.NHTSACampaignNumber,
                       components: r.Component ? [r.Component] : undefined,
                       date: formatNhtsaDate(r.ReportReceivedDate),
                     }}

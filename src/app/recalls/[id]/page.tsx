@@ -29,9 +29,11 @@ export async function generateMetadata({
     return { title: `Recall ${upper} — Not Found | VinDecoder`, robots: { index: false } };
   }
   const ymm = `${c.modelYears.join(", ")} ${c.makes.join(", ")} ${c.models.join(", ")}`.trim();
+  const component = c.component || "Open recall campaign";
+  const summary = (c.summary || "").slice(0, 140);
   return {
-    title: `${ymm} Recall ${upper} — ${c.component} | VinDecoder`,
-    description: `${c.component}. ${c.summary.slice(0, 140)}`,
+    title: `${ymm} Recall ${upper} — ${component} | VinDecoder`,
+    description: summary ? `${component}. ${summary}` : component,
     alternates: { canonical: `/recalls/${upper}` },
   };
 }
