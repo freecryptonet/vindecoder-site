@@ -1,0 +1,268 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e6]:
+      - generic [ref=e7]:
+        - generic [ref=e11]: Analytics
+        - button "Open the universal picker." [ref=e14] [cursor=pointer]:
+          - generic [ref=e15]:
+            - generic [ref=e16]:
+              - generic [ref=e17]: All accounts
+              - img [ref=e18]: chevron_right
+              - generic [ref=e19]: mijnwebsites
+            - generic [ref=e20]:
+              - generic [ref=e22]: vindecoder.site
+              - img [ref=e23]: arrow_drop_down
+        - search [ref=e27]:
+          - img [ref=e28]: search
+          - textbox "Search" [ref=e30]:
+            - /placeholder: Try searching "link with Ads"
+        - button "Switch products" [ref=e32] [cursor=pointer]:
+          - img [ref=e33]
+        - button "Help entry menu" [ref=e37] [cursor=pointer]:
+          - img [ref=e38]: help
+        - button "Open the user account switcher panel." [ref=e42] [cursor=pointer]
+    - generic [ref=e45]:
+      - generic [ref=e48]:
+        - generic [ref=e49]:
+          - navigation "Main pages" [ref=e50]:
+            - link "Home" [ref=e52] [cursor=pointer]:
+              - img [ref=e53]:
+                - img [ref=e54]
+              - generic [ref=e57]: Home
+            - link "Reports" [ref=e59] [cursor=pointer]:
+              - img [ref=e60]: insert_chart_filled
+              - generic [ref=e61]: Reports
+            - link "Explore" [ref=e63] [cursor=pointer]:
+              - img [ref=e64]: data_exploration
+              - generic [ref=e65]: Explore
+            - link "Advertising" [ref=e67] [cursor=pointer]:
+              - img [ref=e68]: ads_click
+              - generic [ref=e69]: Advertising
+          - navigation "Settings pages" [ref=e70]:
+            - link "Tasks" [ref=e72] [cursor=pointer]:
+              - img [ref=e73]: task_alt
+              - generic [ref=e74]: Tasks
+            - link "Admin" [ref=e76] [cursor=pointer]:
+              - img [ref=e77]: settings_filled
+              - generic [ref=e78]: Admin
+        - generic [ref=e80]:
+          - navigation "Secondary pages" [ref=e1708]:
+            - button "Create" [ref=e1713] [cursor=pointer]:
+              - img [ref=e1714]: add
+              - generic [ref=e1716]:
+                - text: Create
+                - img [ref=e1717]: arrow_drop_down
+          - tree [ref=e1720]:
+            - treeitem "Admin" [level=1] [ref=e1721]:
+              - button "Admin" [ref=e1723] [cursor=pointer]:
+                - generic [ref=e1726]: Admin
+            - treeitem "My preferences" [level=1] [ref=e1729]:
+              - button "My preferences" [ref=e1731] [cursor=pointer]:
+                - generic [ref=e1734]: My preferences
+            - treeitem "Account settings" [expanded] [level=1] [ref=e1737]:
+              - generic [ref=e1738]:
+                - separator [ref=e1739]
+                - button "Account settings" [ref=e1740] [cursor=pointer]:
+                  - generic [ref=e1743]:
+                    - generic [ref=e1744]: Account settings
+                    - img [ref=e1745]: keyboard_arrow_up
+            - treeitem "Account" [level=2] [ref=e1748]:
+              - button "Account" [ref=e1750] [cursor=pointer]:
+                - generic [ref=e1752]:
+                  - img [ref=e1753]: arrow_right
+                  - generic [ref=e1754]: Account
+            - treeitem "Property settings" [expanded] [level=1] [ref=e1757]:
+              - generic [ref=e1758]:
+                - separator [ref=e1759]
+                - button "Property settings" [ref=e1760] [cursor=pointer]:
+                  - generic [ref=e1763]:
+                    - generic [ref=e1764]: Property settings
+                    - img [ref=e1765]: keyboard_arrow_up
+            - treeitem "Property" [level=2] [ref=e1768]:
+              - button "Property" [ref=e1770] [cursor=pointer]:
+                - generic [ref=e1772]:
+                  - img [ref=e1773]: arrow_right
+                  - generic [ref=e1774]: Property
+            - treeitem "Data collection and modification" [expanded] [level=2] [ref=e1777]:
+              - button "Data collection and modification" [ref=e1779] [cursor=pointer]:
+                - generic [ref=e1781]:
+                  - img [ref=e1782]: arrow_drop_down
+                  - generic [ref=e1783]: Data collection and modification
+            - treeitem "Data streams" [level=3] [ref=e1786]:
+              - button "Data streams" [ref=e1788] [cursor=pointer]:
+                - generic [ref=e1791]: Data streams
+            - treeitem "Data collection" [level=3] [ref=e1794]:
+              - button "Data collection" [ref=e1796] [cursor=pointer]:
+                - generic [ref=e1799]: Data collection
+            - treeitem "Data import" [level=3] [ref=e1802]:
+              - button "Data import" [ref=e1804] [cursor=pointer]:
+                - generic [ref=e1807]: Data import
+            - treeitem "Data retention" [level=3] [ref=e1810]:
+              - button "Data retention" [ref=e1812] [cursor=pointer]:
+                - generic [ref=e1815]: Data retention
+            - treeitem "Data filters" [level=3] [ref=e1818]:
+              - button "Data filters" [ref=e1820] [cursor=pointer]:
+                - generic [ref=e1823]: Data filters
+            - treeitem "Data deletion requests" [level=3] [ref=e1826]:
+              - button "Data deletion requests" [ref=e1828] [cursor=pointer]:
+                - generic [ref=e1831]: Data deletion requests
+            - treeitem "Consent settings" [level=3] [ref=e1834]:
+              - button "Consent settings" [ref=e1836] [cursor=pointer]:
+                - generic [ref=e1839]: Consent settings
+            - treeitem "Data display" [level=2] [ref=e1842]:
+              - button "Data display" [ref=e1844] [cursor=pointer]:
+                - generic [ref=e1846]:
+                  - img [ref=e1847]: arrow_right
+                  - generic [ref=e1848]: Data display
+            - treeitem "Product links" [level=2] [ref=e1851]:
+              - button "Product links" [ref=e1853] [cursor=pointer]:
+                - generic [ref=e1855]:
+                  - img [ref=e1856]: arrow_right
+                  - generic [ref=e1857]: Product links
+          - separator [ref=e1860]
+        - button "Nav toggle" [expanded] [ref=e1862] [cursor=pointer]:
+          - img [ref=e1863]: keyboard_arrow_left
+      - generic [ref=e1866]:
+        - main [ref=e1867]:
+          - generic [ref=e2390]:
+            - generic [ref=e2391]:
+              - heading "Data filters" [level=1] [ref=e2394]
+              - generic [ref=e2395]:
+                - text: Filter event data in this property.
+                - link "Learn more about data filters" [ref=e2396] [cursor=pointer]:
+                  - /url: https://support.google.com/analytics/answer/10108813?hl=en_GB&utm_id=ad
+            - generic [ref=e2397]:
+              - button "Create filter" [ref=e2399] [cursor=pointer]:
+                - generic [ref=e2400]: Create filter
+              - table [ref=e2406]:
+                - row "Name Filter type Operation Current state Actions" [ref=e2407]:
+                  - columnheader "Name" [ref=e2408] [cursor=pointer]:
+                    - button "Name" [ref=e2409]:
+                      - generic [ref=e2411]: Name
+                      - img [ref=e2413]
+                  - columnheader "Filter type" [ref=e2415] [cursor=pointer]:
+                    - button "Filter type" [ref=e2416]:
+                      - generic [ref=e2418]: Filter type
+                      - img [ref=e2420]
+                  - columnheader "Operation" [ref=e2422] [cursor=pointer]:
+                    - button "Operation" [ref=e2423]:
+                      - generic [ref=e2425]: Operation
+                      - img [ref=e2427]
+                  - columnheader "Current state" [ref=e2429] [cursor=pointer]:
+                    - button "Current state" [ref=e2430]:
+                      - generic [ref=e2432]: Current state
+                      - img [ref=e2434]
+                  - columnheader "Actions" [ref=e2436]:
+                    - generic [ref=e2437]: Actions
+                - row "Internal Traffic Internal Traffic Exclude Testing View Data filter More actions" [ref=e2438] [cursor=pointer]:
+                  - cell "Internal Traffic" [ref=e2439]:
+                    - generic [ref=e2441]: Internal Traffic
+                  - cell "Internal Traffic" [ref=e2442]:
+                    - generic [ref=e2444]: Internal Traffic
+                  - cell "Exclude" [ref=e2445]:
+                    - generic [ref=e2447]: Exclude
+                  - cell "Testing" [ref=e2448]:
+                    - generic [ref=e2450]: Testing
+                  - cell "View Data filter More actions" [ref=e2451]:
+                    - button "View Data filter" [ref=e2452]:
+                      - img [ref=e2453]: chevron_right
+                    - button "More actions" [ref=e2456]:
+                      - img [ref=e2457]: more_vert
+        - contentinfo [ref=e2377]:
+          - text: ©2026 Google |
+          - link "Analytics home" [ref=e2378] [cursor=pointer]:
+            - /url: https://www.google.com/analytics/?hl=en-GB
+          - text: "|"
+          - link "Terms of Service" [ref=e2379] [cursor=pointer]:
+            - /url: https://www.google.com/analytics/tos.html?hl=en-GB
+          - text: "|"
+          - link "Privacy policy" [ref=e2380] [cursor=pointer]:
+            - /url: https://www.google.com/policies/privacy/?hl=en-GB
+          - text: "|"
+          - button "Send feedback" [ref=e2381] [cursor=pointer]:
+            - img [ref=e2382]: feedback
+            - generic [ref=e2383]: Send feedback
+      - generic:
+        - button "Open context menu"
+  - dialog "Edit data filter" [ref=e2463]:
+    - generic [ref=e2466]:
+      - generic [ref=e2467]:
+        - button "Close data filter editor panel" [ref=e2468] [cursor=pointer]:
+          - img [ref=e2469]: close
+        - heading "Edit data filter" [level=1] [ref=e2472]
+        - button "Save" [ref=e2574] [cursor=pointer]:
+          - generic [ref=e2575]: Save
+        - button "More actions" [ref=e2473] [cursor=pointer]:
+          - img [ref=e2474]: more_vert
+      - separator [ref=e2477]
+      - generic [ref=e2478]:
+        - generic [ref=e2479]:
+          - heading "Choose filter type" [level=2] [ref=e2483]
+          - radiogroup "Choose filter type" [ref=e2485]:
+            - generic:
+              - generic:
+                - generic:
+                  - radio "Developer traffic Filter event data from your development devices" [disabled]
+                - generic:
+                  - generic: Developer traffic
+                  - generic: Filter event data from your development devices
+            - generic:
+              - generic:
+                - generic:
+                  - radio "Internal traffic Filter event data that you've identified as internal traffic" [checked] [disabled]
+                - generic:
+                  - generic: Internal traffic
+                  - generic: Filter event data that you've identified as internal traffic
+        - generic [ref=e2486]:
+          - generic [ref=e2487]:
+            - heading "Filter details" [level=2] [ref=e2491]
+            - separator [ref=e2492]
+            - generic [ref=e2493]:
+              - text: Data filter name
+              - textbox "Data filter name" [ref=e2498]:
+                - /placeholder: My data filter
+                - text: Internal Traffic
+              - generic [ref=e2499]:
+                - generic [ref=e2500]: Filter operation
+                - button "Help for filter operation" [ref=e2502]:
+                  - img [ref=e2503] [cursor=pointer]: help_outline
+              - combobox "Filter operation selector" [ref=e2508] [cursor=pointer]:
+                - generic [ref=e2509]:
+                  - generic [ref=e2511]: Exclude
+                  - img [ref=e2514]
+              - generic [ref=e2516]:
+                - separator [ref=e2517]
+                - generic [ref=e2518]: Filter events with the following parameter value
+                - link "How do I append this parameter to my events?" [ref=e2520] [cursor=pointer]:
+                  - /url: https://support.google.com/analytics/answer/10104470
+                - generic [ref=e2521]:
+                  - generic [ref=e2522]:
+                    - generic [ref=e2523]: Parameter name
+                    - generic [ref=e2524]: traffic_type
+                  - generic [ref=e2526]:
+                    - text: Parameter value
+                    - textbox "Parameter value" [ref=e2531]:
+                      - /placeholder: internal
+                      - text: internal
+              - separator [ref=e2532]
+              - generic [ref=e2533]:
+                - text: Summary
+                - generic [ref=e2534]: Exclude events where the value of parameter traffic_type exactly matches internal.
+          - generic [ref=e2535]:
+            - heading "Filter state" [level=2] [ref=e2539]
+            - radiogroup "Select a filter state" [ref=e2541]:
+              - generic [ref=e2543]:
+                - radio "Testing This filter will be evaluated and matching data will be identified with the dimension 'Test data filter name', which is available in reporting." [ref=e2546] [cursor=pointer]
+                - generic [ref=e2550] [cursor=pointer]:
+                  - generic [ref=e2551]: Testing
+                  - generic [ref=e2552]: This filter will be evaluated and matching data will be identified with the dimension 'Test data filter name', which is available in reporting.
+              - generic [ref=e2554]:
+                - radio "Active This filter will be evaluated and applied to incoming data. Matching data will be excluded from processing." [checked] [active] [ref=e2557] [cursor=pointer]
+                - generic [ref=e2560] [cursor=pointer]:
+                  - generic [ref=e2561]: Active
+                  - generic [ref=e2562]: This filter will be evaluated and applied to incoming data. Matching data will be excluded from processing.
+              - generic [ref=e2564]:
+                - radio "Inactive This filter won't be evaluated." [ref=e2567] [cursor=pointer]
+                - generic [ref=e2570] [cursor=pointer]:
+                  - generic [ref=e2571]: Inactive
+                  - generic [ref=e2572]: This filter won't be evaluated.

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 export const metadata: Metadata = {
-  title: "About VinDecoder",
+  title: "About",
   description:
     "VinDecoder is a free, ad-light, NHTSA-powered VIN decoder built for US drivers. No paywalls, no fake premium upsells.",
   alternates: { canonical: "/about" },

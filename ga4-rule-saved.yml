@@ -1,0 +1,498 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e6]:
+      - generic [ref=e7]:
+        - generic [ref=e11]: Analytics
+        - button "Open the universal picker." [ref=e14] [cursor=pointer]:
+          - generic [ref=e15]:
+            - generic [ref=e16]:
+              - generic [ref=e17]: All accounts
+              - img [ref=e18]: chevron_right
+              - generic [ref=e19]: mijnwebsites
+            - generic [ref=e20]:
+              - generic [ref=e22]: vindecoder.site
+              - img [ref=e23]: arrow_drop_down
+        - search [ref=e27]:
+          - img [ref=e28]: search
+          - textbox "Search" [ref=e30]:
+            - /placeholder: Try searching "link with Ads"
+        - button "Switch products" [ref=e32] [cursor=pointer]:
+          - img [ref=e33]
+        - button "Help entry menu" [ref=e37] [cursor=pointer]:
+          - img [ref=e38]: help
+        - button "Open the user account switcher panel." [ref=e42] [cursor=pointer]
+    - generic [ref=e45]:
+      - generic [ref=e48]:
+        - generic [ref=e49]:
+          - navigation "Main pages" [ref=e50]:
+            - link "Home" [ref=e52] [cursor=pointer]:
+              - img [ref=e53]:
+                - img [ref=e54]
+              - generic [ref=e57]: Home
+            - link "Reports" [ref=e59] [cursor=pointer]:
+              - img [ref=e60]: insert_chart_filled
+              - generic [ref=e61]: Reports
+            - link "Explore" [ref=e63] [cursor=pointer]:
+              - img [ref=e64]: data_exploration
+              - generic [ref=e65]: Explore
+            - link "Advertising" [ref=e67] [cursor=pointer]:
+              - img [ref=e68]: ads_click
+              - generic [ref=e69]: Advertising
+          - navigation "Settings pages" [ref=e70]:
+            - link "Tasks" [ref=e72] [cursor=pointer]:
+              - img [ref=e73]: task_alt
+              - generic [ref=e74]: Tasks
+            - link "Admin" [ref=e76] [cursor=pointer]:
+              - img [ref=e77]: settings_filled
+              - generic [ref=e78]: Admin
+        - generic [ref=e80]:
+          - navigation "Secondary pages" [ref=e81]:
+            - button "Create" [ref=e86] [cursor=pointer]:
+              - img [ref=e87]: add
+              - generic [ref=e89]:
+                - text: Create
+                - img [ref=e90]: arrow_drop_down
+          - tree [ref=e93]:
+            - treeitem "Admin" [level=1] [ref=e94]:
+              - button "Admin" [ref=e96] [cursor=pointer]:
+                - generic [ref=e99]: Admin
+            - treeitem "My preferences" [level=1] [ref=e102]:
+              - button "My preferences" [ref=e104] [cursor=pointer]:
+                - generic [ref=e107]: My preferences
+            - treeitem "Account settings" [expanded] [level=1] [ref=e110]:
+              - generic [ref=e111]:
+                - separator [ref=e112]
+                - button "Account settings" [ref=e113] [cursor=pointer]:
+                  - generic [ref=e116]:
+                    - generic [ref=e117]: Account settings
+                    - img [ref=e118]: keyboard_arrow_up
+            - treeitem "Account" [level=2] [ref=e121]:
+              - button "Account" [ref=e123] [cursor=pointer]:
+                - generic [ref=e125]:
+                  - img [ref=e126]: arrow_right
+                  - generic [ref=e127]: Account
+            - treeitem "Property settings" [expanded] [level=1] [ref=e130]:
+              - generic [ref=e131]:
+                - separator [ref=e132]
+                - button "Property settings" [ref=e133] [cursor=pointer]:
+                  - generic [ref=e136]:
+                    - generic [ref=e137]: Property settings
+                    - img [ref=e138]: keyboard_arrow_up
+            - treeitem "Property" [level=2] [ref=e141]:
+              - button "Property" [ref=e143] [cursor=pointer]:
+                - generic [ref=e145]:
+                  - img [ref=e146]: arrow_right
+                  - generic [ref=e147]: Property
+            - treeitem "Data collection and modification" [expanded] [level=2] [ref=e150]:
+              - button "Data collection and modification" [ref=e152] [cursor=pointer]:
+                - generic [ref=e154]:
+                  - img [ref=e155]: arrow_drop_down
+                  - generic [ref=e156]: Data collection and modification
+            - treeitem "Data streams" [level=3] [ref=e159]:
+              - button "Data streams" [ref=e161] [cursor=pointer]:
+                - generic [ref=e164]: Data streams
+            - treeitem "Data collection" [level=3] [ref=e167]:
+              - button "Data collection" [ref=e169] [cursor=pointer]:
+                - generic [ref=e172]: Data collection
+            - treeitem "Data import" [level=3] [ref=e175]:
+              - button "Data import" [ref=e177] [cursor=pointer]:
+                - generic [ref=e180]: Data import
+            - treeitem "Data retention" [level=3] [ref=e183]:
+              - button "Data retention" [ref=e185] [cursor=pointer]:
+                - generic [ref=e188]: Data retention
+            - treeitem "Data filters" [level=3] [ref=e191]:
+              - button "Data filters" [ref=e193] [cursor=pointer]:
+                - generic [ref=e196]: Data filters
+            - treeitem "Data deletion requests" [level=3] [ref=e199]:
+              - button "Data deletion requests" [ref=e201] [cursor=pointer]:
+                - generic [ref=e204]: Data deletion requests
+            - treeitem "Consent settings" [level=3] [ref=e207]:
+              - button "Consent settings" [ref=e209] [cursor=pointer]:
+                - generic [ref=e212]: Consent settings
+            - treeitem "Data display" [level=2] [ref=e215]:
+              - button "Data display" [ref=e217] [cursor=pointer]:
+                - generic [ref=e219]:
+                  - img [ref=e220]: arrow_right
+                  - generic [ref=e221]: Data display
+            - treeitem "Product links" [level=2] [ref=e224]:
+              - button "Product links" [ref=e226] [cursor=pointer]:
+                - generic [ref=e228]:
+                  - img [ref=e229]: arrow_right
+                  - generic [ref=e230]: Product links
+          - separator [ref=e233]
+        - button "Nav toggle" [expanded] [ref=e235] [cursor=pointer]:
+          - img [ref=e236]: keyboard_arrow_left
+      - generic [ref=e241]:
+        - main [ref=e242]:
+          - generic [ref=e244]:
+            - heading "Data streams" [level=1] [ref=e247]
+            - generic [ref=e251]:
+              - generic [ref=e252]:
+                - generic [ref=e253]:
+                  - generic [ref=e257]:
+                    - img [ref=e259]: search
+                    - searchbox "Type to filter" [ref=e261]
+                  - button "Add stream" [ref=e267] [cursor=pointer]:
+                    - img [ref=e268]: arrow_drop_down
+                    - generic [ref=e269]: Add stream
+                - generic [ref=e272]:
+                  - tablist [ref=e275]:
+                    - generic [ref=e276]:
+                      - tab "All" [selected] [ref=e277] [cursor=pointer]:
+                        - generic [ref=e280]: All
+                      - tab "iOS" [ref=e281] [cursor=pointer]:
+                        - generic [ref=e284]: iOS
+                      - tab "Android" [ref=e285] [cursor=pointer]:
+                        - generic [ref=e288]: Android
+                      - tab "Web" [ref=e289] [cursor=pointer]:
+                        - generic [ref=e292]: Web
+                  - generic:
+                    - tabpanel "All"
+              - table [ref=e294]:
+                - row "VinDecoder https://vindecoder.site 14371675300 Receiving traffic in past 48 hours. Select stream" [ref=e295] [cursor=pointer]:
+                  - cell [ref=e296]:
+                    - img [ref=e298]:
+                      - img [ref=e299]
+                  - cell "VinDecoder https://vindecoder.site" [ref=e311]:
+                    - generic [ref=e312]:
+                      - generic [ref=e313]: VinDecoder
+                      - generic [ref=e314]: https://vindecoder.site
+                  - cell "14371675300" [ref=e315]:
+                    - generic [ref=e316]: "14371675300"
+                  - cell "Receiving traffic in past 48 hours." [ref=e317]:
+                    - generic [ref=e318]: Receiving traffic in past 48 hours.
+                  - cell "Select stream" [ref=e319]:
+                    - button "Select stream" [ref=e320]:
+                      - img [ref=e321]: keyboard_arrow_right
+        - contentinfo [ref=e324]:
+          - text: ©2026 Google |
+          - link "Analytics home" [ref=e325] [cursor=pointer]:
+            - /url: https://www.google.com/analytics/?hl=en-GB
+          - text: "|"
+          - link "Terms of Service" [ref=e326] [cursor=pointer]:
+            - /url: https://www.google.com/analytics/tos.html?hl=en-GB
+          - text: "|"
+          - link "Privacy policy" [ref=e327] [cursor=pointer]:
+            - /url: https://www.google.com/policies/privacy/?hl=en-GB
+          - text: "|"
+          - button "Send feedback" [ref=e328] [cursor=pointer]:
+            - img [ref=e329]: feedback
+            - generic [ref=e330]: Send feedback
+      - generic:
+        - button "Open context menu"
+  - dialog "Web stream details" [ref=e337]:
+    - generic [ref=e338]:
+      - generic [ref=e339]:
+        - button "Close web stream details" [ref=e340] [cursor=pointer]:
+          - img [ref=e341]: close
+        - heading "Web stream details" [level=1] [ref=e344]
+        - button "More actions" [ref=e345] [cursor=pointer]:
+          - img [ref=e346]: more_vert
+      - separator [ref=e349]
+      - generic [ref=e350]:
+        - generic [ref=e351]:
+          - img [ref=e352]: check_circle
+          - generic [ref=e354]:
+            - generic [ref=e355]: Confirmation
+            - generic [ref=e356]: Data collection is active in the past 48 hours.
+        - generic [ref=e358]:
+          - generic [ref=e359]:
+            - heading "Stream details" [level=2] [ref=e360]
+            - button "Edit web stream settings" [ref=e361] [cursor=pointer]:
+              - img [ref=e362]: edit
+          - group [ref=e365]:
+            - generic [ref=e366]:
+              - generic [ref=e367]: Stream name
+              - generic [ref=e368]: VinDecoder
+            - generic [ref=e369]:
+              - generic [ref=e370]: Stream URL
+              - generic [ref=e371]: https://vindecoder.site
+            - generic [ref=e372]:
+              - generic [ref=e373]: Stream ID
+              - generic [ref=e374]: "14371675300"
+            - generic [ref=e375]:
+              - generic [ref=e376]: Measurement ID
+              - generic [ref=e377]:
+                - text: G-E2EJ44QMGZ
+                - button "Copy Measurement ID" [ref=e379] [cursor=pointer]:
+                  - img [ref=e380]: content_copy
+        - generic [ref=e384]:
+          - heading "Events" [level=2] [ref=e386]
+          - group [ref=e387]:
+            - generic [ref=e390]:
+              - generic [ref=e391]:
+                - img "Enhanced Measurement icon" [ref=e392]
+                - generic [ref=e393]:
+                  - generic [ref=e394]: Enhanced measurement
+                  - generic [ref=e395]: Automatically measure interactions and content on your sites in addition to standard page view measurement.
+                  - text: Data from on-page elements such as links and embedded videos may be collected with relevant events. You must ensure that no personally identifiable information will be sent to Google.
+                  - link "Learn more about enhanced measurement" [ref=e396] [cursor=pointer]:
+                    - /url: https://support.google.com/analytics/answer/9216061?hl=en_GB&utm_id=ad
+                    - text: Learn more
+                - switch "Enable enhanced measurement" [checked] [ref=e400] [cursor=pointer]:
+                  - generic [ref=e406]:
+                    - img [ref=e407]
+                    - img [ref=e409]
+              - separator [ref=e411]
+              - generic [ref=e412]:
+                - generic [ref=e413]: "Measuring:"
+                - list "Active enhanced measurements" [ref=e414]:
+                  - listitem [ref=e415]:
+                    - generic [ref=e418]:
+                      - img [ref=e419]: remove_red_eye
+                      - text: Page views
+                  - listitem [ref=e420]:
+                    - generic [ref=e423]:
+                      - img [ref=e424]: control_camera
+                      - text: Scrolls
+                  - listitem [ref=e425]:
+                    - generic [ref=e428]:
+                      - img [ref=e429]: mouse
+                      - text: Outbound clicks
+                - button "Show 4 more active enhanced measurements." [ref=e430] [cursor=pointer]:
+                  - generic [ref=e431]: + 4 more
+                - button "Configure enhanced measurement" [ref=e434] [cursor=pointer]:
+                  - img [ref=e435]: settings
+            - button "Modify events Modify incoming events and parameters. Learn more about modifying existing events. Open" [ref=e438] [cursor=pointer]:
+              - img [ref=e439]: touch_app
+              - generic [ref=e440]:
+                - generic [ref=e442]: Modify events
+                - generic [ref=e444]:
+                  - text: Modify incoming events and parameters.
+                  - link "Learn more about modifying existing events." [ref=e445]:
+                    - /url: https://support.google.com/analytics/answer/10085872?hl=en_GB&utm_id=ad
+                    - text: Learn more
+              - button "Open" [ref=e447]:
+                - img [ref=e448]: keyboard_arrow_right
+            - button "Create custom events Create new events from existing events. Learn more about creating new events based on existing events. Open" [ref=e451] [cursor=pointer]:
+              - img [ref=e452]: web_traffic
+              - generic [ref=e453]:
+                - generic [ref=e455]: Create custom events
+                - generic [ref=e457]:
+                  - text: Create new events from existing events.
+                  - link "Learn more about creating new events based on existing events." [ref=e458]:
+                    - /url: https://support.google.com/analytics/answer/10085872?hl=en_GB&utm_id=ad
+                    - text: Learn more
+              - button "Open" [ref=e460]:
+                - img [ref=e461]: keyboard_arrow_right
+            - button "Measurement Protocol API secrets Create an API secret to enable additional events to be sent into this stream through the Measurement Protocol. Learn more about Measurement Protocol in Google Analytics 4 Open" [ref=e464] [cursor=pointer]:
+              - img [ref=e465]: vpn_key
+              - generic [ref=e466]:
+                - generic [ref=e468]: Measurement Protocol API secrets
+                - generic [ref=e470]:
+                  - text: Create an API secret to enable additional events to be sent into this stream through the Measurement Protocol.
+                  - link "Learn more about Measurement Protocol in Google Analytics 4" [ref=e471]:
+                    - /url: https://support.google.com/analytics/answer/9900444?hl=en_GB&utm_id=ad
+                    - text: Learn more
+              - button "Open" [ref=e473]:
+                - img [ref=e474]: keyboard_arrow_right
+            - button "Redact data Prevent specific data from being sent to Google Analytics. Learn more about data redaction Email active URL query parameter keys inactive Open data redaction panel" [ref=e480] [cursor=pointer]:
+              - generic [ref=e481]:
+                - generic [ref=e483]: Redact data
+                - generic [ref=e485]:
+                  - text: Prevent specific data from being sent to Google Analytics.
+                  - link "Learn more about data redaction" [ref=e486]:
+                    - /url: https://support.google.com/analytics/answer/13544947?hl=en_GB&utm_id=ad
+                    - text: Learn more
+              - generic [ref=e488]:
+                - generic [ref=e489]: Email active
+                - generic [ref=e490]: URL query parameter keys inactive
+              - button "Open data redaction panel" [ref=e493]:
+                - img [ref=e494]: keyboard_arrow_right
+        - generic [ref=e498]:
+          - heading "Google tag" [level=2] [ref=e500]
+          - group [ref=e501]:
+            - button "Configure tag settings Configure your Google tag behaviour, including cross-domain linking and internal traffic.Learn more about tag settings. Open" [ref=e502] [cursor=pointer]:
+              - img [ref=e503]: gtag
+              - generic [ref=e504]:
+                - generic [ref=e506]: Configure tag settings
+                - generic [ref=e508]:
+                  - text: Configure your Google tag behaviour, including cross-domain linking and internal traffic.
+                  - link "Learn more about tag settings." [ref=e509]:
+                    - /url: https://support.google.com/analytics/answer/12131703?hl=en_GB&utm_id=ad
+                    - text: Learn more
+              - button "Open" [ref=e512]:
+                - img [ref=e513]: keyboard_arrow_right
+            - button "Manage connected site tags Load tags for additional properties or products using this stream's on-page Google tag. Learn more about how gtag.js maps Universal Analytics to Google Analytics 4 0 connected Open" [ref=e518] [cursor=pointer]:
+              - img [ref=e519]: settings_ethernet
+              - generic [ref=e520]:
+                - generic [ref=e522]: Manage connected site tags
+                - generic [ref=e524]:
+                  - text: Load tags for additional properties or products using this stream's on-page Google tag.
+                  - link "Learn more about how gtag.js maps Universal Analytics to Google Analytics 4" [ref=e525]:
+                    - /url: https://support.google.com/analytics/answer/9973999?hl=en_GB&utm_id=ad
+                    - text: Learn more
+              - generic [ref=e528]: 0 connected
+              - button "Open" [ref=e531]:
+                - img [ref=e532]: keyboard_arrow_right
+            - button "View tag instructions Get instructions for how to implement your Google tag for this data stream.Learn more about setting up your Google tag Data flowing Open" [ref=e535] [cursor=pointer]:
+              - img [ref=e536]: integration_instructions
+              - generic [ref=e537]:
+                - generic [ref=e539]: View tag instructions
+                - generic [ref=e541]:
+                  - text: Get instructions for how to implement your Google tag for this data stream.
+                  - link "Learn more about setting up your Google tag" [ref=e542]:
+                    - /url: https://support.google.com/analytics/answer/12002338?hl=en_GB&utm_id=ad
+                    - text: Learn more
+              - generic [ref=e545]:
+                - img [ref=e546]: done
+                - generic [ref=e547]: Data flowing
+              - button "Open" [ref=e550]:
+                - img [ref=e551]: keyboard_arrow_right
+  - iframe [active] [ref=e555]:
+    - generic [ref=f3e1]:
+      - generic:
+        - generic [ref=f3e4]:
+          - link "Skip to main content" [ref=f3e5] [cursor=pointer]:
+            - /url: "#sheetContent1"
+          - generic [ref=f3e6]:
+            - button "Close screen" [ref=f3e7] [cursor=pointer]
+            - generic [ref=f3e8]:
+              - heading "Google tag" [level=1] [ref=f3e9]
+              - generic [ref=f3e12]:
+                - generic [ref=f3e13]: VinDecoder
+                - generic [ref=f3e14]: G-E2EJ44QMGZ
+            - button "Send feedback" [ref=f3e16] [cursor=pointer]:
+              - generic "Send feedback" [ref=f3e17]
+          - navigation [ref=f3e22]:
+            - tablist "Top level navigation" [ref=f3e23]:
+              - tab "Configuration" [selected] [ref=f3e24] [cursor=pointer]
+              - tab "History" [ref=f3e25] [cursor=pointer]:
+                - generic [ref=f3e26]: History
+              - tab "Admin" [ref=f3e27] [cursor=pointer]
+          - generic [ref=f3e33]:
+            - generic [ref=f3e34]:
+              - generic [ref=f3e37]:
+                - heading "Welcome to your Google tag" [level=2] [ref=f3e38]
+                - generic [ref=f3e39]:
+                  - text: The global site tag (gtag.js) is now the Google tag. With this change, new and existing gtag.js installations will get new capabilities to help you do more, improve data quality and adopt new features – all without additional code.
+                  - link "Learn more" [ref=f3e40] [cursor=pointer]:
+                    - /url: https://support.google.com/tagmanager/answer/11994839
+                - button "Dismiss" [ref=f3e42] [cursor=pointer]
+              - generic [ref=f3e44]:
+                - generic [ref=f3e45]:
+                  - heading "Your Google tag" [level=2] [ref=f3e46]
+                  - button "Installation instructions" [ref=f3e47] [cursor=pointer]
+                - region "Diagram that shows the relationship between the Google tag and its destinations. Click to manage the Google tag." [ref=f3e48] [cursor=pointer]:
+                  - generic [ref=f3e51]:
+                    - generic [ref=f3e52]:
+                      - generic [ref=f3e53]:
+                        - text: Google tag
+                        - button "More information about the Google tag" [ref=f3e54]
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic "VinDecoder"
+                            - generic:
+                              - generic: "IDs:"
+                              - generic:
+                                - generic: G-E2EJ44QMGZ,
+                                - generic: GT-PJRQXJ7J
+                    - generic [ref=f3e57]:
+                      - generic [ref=f3e58]:
+                        - text: Destinations
+                        - button "More information about destinations" [ref=f3e59]
+                      - generic [ref=f3e60]:
+                        - generic:
+                          - generic:
+                            - img "Google Analytics"
+                            - generic: VinDecoder
+                - generic [ref=f3e64]:
+                  - generic [ref=f3e65]:
+                    - generic [ref=f3e66]: "Tag quality: Needs attention"
+                    - generic [ref=f3e75]: Some issues are detected that may need your attention.
+                  - button "View 1 issue" [ref=f3e77] [cursor=pointer]
+            - generic [ref=f3e82]:
+              - heading "Settings Some tag settings apply only to specific destinations. Learn more about tag settings" [level=2] [ref=f3e83]:
+                - generic [ref=f3e84]:
+                  - generic [ref=f3e85]: Settings
+                  - generic [ref=f3e86]:
+                    - text: Some tag settings apply only to specific destinations.
+                    - link "Learn more about tag settings" [ref=f3e87] [cursor=pointer]:
+                      - /url: https://support.google.com/google-ads/answer/12131703#Configure
+              - list [ref=f3e88]:
+                - generic [ref=f3e90]:
+                  - button "Manage automatic event detection Configure which types of events should automatically be detected for measurement in associated Google destinations" [ref=f3e92] [cursor=pointer]:
+                    - generic [ref=f3e96]:
+                      - generic [ref=f3e97]: Manage automatic event detection
+                      - generic [ref=f3e98]: Configure which types of events should automatically be detected for measurement in associated Google destinations
+                  - button "Configure your domains Specify a list of domains for cross-domain measurement" [ref=f3e100] [cursor=pointer]:
+                    - generic [ref=f3e104]:
+                      - generic [ref=f3e105]: Configure your domains
+                      - generic [ref=f3e106]: Specify a list of domains for cross-domain measurement
+                  - button "Allow user-provided data capabilities Configure whether or not to allow user-provided data to be included in measurement for destination products that accept such data." [ref=f3e108] [cursor=pointer]:
+                    - generic [ref=f3e112]:
+                      - generic [ref=f3e113]: Allow user-provided data capabilities
+                      - generic [ref=f3e114]: Configure whether or not to allow user-provided data to be included in measurement for destination products that accept such data.
+                - generic [ref=f3e119]:
+                  - generic "Collect Universal Analytics events Collect an event each time a ga() custom event, timing, or exception call from Universal Analytics occurs on your website" [ref=f3e121]:
+                    - generic [ref=f3e123]:
+                      - generic [ref=f3e125]:
+                        - generic [ref=f3e126]: Collect Universal Analytics events
+                        - generic [ref=f3e127]: Collect an event each time a ga() custom event, timing, or exception call from Universal Analytics occurs on your website
+                      - generic "Collect Universal Analytics events" [ref=f3e129]:
+                        - checkbox "Collect Universal Analytics events" [ref=f3e131] [cursor=pointer]
+                  - button "Extract data from your page Specify where in your web page to find event data such as conversion values or user data" [ref=f3e136] [cursor=pointer]:
+                    - generic [ref=f3e140]:
+                      - generic [ref=f3e141]: Extract data from your page
+                      - generic [ref=f3e142]: Specify where in your web page to find event data such as conversion values or user data
+                  - button "Define internal traffic Define IP addresses whose traffic should be marked as internal" [ref=f3e144] [cursor=pointer]:
+                    - generic [ref=f3e148]:
+                      - generic [ref=f3e149]: Define internal traffic
+                      - generic [ref=f3e150]: Define IP addresses whose traffic should be marked as internal
+                  - button "List unwanted referrals Specify domains whose traffic should not be considered to be referrals" [ref=f3e152] [cursor=pointer]:
+                    - generic [ref=f3e156]:
+                      - generic [ref=f3e157]: List unwanted referrals
+                      - generic [ref=f3e158]: Specify domains whose traffic should not be considered to be referrals
+                  - button "Adjust session timeout Set how long sessions can last" [ref=f3e160] [cursor=pointer]:
+                    - generic [ref=f3e164]:
+                      - generic [ref=f3e165]: Adjust session timeout
+                      - generic [ref=f3e166]: Set how long sessions can last
+                  - button "Override cookie settings Change how long cookies last and how they're updated" [ref=f3e168] [cursor=pointer]:
+                    - generic [ref=f3e172]:
+                      - generic [ref=f3e173]: Override cookie settings
+                      - generic [ref=f3e174]: Change how long cookies last and how they're updated
+                  - button "Manage data transmission Configure how much advertising and analytics data Google receives before end user consent signals are sent via the consent mode API" [ref=f3e176] [cursor=pointer]:
+                    - generic [ref=f3e180]:
+                      - generic [ref=f3e181]: Manage data transmission
+                      - generic [ref=f3e182]: Configure how much advertising and analytics data Google receives before end user consent signals are sent via the consent mode API
+                  - button "Override consent mode defaults Load your Google tag with end-user consent set to 'denied' until a consent update signal is received" [ref=f3e184] [cursor=pointer]:
+                    - generic [ref=f3e188]:
+                      - generic [ref=f3e189]: Override consent mode defaults
+                      - generic [ref=f3e190]: Load your Google tag with end-user consent set to 'denied' until a consent update signal is received
+                  - button "Manage default consent settings for data collection Set consent default labels for end-user data from the European Economic Area (EEA) used for advertising purposes" [ref=f3e192] [cursor=pointer]:
+                    - generic [ref=f3e196]:
+                      - generic [ref=f3e197]: Manage default consent settings for data collection
+                      - generic [ref=f3e198]: Set consent default labels for end-user data from the European Economic Area (EEA) used for advertising purposes
+                  - button "Manage data use across Google services Choose which Google services can receive consented data from end users in the European Economic Area (EEA) for advertising purposes" [ref=f3e200] [cursor=pointer]:
+                    - generic [ref=f3e204]:
+                      - generic [ref=f3e205]: Manage data use across Google services
+                      - generic [ref=f3e206]: Choose which Google services can receive consented data from end users in the European Economic Area (EEA) for advertising purposes
+              - button "Show more settings" [ref=f3e116] [cursor=pointer]: Show less
+        - generic [ref=f3e208]:
+          - generic [ref=f3e209]:
+            - button "Close screen" [ref=f3e210] [cursor=pointer]
+            - generic [ref=f3e211]:
+              - heading "Define internal traffic" [level=1] [ref=f3e212]:
+                - generic [ref=f3e213]: Define internal traffic
+              - generic [ref=f3e216]:
+                - generic [ref=f3e217]: VinDecoder
+                - generic [ref=f3e218]: G-E2EJ44QMGZ
+          - generic [ref=f3e224]:
+            - generic [ref=f3e225]:
+              - generic [ref=f3e226]: Internal traffic rules
+              - generic [ref=f3e227]:
+                - button "Add filter text" [ref=f3e327] [cursor=pointer]
+                - button "Create" [active] [ref=f3e229] [cursor=pointer]
+            - generic [ref=f3e328]:
+              - generic [ref=f3e329]:
+                - generic [ref=f3e330]: Order
+                - generic [ref=f3e331]: Rule name
+                - generic [ref=f3e332]: traffic_type value
+              - button "1 home internal" [ref=f3e334] [cursor=pointer]:
+                - generic [ref=f3e335]: "1"
+                - generic [ref=f3e338]: home
+                - generic [ref=f3e341]: internal
+      - generic [ref=f3e345]:
+        - alert [ref=f3e347]: Configuration "home" saved
+        - button [ref=f3e348] [cursor=pointer]

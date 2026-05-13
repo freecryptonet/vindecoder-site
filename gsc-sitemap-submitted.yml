@@ -1,0 +1,217 @@
+- generic [ref=e2]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - button [ref=e414] [cursor=pointer]:
+          - img [ref=e8]
+        - link [ref=e415] [cursor=pointer]:
+          - /url: ./search-console?resource_id=https%3A%2F%2Fvindecoder.site%2F
+          - img [ref=e13]
+      - generic [ref=e14]:
+        - search [ref=e16]:
+          - generic [ref=e22]:
+            - textbox [disabled] [ref=e23]: Inspect any URL in 'https://vindecoder.site/'
+            - combobox [ref=e416]
+          - button [ref=e417] [cursor=pointer]:
+            - img [ref=e26]
+        - generic [ref=e29]:
+          - generic [ref=e31]:
+            - button [ref=e418] [cursor=pointer]:
+              - generic [ref=e36]: 
+            - button [ref=e419] [cursor=pointer]:
+              - img [ref=e41]
+          - button [ref=e420] [cursor=pointer]:
+            - generic [ref=e48]: 
+      - generic [ref=e50]:
+        - button [ref=e421] [cursor=pointer]:
+          - img [ref=e55]
+        - button [ref=e422] [cursor=pointer]:
+          - img [ref=e62]
+          - img [ref=e68]
+  - dialog [ref=e423]:
+    - navigation [ref=e424]:
+      - button [ref=e425] [cursor=pointer]:
+        - img [ref=e81]
+        - combobox [ref=e426]: https://vindecoder.site/
+        - generic [ref=e89]: 
+      - generic [ref=e90]:
+        - generic [ref=e91]:
+          - generic [ref=e92]:
+            - link [ref=e427] [cursor=pointer]:
+              - /url: ./search-console?resource_id=https%3A%2F%2Fvindecoder.site%2F
+              - generic [ref=e96]: home
+              - generic [ref=e98]: Overview
+            - link [ref=e428] [cursor=pointer]:
+              - /url: ./search-console/performance/insights?resource_id=https%3A%2F%2Fvindecoder.site%2F
+              - generic [ref=e103]: lightbulb_2
+              - generic [ref=e105]: Insights
+            - link [ref=e429] [cursor=pointer]:
+              - /url: ./search-console/performance/search-analytics?resource_id=https%3A%2F%2Fvindecoder.site%2F
+              - generic [ref=e110]: trending_up
+              - generic [ref=e112]: Performance
+            - button [ref=e430] [cursor=pointer]:
+              - generic [ref=e117]: search
+              - generic [ref=e119]: URL inspection
+          - generic [ref=e123]:
+            - button [expanded] [ref=e431] [cursor=pointer]:
+              - generic [ref=e125]:
+                - generic [ref=e128]: Indexing
+                - img [ref=e132]
+            - generic [ref=e137]:
+              - link [ref=e432] [cursor=pointer]:
+                - /url: ./search-console/index?resource_id=https%3A%2F%2Fvindecoder.site%2F
+                - generic [ref=e141]: file_copy
+                - generic [ref=e143]: Pages
+              - link [ref=e433] [cursor=pointer]:
+                - /url: ./search-console/sitemaps?resource_id=https%3A%2F%2Fvindecoder.site%2F
+                - generic [ref=e148]: account_tree
+                - generic [ref=e150]: Sitemaps
+              - link [ref=e434] [cursor=pointer]:
+                - /url: ./search-console/removals?resource_id=https%3A%2F%2Fvindecoder.site%2F
+                - generic [ref=e155]: visibility_off
+                - generic [ref=e157]: Removals
+          - generic [ref=e161]:
+            - button [expanded] [ref=e435] [cursor=pointer]:
+              - generic [ref=e163]:
+                - generic [ref=e166]: Experience
+                - img [ref=e170]
+            - generic [ref=e175]:
+              - link [ref=e436] [cursor=pointer]:
+                - /url: ./search-console/core-web-vitals?resource_id=https%3A%2F%2Fvindecoder.site%2F
+                - generic [ref=e179]: speed
+                - generic [ref=e181]: Core web vitals
+              - link [ref=e437] [cursor=pointer]:
+                - /url: ./search-console/https?resource_id=https%3A%2F%2Fvindecoder.site%2F
+                - generic [ref=e186]: lock
+                - generic [ref=e188]: HTTPS
+          - generic [ref=e192]:
+            - button [expanded] [ref=e438] [cursor=pointer]:
+              - generic [ref=e194]:
+                - generic [ref=e197]: Shopping
+                - img [ref=e201]
+            - link [ref=e439] [cursor=pointer]:
+              - /url: ./search-console/r/product?resource_id=https%3A%2F%2Fvindecoder.site%2F
+              - generic [ref=e210]: layers
+              - generic [ref=e212]: Product snippets
+          - generic [ref=e216]:
+            - button [expanded] [ref=e440] [cursor=pointer]:
+              - generic [ref=e218]:
+                - generic [ref=e221]: Enhancements
+                - img [ref=e225]
+            - generic [ref=e230]:
+              - link [ref=e441] [cursor=pointer]:
+                - /url: ./search-console/r/breadcrumbs?resource_id=https%3A%2F%2Fvindecoder.site%2F
+                - generic [ref=e234]: layers
+                - generic [ref=e236]: Breadcrumbs
+              - link [ref=e442] [cursor=pointer]:
+                - /url: ./search-console/r/faq?resource_id=https%3A%2F%2Fvindecoder.site%2F
+                - generic [ref=e241]: layers
+                - generic [ref=e243]: FAQ
+          - button [ref=e443] [cursor=pointer]:
+            - generic [ref=e249]:
+              - generic [ref=e252]: Security & Manual Actions
+              - img [ref=e256]
+          - generic [ref=e258]:
+            - link [ref=e444] [cursor=pointer]:
+              - /url: ./search-console/links?resource_id=https%3A%2F%2Fvindecoder.site%2F
+              - generic [ref=e262]: link_2
+              - generic [ref=e264]: Links
+            - link [ref=e445] [cursor=pointer]:
+              - /url: ./search-console/achievements?resource_id=https%3A%2F%2Fvindecoder.site%2F
+              - generic [ref=e269]: trophy
+              - generic [ref=e271]: Achievements
+            - link [ref=e446] [cursor=pointer]:
+              - /url: ./search-console/settings?resource_id=https%3A%2F%2Fvindecoder.site%2F
+              - generic [ref=e276]: settings
+              - generic [ref=e278]: Settings
+        - generic [ref=e280]:
+          - generic [ref=e282]:
+            - button [ref=e447] [cursor=pointer]:
+              - generic [ref=e286]: feedback
+              - generic [ref=e288]: Submit feedback
+            - button [ref=e448] [cursor=pointer]:
+              - generic [ref=e293]: info
+              - generic [ref=e295]: About Search Console
+          - generic [ref=e299]:
+            - link [ref=e449] [cursor=pointer]:
+              - /url: https://myaccount.google.com/privacypolicy?hl=en-GB
+              - text: Privacy
+            - link [ref=e450] [cursor=pointer]:
+              - /url: https://myaccount.google.com/termsofservice?hl=en-GB
+              - text: Terms
+  - generic [ref=e303]:
+    - navigation [ref=e451]:
+      - heading [level=1] [ref=e452]: Sitemaps
+    - main [ref=e315]:
+      - generic [ref=e318]:
+        - generic [ref=e319]: Add a new sitemap
+        - generic [ref=e320]:
+          - generic [ref=e321]:
+            - generic [ref=e322]: https://vindecoder.site/
+            - textbox [ref=e453]: sitemap.xml
+          - button [active] [ref=e454] [cursor=pointer]:
+            - generic [ref=e334]: Submit
+      - generic [ref=e458]:
+        - generic [ref=e459]:
+          - heading [level=1] [ref=e460]:
+            - generic [ref=e461]: Submitted sitemaps
+          - button [ref=e464] [cursor=pointer]:
+            - generic [ref=e467]: 
+        - table [ref=e469]:
+          - rowgroup [ref=e470]:
+            - row [ref=e471]:
+              - columnheader [ref=e472]:
+                - text: Sitemap
+                - img [ref=e474] [cursor=pointer]
+              - columnheader [ref=e476]:
+                - text: Type
+                - img [ref=e478] [cursor=pointer]
+              - columnheader [ref=e480]:
+                - text: Submitted
+                - img [ref=e482] [cursor=pointer]
+              - columnheader [ref=e484]:
+                - text: Last read
+                - img [ref=e486] [cursor=pointer]
+              - columnheader [ref=e488]:
+                - text: Status
+                - img [ref=e490] [cursor=pointer]
+              - columnheader [ref=e492]:
+                - img [ref=e494] [cursor=pointer]
+                - text: Discovered pages
+              - columnheader [ref=e496]:
+                - img [ref=e498] [cursor=pointer]
+                - text: Discovered videos
+              - columnheader [ref=e500]
+          - rowgroup [ref=e501]:
+            - row [ref=e502] [cursor=pointer]:
+              - cell [ref=e503]: /sitemap.xml
+              - cell [ref=e504]: Sitemap
+              - cell [ref=e505]: 13 May 2026
+              - cell [ref=e506]: 7 May 2026
+              - cell [ref=e507]:
+                - generic [ref=e508]: Success
+              - cell [ref=e509]: "37"
+              - cell [ref=e510]: "0"
+              - cell [ref=e511]:
+                - button [ref=e513]:
+                  - generic [ref=e516]: 
+        - generic [ref=e519]:
+          - generic [ref=e521]:
+            - generic [ref=e522]: "Rows per page:"
+            - listbox [ref=e523] [cursor=pointer]:
+              - text: "5"
+              - option [selected] [ref=e524]: "10"
+              - text: 25 50 100 250 500
+          - generic [ref=e525]:
+            - generic [ref=e526]: 1-1 of 1
+            - generic [ref=e527]:
+              - generic [ref=e529]: 
+              - generic [ref=e531]: 
+  - dialog "Sitemap submitted successfully" [ref=e533]:
+    - generic [ref=e534]:
+      - heading "Sitemap submitted successfully" [level=2] [ref=e535]:
+        - generic [ref=e536]: check_circle
+        - generic [ref=e537]: Sitemap submitted successfully
+      - generic [ref=e538]: Google will periodically process it and look for changes. You will be notified if anything goes wrong with it in the future.
+    - button "Dismiss" [ref=e541] [cursor=pointer]:
+      - generic [ref=e543]: Dismiss

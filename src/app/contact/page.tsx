@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 export const metadata: Metadata = {
-  title: "Contact VinDecoder",
+  title: "Contact",
   description: "Get in touch about a VIN decode error, a missing recall, or a partnership.",
   alternates: { canonical: "/contact" },
 };

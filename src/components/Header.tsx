@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { TrustStrip } from "./TrustStrip";
+import { MobileNav } from "./MobileNav";
 
 const navItems = [
   { href: "/makes", label: "Makes" },
@@ -21,7 +22,7 @@ export function Header() {
           <Wordmark />
           <span>VinDecoder</span>
         </Link>
-        <nav aria-label="Primary">
+        <nav aria-label="Primary" className="flex items-center">
           <ul className="hidden items-center gap-5 text-sm font-medium text-slate-950 md:flex">
             {navItems.map((item) => (
               <li key={item.href}>
@@ -34,6 +35,7 @@ export function Header() {
               </li>
             ))}
           </ul>
+          <MobileNav items={navItems} />
         </nav>
       </div>
       <div className="border-t border-border bg-surface-alt py-1.5">

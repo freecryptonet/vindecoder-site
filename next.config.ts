@@ -1,6 +1,34 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          // Force HTTPS for the next year; includes subdomains (staging is also TLS).
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=31536000; includeSubDomains",
+          },
+          // Prevent MIME sniffing.
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          // Block being iframed except by us (prevents clickjacking).
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          // Conservative referrer leak policy.
+          {
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
+          },
+          // Drop browser features we don't use — defense-in-depth.
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=(), payment=()",
+          },
+        ],
+      },
+    ];
+  },
   async redirects() {
     return [
       // Old admin/closed-loop routes: gone for good. Land users on the homepage.
