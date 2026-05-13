@@ -74,9 +74,28 @@ function isoToFlag(iso: string): string {
   return String.fromCodePoint(iso.charCodeAt(0) + A, iso.charCodeAt(1) + A);
 }
 
+// Case-insensitive lookup index built once — NHTSA returns plant country as
+// "UNITED STATES (USA)" while our archive/WMI lib returns "United States".
+const NORMALIZED_INDEX: Record<string, string> = (() => {
+  const out: Record<string, string> = {};
+  for (const [name, iso] of Object.entries(COUNTRY_TO_ISO)) {
+    out[normalize(name)] = iso;
+  }
+  return out;
+})();
+
+function normalize(s: string): string {
+  // Lowercase, strip parenthetical suffix like " (USA)", collapse whitespace.
+  return s
+    .toLowerCase()
+    .replace(/\s*\([^)]*\)\s*$/, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 /** Look up a country flag emoji from a name. Empty string if unknown. */
 export function countryFlag(country: string | null | undefined): string {
   if (!country) return "";
-  const iso = COUNTRY_TO_ISO[country.trim()];
+  const iso = NORMALIZED_INDEX[normalize(country)];
   return iso ? isoToFlag(iso) : "";
 }
