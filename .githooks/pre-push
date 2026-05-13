@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# Pre-push hook — runs a fast typecheck to catch the class of bug that
+# silently fails GitHub Actions deploys (missing imports, type errors,
+# etc.) at push time rather than at deploy time.
+#
+# Activate once per clone:  git config core.hooksPath .githooks
+# Skip in an emergency:     git push --no-verify
+#
+# If node_modules isn't installed locally the hook degrades gracefully:
+# it prints a warning and lets the push through. Run `npm ci` once to
+# enable real type checking.
+
+set -e
+
+if [ ! -x node_modules/.bin/tsc ]; then
+  echo "⚠ pre-push: skipping typecheck — node_modules not installed."
+  echo "   Run 'npm ci' to enable type checking before push."
+  exit 0
+fi
+
+echo "→ pre-push: typecheck (tsc --noEmit)"
+if ! npm run typecheck --silent; then
+  echo
+  echo "✗ TypeScript errors found. Fix them or bypass with --no-verify."
+  exit 1
+fi
+
+echo "✓ typecheck passed — pushing"

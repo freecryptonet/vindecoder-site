@@ -18,6 +18,20 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - NHTSA fields are nullable. `c.summary`, `r.Summary`, complaint fields can be null — null-guard before `.slice(...)`. Crashes propagate through `generateMetadata` and produce 503s.
 - JSX strips whitespace between `{expr}` and adjacent text inside an element. Use a template literal `` {`${expr} text`} `` when you need a guaranteed space.
 
+## Pre-push hook
+
+The repo ships a `.githooks/pre-push` hook that runs `npm run typecheck`
+(`tsc --noEmit`) before allowing a push. Activate once per clone:
+
+```
+git config core.hooksPath .githooks
+```
+
+Catches the missing-import / type-error class of bug that otherwise
+fails the GitHub Actions deploy silently after push. Bypass in an
+emergency with `git push --no-verify`. Hook degrades gracefully when
+`node_modules` isn't installed — it warns and lets the push through.
+
 ## Verification & ops patterns
 
 - Smoke prod after each push with `curl -sI` — faster and quieter than the GitHub Actions API (which anon-rate-limits fast).
