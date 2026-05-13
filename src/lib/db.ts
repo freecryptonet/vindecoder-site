@@ -136,17 +136,6 @@ export async function initializeDatabase(): Promise<void> {
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     `;
 
-    await sql`
-      CREATE TABLE IF NOT EXISTS not_found_log (
-        path VARCHAR(255) NOT NULL,
-        hit_count INT NOT NULL DEFAULT 1,
-        first_seen TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        last_seen TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        PRIMARY KEY (path),
-        INDEX idx_404_last_seen (last_seen DESC)
-      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-    `;
-
     // model_years_cache — answers "what years did NHTSA list this model?".
     // Day-4 added: backs /makes/[make]/[model] without sweeping every model
     // year on every request. 30-day TTL.
