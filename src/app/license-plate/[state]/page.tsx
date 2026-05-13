@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { Card } from "@/components/Card";
 import { JsonLd } from "@/components/JsonLd";
+import { StateBadge } from "@/components/StateBadge";
 import { breadcrumbJsonLd } from "@/lib/seo";
 import { US_STATES, findState } from "@/lib/states";
 
@@ -73,13 +74,16 @@ export default async function StateLicensePlatePage({
         />
 
         <article className="mt-6 max-w-3xl">
-          <header>
-            <h1 className="text-h1-page text-slate-950">
-              {s.name} license plate lookup
-            </h1>
-            <p className="mt-3 text-base text-muted">
-              {`Plate-holder information in ${s.name} is regulated by the federal Driver’s Privacy Protection Act and the state’s own privacy rules. Here’s what you can actually look up, where, and for what purpose.`}
-            </p>
+          <header className="flex flex-col gap-4 sm:flex-row sm:items-start">
+            <StateBadge abbr={s.abbr} name={s.name} size="lg" className="shrink-0" />
+            <div className="flex-1">
+              <h1 className="text-h1-page text-slate-950">
+                {s.name} license plate lookup
+              </h1>
+              <p className="mt-3 text-base text-muted">
+                {`Plate-holder information in ${s.name} is regulated by the federal Driver’s Privacy Protection Act and the state’s own privacy rules. Here’s what you can actually look up, where, and for what purpose.`}
+              </p>
+            </div>
           </header>
 
           <div className="mt-8 space-y-6">

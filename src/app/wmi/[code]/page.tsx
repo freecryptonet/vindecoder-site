@@ -8,6 +8,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbJsonLd } from "@/lib/seo";
 import { UNIVERSAL_WMI_MAP } from "@/lib/universalWmi";
 import { lookupWmiRegion } from "@/lib/wmiCountry";
+import { countryFlag } from "@/lib/countryFlags";
 
 const SITE = "https://vindecoder.site";
 
@@ -74,7 +75,11 @@ export default async function WmiDetailPage({
             WMI <span className="vin-mono">{upper}</span> · {manufacturer}
           </h1>
           <p className="mt-2 text-base text-muted">
-            Built in {country} ({region}).
+            Built in{" "}
+            <span aria-hidden className="mr-1">
+              {countryFlag(country)}
+            </span>
+            {country} ({region}).
           </p>
         </header>
 

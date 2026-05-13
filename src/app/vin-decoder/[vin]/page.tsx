@@ -14,6 +14,7 @@ import { ShareButton } from "@/components/ShareButton";
 import { JsonLd } from "@/components/JsonLd";
 import { getVinPageData } from "@/lib/nhtsa";
 import { isValidVin, titleCase, formatNhtsaDate } from "@/lib/utils";
+import { countryFlag } from "@/lib/countryFlags";
 import { breadcrumbJsonLd, vehicleJsonLd } from "@/lib/seo";
 
 const SITE = "https://vindecoder.site";
@@ -362,9 +363,15 @@ export default async function VinResultPage({
                 { label: "Manufacturer", value: vinDecode.manufacturer },
                 {
                   label: "Plant",
-                  value: [vinDecode.plantCity, vinDecode.plantState, vinDecode.plantCountry]
-                    .filter(Boolean)
-                    .join(", "),
+                  value:
+                    [
+                      countryFlag(vinDecode.plantCountry),
+                      [vinDecode.plantCity, vinDecode.plantState, vinDecode.plantCountry]
+                        .filter(Boolean)
+                        .join(", "),
+                    ]
+                      .filter(Boolean)
+                      .join(" "),
                 },
               ]}
             />

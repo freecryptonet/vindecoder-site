@@ -56,18 +56,29 @@ export function Footer() {
             </div>
           ))}
         </div>
-        <div className="mt-10 border-t border-slate-800 pt-6 text-xs text-slate-500">
+        <div className="mt-10 flex flex-col gap-3 border-t border-slate-800 pt-6 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
           <p>
-            © {new Date().getFullYear()} VinDecoder. Vehicle data via{" "}
-            <a
-              href="https://www.nhtsa.gov/"
-              className="underline hover:text-white"
-              rel="noopener"
-            >
-              NHTSA
-            </a>
-            . Not affiliated with any vehicle manufacturer.
+            © {new Date().getFullYear()} VinDecoder. Not affiliated with any
+            vehicle manufacturer.
           </p>
+          <a
+            href="https://www.nhtsa.gov/"
+            rel="noopener noreferrer"
+            target="_blank"
+            className="inline-flex items-center gap-2 rounded-card border border-slate-700 bg-slate-900 px-3 py-1.5 font-semibold uppercase tracking-wider text-slate-300 transition-colors hover:border-slate-600 hover:text-white"
+            aria-label="Data sourced from the National Highway Traffic Safety Administration"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="14"
+              height="14"
+              fill="currentColor"
+              aria-hidden
+            >
+              <path d="M12 2L4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5l-8-3zm0 4.5l5 1.9V11c0 3.5-2.3 6.6-5 7.9-2.7-1.3-5-4.4-5-7.9V8.4l5-1.9z" />
+            </svg>
+            Data source: NHTSA
+          </a>
         </div>
       </div>
     </footer>
