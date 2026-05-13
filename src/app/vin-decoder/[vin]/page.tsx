@@ -11,6 +11,7 @@ import { SpecsGrid } from "@/components/SpecsGrid";
 import { VinDisplay } from "@/components/VinDisplay";
 import { VinSearchForm } from "@/components/VinSearchForm";
 import { ShareButton } from "@/components/ShareButton";
+import { FuelIcon } from "@/components/FuelIcon";
 import { JsonLd } from "@/components/JsonLd";
 import { getVinPageData } from "@/lib/nhtsa";
 import { isValidVin, titleCase, formatNhtsaDate } from "@/lib/utils";
@@ -354,7 +355,11 @@ export default async function VinResultPage({
                 { label: "Engine", value: engineSpec(vinDecode) },
                 { label: "Drivetrain", value: vinDecode.driveType },
                 { label: "Transmission", value: vinDecode.transmissionStyle },
-                { label: "Fuel", value: vinDecode.fuelTypePrimary },
+                {
+                  label: "Fuel",
+                  value: vinDecode.fuelTypePrimary,
+                  icon: <FuelIcon fuel={vinDecode.fuelTypePrimary} size={14} />,
+                },
                 { label: "Body class", value: vinDecode.bodyClass },
                 { label: "Doors", value: vinDecode.doors },
                 { label: "Seats", value: vinDecode.seats },
