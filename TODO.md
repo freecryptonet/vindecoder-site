@@ -1,6 +1,6 @@
 # TODO — vindecoder.site (post-rebuild baseline)
 
-Today: **2026-05-13**. Baseline: `f408ca6` (the simple post-rebuild site).
+Today: **2026-05-13** (session 2). Baseline: `f408ca6` + post-session commits.
 Previous TODO list (in `C:\outrank-vindecoderz-archive-2026\TODO.md`) is **retired** —
 it referenced admin/plate/corpus features that no longer exist on prod.
 
@@ -9,59 +9,91 @@ it referenced admin/plate/corpus features that no longer exist on prod.
 ## Decide
 
 **Confirmed direction (2026-05-13):**
-- **No archive resurrection.** The 370 abandoned commits stay dead. Don't propose license-plate / problems / admin / plateDecoders work without a fresh trigger.
-- **Strategy: outrank vindecoderz.com via SEO + content.** Drives the "Ship — SEO/content" section below.
+- **No archive resurrection.** The 370 abandoned commits stay dead.
+- **Strategy: outrank vindecoderz.com via SEO + content.** Drives the SEO section below.
+- **VPS renewal: monthly €21.49/mo** — auto-renew enabled via Hostinger MCP on 2026-05-13. Next billing 2026-06-03.
 
-**Still pending:**
-
-| | Decision | Why |
-|---|---|---|
-| **By 2026-05-31** | VPS auto-renewal: monthly €21.99 / 12-mo €14.99 / 24-mo €7.99 / cancel | Subscription expires 2026-06-03, auto-renew currently OFF. ~18 days to act. |
+**All decisions resolved.** No pending decide items.
 
 ---
 
-## Ship (do this work)
+## Done this session (2026-05-13)
 
-### Infrastructure (carryover from archive — survives the rebuild)
+- [x] VPS health check (10.35d uptime confirmed)
+- [x] **Legacy Business app decommissioned** via hPanel Playwright
+- [x] **VPS auto-renew enabled** on monthly subscription
+- [x] **SSH access confirmed** — local `~/.ssh/autodtcs_key` matches the attached `autodtcs-dev` pubkey on VM 1639436 (root)
+- [x] Dropped dead `not_found_log` table on prod MariaDB
+- [x] Removed `not_found_log` CREATE block from `src/lib/db.ts`
+- [x] Removed stale `/admin/` from `src/app/robots.ts` disallow
+- [x] Deleted unmonitored `/api/health` endpoint
+- [x] Built `/complaints` index page (`src/app/complaints/page.tsx` + `getRecentComplaintsFromCache` helper + sitemap + nav)
+- [x] Added 301 redirects for abandoned URLs (`/admin`, `/specs`, `/license-plate`, `/compare`, `/problems`) to preserve link equity from external traffic per GA4
+- [x] GSC checkup (37 URLs submitted, **0 indexed** — see below)
+- [x] GA4 checkup (last 28 days — see below)
+- [x] Vindecoderz template-gap audit (see below)
 
-- [x] ~~Decommission legacy Hostinger Business Node.js app~~ — **DONE 2026-05-13.** Deleted the vindecoder.site addon via hPanel (Playwright-driven). `~/domains/vindecoder.site/` removed from Business plan, no Node processes, autodtcs.com + servicereset.net unaffected, VPS still serving prod.
-- [ ] **Rotate exposed credentials.** While in hPanel deployment settings I saw the legacy app had these env vars stored unencrypted (previously also in `.htaccess` on a multi-tenant Business plan). The env-var store was deleted with the addon, but values may still be live elsewhere:
-  - `DATABASE_URL` (MariaDB on VPS, password `R3kmqwpy5bJfXm*`) — **still in active use on VPS.** Rotate: ALTER USER on MariaDB, update `/home/deploy/app/.env`, `pm2 restart vd --update-env`.
-  - `ADMIN_TOKEN` (`zM9obHePVlBEhJFxM2Zf0DgTEwMxowfM`) — `/admin/*` is currently 404 on prod, so this token may no longer gate anything. Confirm not referenced anywhere in the rebuilt site, then either rotate or remove from `.env`.
-  - `DATABASE_URL_NEON_BACKUP` (Neon Postgres, leftover from pre-rebuild) — site no longer uses Neon. Log into Neon console once: if the project still exists, delete it (kills the credential and any residual billing); if already deleted, ignore.
-- [ ] **Set up SSH access to VPS from this PC.** Currently the `deploy@72.62.154.119` key lives only in the GitHub Actions secret. Generate a local key, add pubkey to `/home/deploy/.ssh/authorized_keys`. Unblocks pm2 checks, log audits, manual deploys. — *No date; needed before next health audit and the secret rotation above.*
+---
 
-### Bugs / dead code (from the audit)
-
-- [x] ~~`not_found_log` table~~ — **DONE 2026-05-13.** Removed `CREATE TABLE` block from `src/lib/db.ts` (no read path, write-only was pointless). Follow-up: `DROP TABLE not_found_log;` on prod once SSH is set up.
-- [x] ~~`robots.ts` disallows `/admin/`~~ — **DONE 2026-05-13.** Removed `/admin/` from disallow list. `/api/` stays (don't want crawlers hitting `/api/health`).
-- [ ] **`/api/health` is unmonitored** — confirmed no scheduled workflow, no cron, no other code references it. Either add UptimeRobot (free 5-min checks + email alert on 503/timeout) or delete the endpoint as dead code. User unsure if anything external pings it — assume not until proven otherwise.
+## Ship (still pending)
 
 ### SEO / content (validated strategy — invest here)
 
-Outrank-vindecoderz.com is the confirmed direction. These items map directly to that.
+- [ ] **Backfill guides 6–20.** Only 5 of 20 planned guides exist. Each is long-tail SEO + AdSense surface area. Write fresh.
+- [ ] **Pre-warm `vehicle_cache`** for high-traffic make/model/year combos. Sitemap pulls from `getCachedVehicles(5000)` — with cold cache it ships only static + make pages. Cache warmup script could iterate top 200 make/model/year combos.
+- [ ] **Submit fresh sitemap to GSC** after the pre-warm.
+- [ ] **Build URL templates we're missing.** Per the vindecoderz audit, big gaps:
+  - `/{state}/license-plate-lookup` — vindecoderz has 50 of these (one per state). We don't have plate lookup at all; this is the single biggest URL-surface gap.
+  - Per-make root-level landing pages (vindecoderz uses `/EN/{Make}` not `/makes/{make}` — they get the make name in the URL closer to root).
+  - Multi-language variants (vindecoderz indexes in DE/FR/ES/etc.) — only consider if AdSense data justifies the build cost.
 
-- [ ] **Backfill guides 6–20**. The current site has 5 guides (`src/lib/guides.ts` + `src/app/guides/[slug]/page.tsx`); 20 were originally planned. Each guide is long-tail SEO + AdSense surface area. Write fresh (don't copy from archive — those were tied to the abandoned stack).
-- [ ] **Pre-warm the `vehicle_cache`** for high-traffic make/model/year combos so the sitemap covers more than the trickle of organically-visited pages. The sitemap pulls from `getCachedVehicles(5000)`; with an empty/cold cache it ships only the static + make pages.
-- [ ] **Submit fresh sitemap to GSC** after the pre-warm so Google sees the expanded URL set.
-- [ ] **Add a `/complaints` index page** sourcing from `vehicle_cache.complaints_data` — currently complaints only appear inline on VIN-decode pages, so the URL has no dedicated landing target.
-- [ ] **Audit what vindecoderz.com ranks for that we don't.** Pull their top 20–50 ranking pages (GSC competitor analysis or Ahrefs/Semrush) and identify URL patterns we're missing entirely (per-model problems pages? safety-rating landings? recall-by-year landings?). Use to plan the next batch of URL templates.
+### Bugs / dead code
+
+(All previous items completed this session.)
+
+### Cosmetic / hygiene
+
+- [ ] **Prod DB is named `vindecoder_staging`** not `vindecoder` (per the VPS `.env` — `DATABASE_URL=mysql://vindecoder_staging:...@127.0.0.1/vindecoder_staging`). A `vindecoder` DB also exists but appears unused. Verify, then either rename or document. Risk: low; confusion only.
 
 ---
 
-## Watch (passive monitoring, no action unless triggered)
+## Watch (passive monitoring)
 
 | | Watch | Trigger to act |
 |---|---|---|
 | **By 2026-07-25** | Let's Encrypt SSL cert auto-renewal (cert expires 2026-08-01) | If `certbot certificates` shows old expiry, manual renew |
-| Ongoing | VPS RAM trend (currently 1.2 → 2.9 GB over last week) | If it crosses ~6 GB on the 8 GB box, look for Node leak |
-| Ongoing | 1.42 GB inbound spike on 2026-05-10 14:38 UTC | Recurring? Pull `/var/log/nginx/access.log` once SSH is set up |
+| Ongoing | VPS RAM trend (1.2 → 2.9 GB over a week) | If crosses ~6 GB on 8 GB box, look for Node leak |
+| Ongoing | 1.42 GB inbound spike on 2026-05-10 14:38 UTC | Recurring? Pull `/var/log/nginx/access.log` (now have SSH) |
+| Ongoing | **2035-user GA4 spike on 2026-05-11** (vs ~25 baseline) | Almost certainly bot traffic — most "direct" sessions appear unattributed. If recurring, investigate UA/IP. |
+
+---
+
+## Checkup snapshots (2026-05-13)
+
+### GSC
+- **1 sitemap** submitted 2026-05-07, 37 URLs, **0 indexed**
+- Top query: "license plate lookup" — 1 click / 5 impressions / position 31. Everything else is zero-click niche.
+- **Quick wins detected: 0** — nothing in positions 4–10 with low CTR. The site has too little indexing to surface ranking opportunities.
+- **Take-away:** Indexing is the binding constraint. Pre-warm + resubmit + give Google ~2 weeks. Then re-check.
+
+### GA4 (28d ending 2026-05-12)
+- Most traffic is `(direct) / (none)` (3953 sessions / 3736 users) — almost all bot/unattributed
+- Real organic: ~17 sessions/28d across Google + Bing + Yandex. Very low.
+- **Anomaly:** 2026-05-11 had 2035 users vs ~25 baseline. Suspected bot.
+- Top page: `/` (405 PV). Most other top pages are abandoned URLs (`/admin` 28 PV, `/specs` 28 PV, `/license-plate` 18 PV, `/compare` 13 PV, `/problems` 13 PV) — now 301'd to homepage/recalls in this commit.
+
+### Vindecoderz audit
+- Root pattern: `/EN/{Make}` and `/EN/{State}/license-plate-lookup` × 50 states
+- Multi-language: `/EN/`, `/DE/`, `/FR/`, etc.
+- Single sitemap page (`/EN/sitemap`) lists ALL makes + plate-lookup states
+- **Biggest gap vs us:** per-state license plate lookup (~50 URLs) and root-level make pages
 
 ---
 
 ## Notes / parking lot
 
-- The HANDBOOK.md and `tools/salvage/`, `tools/amayama/` in the archive describe a *different site* (the pre-rebuild one). Don't grep them for current architecture.
-- VM ID for Hostinger MCP is `1639436`. CPU/RAM/disk metrics queryable via `mcp__hostinger__VPS_getMetricsV1`.
-- Repo branches `main` and `staging` both point to `f408ca6` — no in-flight branches on origin.
-- Update this file when items ship or new follow-ups appear. Dated items >30 days out are good `/schedule` candidates.
+- The HANDBOOK.md and `tools/salvage/`, `tools/amayama/` in the archive describe a *different site*. Don't grep them for current architecture.
+- VM ID for Hostinger MCP: `1639436`. Metrics: `mcp__hostinger__VPS_getMetricsV1`.
+- This VPS also hosts `vd-staging` and `zw` (zonewijzer.nl) pm2 apps under the `deploy` user.
+- Repo branches `main` and `staging` — same SHA before this session; `main` ahead after.
+- Update this file when items ship or new follow-ups appear.

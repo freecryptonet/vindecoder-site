@@ -17,6 +17,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { path: "/", pri: 1, freq: "daily" },
     { path: "/makes", pri: 0.9, freq: "weekly" },
     { path: "/recalls", pri: 0.8, freq: "daily" },
+    { path: "/complaints", pri: 0.8, freq: "daily" },
     { path: "/wmi", pri: 0.7, freq: "monthly" },
     { path: "/vin-year-chart", pri: 0.6, freq: "yearly" },
     { path: "/vehicle-types", pri: 0.6, freq: "monthly" },

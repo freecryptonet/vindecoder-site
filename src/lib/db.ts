@@ -513,6 +513,76 @@ export async function getRecentRecallsFromCache(
   }
 }
 
+export interface CachedComplaintSummary {
+  odiNumber: number;
+  make: string;
+  model: string;
+  modelYear: string;
+  components: string;
+  dateOfIncident: string;
+  summary: string;
+  crash: boolean;
+  fire: boolean;
+  injuries: number;
+}
+
+export async function getRecentComplaintsFromCache(
+  limit = 30,
+): Promise<CachedComplaintSummary[]> {
+  const sql = getDb();
+  if (!sql) return [];
+  try {
+    const rows = await sql`
+      SELECT complaints_data, make, model, year
+      FROM vehicle_cache
+      WHERE complaints_data IS NOT NULL AND complaints_count > 0
+      ORDER BY last_fetched DESC
+      LIMIT 200
+    `;
+    const seen = new Set<number>();
+    const flat: CachedComplaintSummary[] = [];
+    for (const r of rows) {
+      const arr = Array.isArray(r.complaints_data) ? (r.complaints_data as unknown[]) : [];
+      for (const raw of arr) {
+        const item = raw as {
+          odiNumber?: number;
+          components?: string;
+          summary?: string;
+          dateOfIncident?: string;
+          crash?: boolean;
+          fire?: boolean;
+          numberOfInjuries?: number;
+          products?: { productYear?: string; productMake?: string; productModel?: string }[];
+        };
+        const odi = item.odiNumber;
+        if (!odi || seen.has(odi)) continue;
+        seen.add(odi);
+        const product = item.products?.[0];
+        flat.push({
+          odiNumber: odi,
+          make: product?.productMake || (r.make as string) || "",
+          model: product?.productModel || (r.model as string) || "",
+          modelYear: product?.productYear || (r.year as string) || "",
+          components: item.components || "",
+          dateOfIncident: item.dateOfIncident || "",
+          summary: item.summary || "",
+          crash: !!item.crash,
+          fire: !!item.fire,
+          injuries: item.numberOfInjuries || 0,
+        });
+      }
+    }
+    flat.sort((a, b) => {
+      const da = new Date(a.dateOfIncident).getTime() || 0;
+      const db = new Date(b.dateOfIncident).getTime() || 0;
+      return db - da;
+    });
+    return flat.slice(0, limit);
+  } catch {
+    return [];
+  }
+}
+
 /** All cached vehicle rows for sitemap generation. */
 export async function getCachedVehicles(
   limit = 5000,
