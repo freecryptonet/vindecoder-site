@@ -38,6 +38,7 @@ yarn-error.log*
 
 # Claude Code workspace settings (per-user, not committed)
 .claude/
+.claude.local.md
 
 # typescript
 *.tsbuildinfo
