@@ -8,7 +8,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbJsonLd } from "@/lib/seo";
 import { getRecallCampaign } from "@/lib/nhtsa";
 import { ALL_US_MAKES } from "@/lib/makes";
-import { slugify, formatNhtsaDate, formatNhtsaComponent } from "@/lib/utils";
+import { slugify, formatNhtsaDate, formatNhtsaComponent, titleCase } from "@/lib/utils";
 
 const SITE = "https://vindecoder.site";
 
@@ -40,13 +40,14 @@ export async function generateMetadata({
       : yearNums.length === 1
         ? String(yearNums[0])
         : `${Math.min(...yearNums)}–${Math.max(...yearNums)}`;
+  const niceMakes = c.makes.map(titleCase);
   const makeStr =
-    c.makes.length === 1
-      ? c.makes[0]
-      : c.makes.length === 2
-        ? c.makes.join(" & ")
-        : c.makes.length > 2
-          ? `${c.makes.length} brands`
+    niceMakes.length === 1
+      ? niceMakes[0]
+      : niceMakes.length === 2
+        ? niceMakes.join(" & ")
+        : niceMakes.length > 2
+          ? `${niceMakes.length} brands`
           : "";
   const ymm = [yearRange, makeStr].filter(Boolean).join(" ");
   const component = formatNhtsaComponent(c.component) || "Open recall campaign";
