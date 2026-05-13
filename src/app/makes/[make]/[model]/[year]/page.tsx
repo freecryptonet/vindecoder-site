@@ -128,11 +128,14 @@ export default async function YearReliabilityPage({
           ]}
         />
 
-        <header className="mt-6">
-          <h1 className="text-h1-page text-slate-950 md:text-4xl">
-            {year} {m.name} {display}
-          </h1>
-          <p className="mt-3 max-w-3xl text-base text-slate-950">{intro}</p>
+        <header className="mt-6 flex flex-wrap items-start gap-4">
+          <BrandLogo make={m.name} slug={m.slug} size={64} className="shrink-0" />
+          <div className="flex-1 min-w-0">
+            <h1 className="text-h1-page text-slate-950 md:text-4xl">
+              {year} {m.name} {display}
+            </h1>
+            <p className="mt-3 max-w-3xl text-base text-slate-950">{intro}</p>
+          </div>
         </header>
 
         <section className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">

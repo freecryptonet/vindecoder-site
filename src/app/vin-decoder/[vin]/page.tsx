@@ -12,6 +12,8 @@ import { VinDisplay } from "@/components/VinDisplay";
 import { VinSearchForm } from "@/components/VinSearchForm";
 import { ShareButton } from "@/components/ShareButton";
 import { FuelIcon } from "@/components/FuelIcon";
+import { BrandLogo } from "@/components/BrandLogo";
+import { slugify } from "@/lib/utils";
 import { JsonLd } from "@/components/JsonLd";
 import { getVinPageData } from "@/lib/nhtsa";
 import { isValidVin, titleCase, formatNhtsaDate } from "@/lib/utils";
@@ -122,19 +124,22 @@ export default async function VinResultPage({
           ]}
         />
 
-        <header className="mt-6">
-          <h1 className="text-h1-page text-balance text-slate-950 md:text-4xl">
-            {heroTitle}
-          </h1>
-          <div className="mt-3 flex flex-wrap items-center gap-3">
-            <VinDisplay vin={vin} />
-            <span className="text-xs text-muted">
-              Decoded from NHTSA{data.fromCache ? " · cached" : ""}
-            </span>
-            <ShareButton
-              title={`${heroTitle} VIN report`}
-              text={`${heroTitle}: ${recalls.length} recalls, ${complaints.length} complaints — full report on vindecoder.site`}
-            />
+        <header className="mt-6 flex flex-wrap items-start gap-4">
+          <BrandLogo make={make} slug={slugify(make)} size={64} className="shrink-0" />
+          <div className="flex-1 min-w-0">
+            <h1 className="text-h1-page text-balance text-slate-950 md:text-4xl">
+              {heroTitle}
+            </h1>
+            <div className="mt-3 flex flex-wrap items-center gap-3">
+              <VinDisplay vin={vin} />
+              <span className="text-xs text-muted">
+                Decoded from NHTSA{data.fromCache ? " · cached" : ""}
+              </span>
+              <ShareButton
+                title={`${heroTitle} VIN report`}
+                text={`${heroTitle}: ${recalls.length} recalls, ${complaints.length} complaints — full report on vindecoder.site`}
+              />
+            </div>
           </div>
         </header>
 
