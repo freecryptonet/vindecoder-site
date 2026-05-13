@@ -28,11 +28,33 @@ export async function generateMetadata({
   if (!c) {
     return { title: `Recall ${upper} — Not Found`, robots: { index: false } };
   }
-  const ymm = `${c.modelYears.join(", ")} ${c.makes.join(", ")} ${c.models.join(", ")}`.trim();
+  // Build a tight year-make summary. Cross-brand campaigns can have 15+
+  // model years and 18+ models, which blows the title past 200 chars.
+  // Collapse years to a range, list at most one make, and skip model list.
+  const yearNums = c.modelYears
+    .map((y) => parseInt(y, 10))
+    .filter((n) => Number.isFinite(n));
+  const yearRange =
+    yearNums.length === 0
+      ? ""
+      : yearNums.length === 1
+        ? String(yearNums[0])
+        : `${Math.min(...yearNums)}–${Math.max(...yearNums)}`;
+  const makeStr =
+    c.makes.length === 1
+      ? c.makes[0]
+      : c.makes.length === 2
+        ? c.makes.join(" & ")
+        : c.makes.length > 2
+          ? `${c.makes.length} brands`
+          : "";
+  const ymm = [yearRange, makeStr].filter(Boolean).join(" ");
   const component = formatNhtsaComponent(c.component) || "Open recall campaign";
   const summary = (c.summary || "").slice(0, 140);
   return {
-    title: `${ymm} Recall ${upper} — ${component}`,
+    title: ymm
+      ? `Recall ${upper}: ${component} (${ymm})`
+      : `Recall ${upper}: ${component}`,
     description: summary ? `${component}. ${summary}` : component,
     alternates: { canonical: `/recalls/${upper}` },
   };
