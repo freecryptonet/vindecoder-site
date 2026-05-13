@@ -5,6 +5,7 @@ const navItems = [
   { href: "/makes", label: "Makes" },
   { href: "/recalls", label: "Recalls" },
   { href: "/complaints", label: "Complaints" },
+  { href: "/license-plate", label: "Plate Lookup" },
   { href: "/wmi", label: "WMI" },
   { href: "/guides", label: "Guides" },
 ];
