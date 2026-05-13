@@ -10,6 +10,7 @@ import { SafetyStars } from "@/components/SafetyStars";
 import { SpecsGrid } from "@/components/SpecsGrid";
 import { VinDisplay } from "@/components/VinDisplay";
 import { VinSearchForm } from "@/components/VinSearchForm";
+import { ShareButton } from "@/components/ShareButton";
 import { JsonLd } from "@/components/JsonLd";
 import { getVinPageData } from "@/lib/nhtsa";
 import { isValidVin, titleCase, formatNhtsaDate } from "@/lib/utils";
@@ -128,6 +129,10 @@ export default async function VinResultPage({
             <span className="text-xs text-muted">
               Decoded from NHTSA{data.fromCache ? " · cached" : ""}
             </span>
+            <ShareButton
+              title={`${heroTitle} VIN report`}
+              text={`${heroTitle}: ${recalls.length} recalls, ${complaints.length} complaints — full report on vindecoder.site`}
+            />
           </div>
         </header>
 
@@ -184,6 +189,26 @@ export default async function VinResultPage({
             <p className="mt-1 text-sm text-muted">
               Open NHTSA recall campaigns affecting this vehicle.
             </p>
+            <Card className="mt-3 border-2 border-brand-red/30 bg-brand-red/5">
+              <p className="text-sm font-semibold text-slate-950">
+                Recall repairs are <span className="text-brand-red">free</span>{" "}
+                at any franchised {make} dealer.
+              </p>
+              <p className="mt-1 text-xs text-muted">
+                Bring this VIN. Federal law (49 U.S.C. § 30120) requires the
+                manufacturer to remedy any open safety recall at no cost,
+                regardless of how old the vehicle is or who owns it now.{" "}
+                <a
+                  className="underline hover:text-slate-950"
+                  href={`https://www.nhtsa.gov/recalls?vin=${vin}`}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Confirm at NHTSA
+                </a>
+                .
+              </p>
+            </Card>
             <ul className="mt-4 overflow-hidden rounded-card border border-border bg-surface">
               {recalls.map((r) => {
                 const firstSentence = (r.Summary || "").split(/\.\s/)[0] || "";

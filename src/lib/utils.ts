@@ -65,17 +65,53 @@ export function slugify(text: string): string {
  *   Multi-token slugs join by spaces ("model-3" → "Model 3").
  */
 export function formatModelName(slug: string): string {
-  return slug
-    .split("-")
-    .map((tok) => {
-      if (!tok) return tok;
-      if (tok.length <= 3 && /^[a-z]+$/i.test(tok)) return tok.toUpperCase();
-      const lettersDigits = tok.match(/^([a-z]+)(\d+)$/i);
-      if (lettersDigits && lettersDigits[1].length <= 4) return tok.toUpperCase();
-      if (/^\d+$/.test(tok)) return tok;
-      return tok.replace(/[a-z]+/gi, (s) => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase());
-    })
-    .join(" ");
+  const tokens = slug.split("-");
+  const formatted = tokens.map((tok) => {
+    if (!tok) return tok;
+    // ≤3 char pure-alpha → uppercase ("MKC", "RSX", "WRX", "BZ")
+    if (tok.length <= 3 && /^[a-z]+$/i.test(tok)) return tok.toUpperCase();
+    // Short token mixing letters and digits → uppercase as a model code
+    // ("F150", "BZ4X", "350Z", "Q5", "M3", "RS6", "GT500", "AMG63").
+    if (
+      tok.length <= 6 &&
+      /^[a-z0-9]+$/i.test(tok) &&
+      /[a-z]/i.test(tok) &&
+      /\d/.test(tok)
+    ) {
+      return tok.toUpperCase();
+    }
+    // Digit-only → keep as-is
+    if (/^\d+$/.test(tok)) return tok;
+    // Mixed long token → title-case each letter-run ("4Runner", "Mustang")
+    return tok.replace(/[a-z]+/gi, (s) => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase());
+  });
+  // Choose joiner: if every token is short (≤3 chars or pure-digit), the model
+  // is a code like "C-HR", "F-150", "RS-5" and looks correct with hyphens.
+  // Otherwise it's a word-style name ("Model 3", "Land Cruiser") — use spaces.
+  const allShort = tokens.every(
+    (t) => t.length === 0 || t.length <= 3 || /^\d+$/.test(t),
+  );
+  return formatted.join(allShort ? "-" : " ");
+}
+
+/**
+ * Title-case an NHTSA component string. NHTSA returns components as
+ * ALL-CAPS colon-separated paths like "AIR BAGS:FRONTAL:DRIVER SIDE:INFLATOR
+ * MODULE". This converts to a readable "Air Bags · Frontal · Driver Side ·
+ * Inflator Module" form.
+ */
+export function formatNhtsaComponent(text: string | null | undefined): string {
+  if (!text) return "";
+  return text
+    .split(":")
+    .map((seg) =>
+      seg
+        .trim()
+        .toLowerCase()
+        .replace(/\b([a-z])/g, (m) => m.toUpperCase()),
+    )
+    .filter(Boolean)
+    .join(" · ");
 }
 
 /** True if year string is a plausible model year (1975 … now+2). */

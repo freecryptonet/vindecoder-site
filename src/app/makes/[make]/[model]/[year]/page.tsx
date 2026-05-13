@@ -173,6 +173,16 @@ export default async function YearReliabilityPage({
             <h2 className="text-h2 text-slate-950">
               Recall campaigns ({recalls.length})
             </h2>
+            <Card className="mt-3 border-2 border-brand-red/30 bg-brand-red/5">
+              <p className="text-sm font-semibold text-slate-950">
+                Recall repairs are <span className="text-brand-red">free</span>{" "}
+                at any franchised {m.name} dealer.
+              </p>
+              <p className="mt-1 text-xs text-muted">
+                Bring your VIN. Federal law (49 U.S.C. § 30120) requires the
+                manufacturer to remedy any open safety recall at no cost.
+              </p>
+            </Card>
             <ul className="mt-4 overflow-hidden rounded-card border border-border bg-surface">
               {recalls.map((r) => {
                 const firstSentence = (r.Summary || "").split(/\.\s/)[0] || "";

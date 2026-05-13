@@ -8,7 +8,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbJsonLd } from "@/lib/seo";
 import { getRecallCampaign } from "@/lib/nhtsa";
 import { ALL_US_MAKES } from "@/lib/makes";
-import { slugify, formatNhtsaDate } from "@/lib/utils";
+import { slugify, formatNhtsaDate, formatNhtsaComponent } from "@/lib/utils";
 
 const SITE = "https://vindecoder.site";
 
@@ -29,7 +29,7 @@ export async function generateMetadata({
     return { title: `Recall ${upper} — Not Found`, robots: { index: false } };
   }
   const ymm = `${c.modelYears.join(", ")} ${c.makes.join(", ")} ${c.models.join(", ")}`.trim();
-  const component = c.component || "Open recall campaign";
+  const component = formatNhtsaComponent(c.component) || "Open recall campaign";
   const summary = (c.summary || "").slice(0, 140);
   return {
     title: `${ymm} Recall ${upper} — ${component}`,
@@ -84,7 +84,9 @@ export default async function RecallDetailPage({
         />
         <header className="mt-6">
           <p className="vin-mono text-sm font-semibold text-brand-red">{upper}</p>
-          <h1 className="mt-1 text-h1-page text-slate-950">{c.component || "NHTSA Recall"}</h1>
+          <h1 className="mt-1 text-h1-page text-slate-950">
+            {formatNhtsaComponent(c.component) || "NHTSA Recall"}
+          </h1>
           <p className="mt-2 text-sm text-muted">
             Issued {formatNhtsaDate(c.reportReceivedDate)} by {c.manufacturer}
             {c.potentialUnitsAffected ? ` · ~${c.potentialUnitsAffected.toLocaleString()} affected units` : ""}
@@ -120,6 +122,31 @@ export default async function RecallDetailPage({
             </p>
           </Card>
         ) : null}
+
+        <Card className="mt-6 border-2 border-brand-red/30 bg-brand-red/5">
+          <h2 className="text-h3 text-slate-950">
+            How to get this fixed
+          </h2>
+          <p className="mt-1 text-sm text-slate-950">
+            Take your VIN to any franchised{" "}
+            <strong>{c.makes[0] || "manufacturer"}</strong> dealer. The repair
+            is <strong className="text-brand-red">free</strong> under federal
+            law (49 U.S.C. § 30120) regardless of how old the vehicle is or
+            whether you&rsquo;re the original owner.
+          </p>
+          <p className="mt-2 text-xs text-muted">
+            Confirm your specific VIN is in this campaign at{" "}
+            <a
+              className="underline hover:text-slate-950"
+              href="https://www.nhtsa.gov/recalls"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              NHTSA&rsquo;s official lookup
+            </a>
+            .
+          </p>
+        </Card>
 
         <Card className="mt-6">
           <h2 className="text-h3 text-slate-950">Summary</h2>

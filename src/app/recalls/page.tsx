@@ -6,7 +6,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbJsonLd } from "@/lib/seo";
 import { getRecentRecallsFromCache } from "@/lib/db";
 import { getHomepageRecentRecalls } from "@/lib/nhtsa";
-import { formatNhtsaDate } from "@/lib/utils";
+import { formatNhtsaComponent, formatNhtsaDate } from "@/lib/utils";
 
 const SITE = "https://vindecoder.site";
 
@@ -78,7 +78,8 @@ export default async function RecallsIndexPage() {
                     <time className="text-xs text-muted">{formatNhtsaDate(e.date)}</time>
                   </div>
                   <p className="mt-1 text-sm font-semibold text-slate-950">
-                    {e.modelYear} {e.make} {e.model} — {e.component || "Open recall"}
+                    {e.modelYear} {e.make} {e.model} —{" "}
+                    {formatNhtsaComponent(e.component) || "Open recall"}
                   </p>
                   {e.summary ? (
                     <p className="mt-1 line-clamp-2 text-xs text-muted">{e.summary}</p>

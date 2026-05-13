@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { formatNhtsaComponent } from "@/lib/utils";
 
 export type RecallItemData = {
   campaignId: string;
@@ -16,6 +17,9 @@ export function RecallItem({ recall }: { recall: RecallItemData }) {
         </Link>
       )
     : ({ children }: { children: React.ReactNode }) => <div>{children}</div>;
+  const componentLine = recall.components?.length
+    ? recall.components.map(formatNhtsaComponent).filter(Boolean).join(" • ")
+    : "";
   return (
     <Wrap>
       <article className="border-b border-border p-4 last:border-b-0">
@@ -28,10 +32,8 @@ export function RecallItem({ recall }: { recall: RecallItemData }) {
         <h3 className="mt-1 text-sm font-semibold text-slate-950">
           {recall.title}
         </h3>
-        {recall.components?.length ? (
-          <p className="mt-1 text-xs text-muted">
-            {recall.components.join(" • ")}
-          </p>
+        {componentLine ? (
+          <p className="mt-1 text-xs text-muted">{componentLine}</p>
         ) : null}
       </article>
     </Wrap>

@@ -6,7 +6,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbJsonLd } from "@/lib/seo";
 import { getRecentComplaintsFromCache } from "@/lib/db";
 import { ALL_US_MAKES } from "@/lib/makes";
-import { formatNhtsaDate, slugify } from "@/lib/utils";
+import { formatNhtsaComponent, formatNhtsaDate, slugify } from "@/lib/utils";
 
 const SITE = "https://vindecoder.site";
 
@@ -84,7 +84,7 @@ export default async function ComplaintsIndexPage() {
                     {c.components ? (
                       <span className="font-normal text-muted">
                         {" "}
-                        — {c.components}
+                        — {formatNhtsaComponent(c.components)}
                       </span>
                     ) : null}
                   </p>
