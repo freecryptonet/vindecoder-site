@@ -78,10 +78,7 @@ export default async function StateLicensePlatePage({
               {s.name} license plate lookup
             </h1>
             <p className="mt-3 text-base text-muted">
-              Plate-holder information in {s.name} is regulated by the federal
-              Driver&rsquo;s Privacy Protection Act and the state&rsquo;s own
-              privacy rules. Here&rsquo;s what you can actually look up, where,
-              and for what purpose.
+              {`Plate-holder information in ${s.name} is regulated by the federal Driver’s Privacy Protection Act and the state’s own privacy rules. Here’s what you can actually look up, where, and for what purpose.`}
             </p>
           </header>
 
@@ -91,14 +88,7 @@ export default async function StateLicensePlatePage({
                 Who can request plate-holder data in {s.name}
               </h2>
               <p className="mt-2 text-base leading-relaxed">
-                Under the federal DPPA (18 U.S.C. § 2721), {s.name}&rsquo;s{" "}
-                {s.dmvName} only releases personal information attached to a
-                license plate to permitted requesters: law enforcement, courts,
-                state agencies, insurance carriers investigating claims,
-                licensed private investigators, and others with a documented
-                legal need. A casual member of the public asking who owns a
-                plate doesn&rsquo;t qualify &mdash; and no online service can
-                legally provide that data either.
+                {`Under the federal DPPA (18 U.S.C. § 2721), ${s.name}’s ${s.dmvName} only releases personal information attached to a license plate to permitted requesters: law enforcement, courts, state agencies, insurance carriers investigating claims, licensed private investigators, and others with a documented legal need. A casual member of the public asking who owns a plate doesn’t qualify — and no online service can legally provide that data either.`}
               </p>
             </section>
 
@@ -109,9 +99,7 @@ export default async function StateLicensePlatePage({
               <ul className="mt-2 list-disc space-y-2 pl-5 text-base leading-relaxed">
                 <li>
                   <strong>Your own plate and registration.</strong>{" "}
-                  {s.name}&rsquo;s {s.dmvName} lets registered owners view
-                  their own vehicle&rsquo;s status, renewal due dates, and
-                  emissions/inspection history online.
+                  {`${s.name}’s ${s.dmvName} lets registered owners view their own vehicle’s status, renewal due dates, and emissions/inspection history online.`}
                 </li>
                 <li>
                   <strong>Public vehicle title status (non-personal).</strong>{" "}
@@ -142,7 +130,7 @@ export default async function StateLicensePlatePage({
                 {`${s.dmvName} — contact & online portal`}
               </h2>
               <p className="mt-2 text-base leading-relaxed">
-                The official online portal for vehicle services in {s.name}:{" "}
+                {`The official online portal for vehicle services in ${s.name}: `}
                 <a
                   href={s.dmvUrl}
                   rel="noopener noreferrer"

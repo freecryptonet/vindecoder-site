@@ -48,7 +48,7 @@ export async function generateMetadata({
   summary.push(`${complaints.length} complaint${complaints.length === 1 ? "" : "s"}`);
   if (star) summary.push(`${star}-star safety`);
   return {
-    title: `${vinDecode.modelYear} ${titleCase(vinDecode.make)} ${vinDecode.model} VIN Decoder — ${recalls.length} Recalls, ${complaints.length} Complaints`,
+    title: `${vinDecode.modelYear} ${titleCase(vinDecode.make)} ${vinDecode.model} — ${recalls.length} recalls · ${complaints.length} complaints`,
     description: `Decode VIN ${upper}: ${summary.join(", ")}. Free, instant, NHTSA-powered. No signup.`,
     alternates: { canonical: `/vin-decoder/${upper}` },
     robots: { index: true, follow: true },
@@ -185,24 +185,27 @@ export default async function VinResultPage({
               Open NHTSA recall campaigns affecting this vehicle.
             </p>
             <ul className="mt-4 overflow-hidden rounded-card border border-border bg-surface">
-              {recalls.slice(0, 10).map((r) => (
-                <li key={r.NHTSACampaignNumber}>
-                  <RecallItem
-                    recall={{
-                      campaignId: r.NHTSACampaignNumber,
-                      title: r.Component || (r.Summary || "").slice(0, 90) || r.NHTSACampaignNumber,
-                      components: r.Component ? [r.Component] : undefined,
-                      date: formatNhtsaDate(r.ReportReceivedDate),
-                    }}
-                  />
-                </li>
-              ))}
+              {recalls.map((r) => {
+                const firstSentence = (r.Summary || "").split(/\.\s/)[0] || "";
+                const title =
+                  firstSentence.slice(0, 110) ||
+                  r.Component ||
+                  r.NHTSACampaignNumber;
+                return (
+                  <li key={r.NHTSACampaignNumber}>
+                    <RecallItem
+                      recall={{
+                        campaignId: r.NHTSACampaignNumber,
+                        title,
+                        components: r.Component ? [r.Component] : undefined,
+                        date: formatNhtsaDate(r.ReportReceivedDate),
+                        href: `/recalls/${r.NHTSACampaignNumber}`,
+                      }}
+                    />
+                  </li>
+                );
+              })}
             </ul>
-            {recalls.length > 10 ? (
-              <p className="mt-3 text-sm text-muted">
-                Showing 10 of {recalls.length} recalls.
-              </p>
-            ) : null}
           </section>
         ) : null}
 

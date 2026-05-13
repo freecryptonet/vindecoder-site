@@ -9,17 +9,37 @@ export function SafetyStars({
   size?: "sm" | "md" | "lg";
   showLabel?: boolean;
 }) {
-  const n = typeof rating === "string" ? parseInt(rating, 10) : (rating ?? 0);
-  const stars = Math.max(0, Math.min(5, Number.isFinite(n) ? n : 0));
+  // NHTSA returns ratings as strings like "5", "Not Rated", or empty. Treat
+  // anything that doesn't parse to a 1-5 integer as "not rated" so we don't
+  // show a misleading row of 5 empty stars labeled "0 of 5".
+  const n = typeof rating === "string" ? parseInt(rating, 10) : (rating ?? NaN);
+  const isRated = Number.isFinite(n) && n >= 1 && n <= 5;
   const px = size === "lg" ? 22 : size === "md" ? 16 : 13;
+  if (!isRated) {
+    return (
+      <span
+        className={cn(
+          "inline-flex items-center text-muted",
+          size === "lg" ? "text-sm" : "text-xs",
+        )}
+        aria-label="Not rated"
+      >
+        Not rated
+      </span>
+    );
+  }
+  const stars = Math.round(n);
   return (
-    <span className="inline-flex items-center gap-1.5" aria-label={`${stars} of 5 stars`}>
+    <span
+      className="inline-flex items-center gap-1.5"
+      aria-label={`${stars} of 5 stars`}
+    >
       <span className="flex gap-0.5">
         {Array.from({ length: 5 }, (_, i) => (
           <Star key={i} filled={i < stars} size={px} />
         ))}
       </span>
-      {showLabel && stars > 0 ? (
+      {showLabel ? (
         <span className={cn("text-muted", size === "lg" ? "text-base" : "text-xs")}>
           {stars} / 5
         </span>

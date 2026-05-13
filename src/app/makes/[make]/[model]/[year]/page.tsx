@@ -174,18 +174,26 @@ export default async function YearReliabilityPage({
               Recall campaigns ({recalls.length})
             </h2>
             <ul className="mt-4 overflow-hidden rounded-card border border-border bg-surface">
-              {recalls.slice(0, 15).map((r) => (
-                <li key={r.NHTSACampaignNumber}>
-                  <RecallItem
-                    recall={{
-                      campaignId: r.NHTSACampaignNumber,
-                      title: r.Component || (r.Summary || "").slice(0, 90) || r.NHTSACampaignNumber,
-                      components: r.Component ? [r.Component] : undefined,
-                      date: formatNhtsaDate(r.ReportReceivedDate),
-                    }}
-                  />
-                </li>
-              ))}
+              {recalls.map((r) => {
+                const firstSentence = (r.Summary || "").split(/\.\s/)[0] || "";
+                const title =
+                  firstSentence.slice(0, 110) ||
+                  r.Component ||
+                  r.NHTSACampaignNumber;
+                return (
+                  <li key={r.NHTSACampaignNumber}>
+                    <RecallItem
+                      recall={{
+                        campaignId: r.NHTSACampaignNumber,
+                        title,
+                        components: r.Component ? [r.Component] : undefined,
+                        date: formatNhtsaDate(r.ReportReceivedDate),
+                        href: `/recalls/${r.NHTSACampaignNumber}`,
+                      }}
+                    />
+                  </li>
+                );
+              })}
             </ul>
             {recalls.length > 15 ? (
               <p className="mt-3 text-sm text-muted">
