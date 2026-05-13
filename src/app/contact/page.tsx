@@ -11,7 +11,7 @@ export default function ContactPage() {
   return (
     <div className="container-page py-8">
       <Breadcrumbs items={[{ href: "/", label: "Home" }, { label: "Contact" }]} />
-      <article className="mt-6 max-w-3xl space-y-6 text-base text-slate-950 leading-relaxed">
+      <article className="mt-6 mx-auto max-w-3xl space-y-6 text-base text-slate-950 leading-relaxed">
         <h1 className="text-h1-page">Contact</h1>
 
         <p>

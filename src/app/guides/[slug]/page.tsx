@@ -76,7 +76,7 @@ export default async function GuidePage({
             { label: g.title },
           ]}
         />
-        <article className="mt-6 max-w-3xl">
+        <article className="mt-6 mx-auto max-w-3xl">
           <header>
             <h1 className="text-h1-page text-slate-950">{g.title}</h1>
             <p className="mt-3 text-base text-muted">{g.intro}</p>

@@ -13,7 +13,7 @@ export default function AboutPage() {
   return (
     <div className="container-page py-8">
       <Breadcrumbs items={[{ href: "/", label: "Home" }, { label: "About" }]} />
-      <article className="mt-6 max-w-3xl space-y-6 text-base text-slate-950 leading-relaxed">
+      <article className="mt-6 mx-auto max-w-3xl space-y-6 text-base text-slate-950 leading-relaxed">
         <h1 className="text-h1-page">About VinDecoder</h1>
 
         <p>

@@ -73,7 +73,7 @@ export default async function StateLicensePlatePage({
           ]}
         />
 
-        <article className="mt-6 max-w-3xl">
+        <article className="mt-6 mx-auto max-w-3xl">
           <header className="flex flex-col gap-4 sm:flex-row sm:items-start">
             <StateBadge abbr={s.abbr} name={s.name} size="lg" className="shrink-0" />
             <div className="flex-1">
@@ -218,7 +218,7 @@ export default async function StateLicensePlatePage({
           </Card>
         </article>
 
-        <section className="mt-16 max-w-3xl border-t border-border pt-10">
+        <section className="mt-16 mx-auto max-w-3xl border-t border-border pt-10">
           <h2 className="text-h2 text-slate-950">Other states</h2>
           <ul className="mt-4 grid grid-cols-2 gap-2 text-sm sm:grid-cols-3 md:grid-cols-4">
             {US_STATES.filter((x) => x.slug !== s.slug).map((other) => (
