@@ -151,9 +151,31 @@ export function formatNhtsaDate(raw: string | null | undefined): string {
       month = a;
       day = b;
     } else {
-      // Ambiguous (both ≤ 12). NHTSA's US-API default is MM/DD.
-      month = a;
-      day = b;
+      // Ambiguous (both ≤ 12). NHTSA returns ReportReceivedDate as
+      // DD/MM/YYYY on the recall endpoints (verified 2026-05-14: campaign
+      // 26V080000 returned "12/02/2026" for a Feb 12 2026 event), but
+      // some other endpoints/fields use MM/DD. Heuristic: try both
+      // interpretations and prefer the one that's in the past — recall
+      // and complaint dates are always historical events. Falls back to
+      // MM/DD only if both interpretations are future.
+      const today = Date.now();
+      const mmddTime = Date.UTC(yr, a - 1, b);
+      const ddmmTime = Date.UTC(yr, b - 1, a);
+      const mmddIsPast = mmddTime <= today;
+      const ddmmIsPast = ddmmTime <= today;
+      if (ddmmIsPast && !mmddIsPast) {
+        // Only DD/MM is past — definitely that.
+        day = a;
+        month = b;
+      } else if (mmddIsPast && !ddmmIsPast) {
+        // Only MM/DD is past — use it.
+        month = a;
+        day = b;
+      } else {
+        // Both past (or both future). Default to MM/DD per US convention.
+        month = a;
+        day = b;
+      }
     }
     const d = new Date(Date.UTC(yr, month - 1, day));
     if (!Number.isNaN(d.getTime())) {
