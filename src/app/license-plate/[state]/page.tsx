@@ -6,7 +6,9 @@ import { Card } from "@/components/Card";
 import { JsonLd } from "@/components/JsonLd";
 import { StateBadge } from "@/components/StateBadge";
 import { breadcrumbJsonLd } from "@/lib/seo";
-import { US_STATES, findState } from "@/lib/states";
+import { faqPageJsonLd } from "@/lib/yearEditorial";
+import { US_STATES, findState, type UsState } from "@/lib/states";
+import { findStateProfile, type StateProfile } from "@/lib/stateProfiles";
 
 const SITE = "https://vindecoder.site";
 
@@ -14,6 +16,38 @@ type Params = { state: string };
 
 export async function generateStaticParams(): Promise<Params[]> {
   return US_STATES.map((s) => ({ state: s.slug }));
+}
+
+function stateFaqs(
+  s: UsState,
+  profile: StateProfile | undefined,
+): { question: string; answer: string }[] {
+  const faqs: { question: string; answer: string }[] = [];
+  faqs.push({
+    question: `Can the public look up who owns a ${s.name} license plate?`,
+    answer: `No — under the federal Driver's Privacy Protection Act (18 U.S.C. § 2721), the ${s.dmvName} only releases plate-holder personal information to permitted requesters such as law enforcement, courts, insurers investigating a claim, and licensed private investigators with a documented legal need. Members of the public cannot pull a name and address from a ${s.abbr} plate.`,
+  });
+  if (profile) {
+    faqs.push({
+      question: `What threshold does ${s.name} use to brand a vehicle title as salvage?`,
+      answer: profile.titleBrandNote,
+    });
+    faqs.push({
+      question: `Does ${s.name} require a VIN inspection when I bring in a vehicle from another state?`,
+      answer: profile.vinInspectionRequired
+        ? `Yes — ${s.name} typically requires a physical VIN verification by the ${s.dmvName} or a law-enforcement officer before issuing a ${s.abbr} title for a vehicle previously titled elsewhere. The inspection card is a prerequisite for almost every out-of-state retitling path.`
+        : `${s.name} does not require a physical VIN inspection for most clean out-of-state title transfers; check the current titling form instructions before assuming, since branded titles and rebuilt vehicles still need an in-person inspection.`,
+    });
+    faqs.push({
+      question: `Where do I report dealer fraud or undisclosed title brands in ${s.name}?`,
+      answer: `File a complaint with the ${s.name} Attorney General's consumer-protection division at ${profile.agConsumerUrl}. The AG's office often resolves motor-vehicle disputes at no cost to the consumer before any private legal action is needed.`,
+    });
+  }
+  faqs.push({
+    question: `If I only have a ${s.name} plate, how can I get the VIN legally?`,
+    answer: `Ask the registered owner directly — the VIN is printed on the dashboard (visible through the windshield), the driver's-side door jamb sticker, the title, and the insurance card. If you're a buyer, seller, or have a legitimate transactional reason, the owner can simply provide it. No public service can legally return a VIN from a ${s.abbr} plate to a member of the public.`,
+  });
+  return faqs;
 }
 
 export async function generateMetadata({
@@ -26,9 +60,13 @@ export async function generateMetadata({
   if (!s) {
     return { title: "Unknown state", robots: { index: false } };
   }
+  const profile = findStateProfile(s.slug);
+  const description = profile
+    ? `${s.name} (${profile.nickname}) plate-lookup rules: what the ${s.dmvName} releases, title-brand thresholds, VIN inspection requirements, and how to file motor-vehicle complaints with the state AG.`
+    : `How license plate lookup works in ${s.name}: what's free at the ${s.dmvName}, what's restricted under the Driver's Privacy Protection Act, and your options for VIN-based vehicle history.`;
   return {
-    title: `${s.name} License Plate Lookup — DMV Resources & What's Legal`,
-    description: `How license plate lookup works in ${s.name}: what's free at the ${s.dmvName}, what's restricted under the Driver's Privacy Protection Act, and your options for VIN-based vehicle history.`,
+    title: `${s.name} License Plate Lookup — DMV Rules, Title Brands & VIN Inspection`,
+    description,
     alternates: { canonical: `/license-plate/${s.slug}` },
   };
 }
@@ -41,6 +79,8 @@ export default async function StateLicensePlatePage({
   const { state } = await params;
   const s = findState(state);
   if (!s) notFound();
+  const profile = findStateProfile(s.slug);
+  const faqs = stateFaqs(s, profile);
 
   const url = `${SITE}/license-plate/${s.slug}`;
 
@@ -63,6 +103,7 @@ export default async function StateLicensePlatePage({
           isPartOf: { "@type": "WebSite", name: "VinDecoder", url: SITE },
         }}
       />
+      <JsonLd data={faqPageJsonLd(faqs)} />
 
       <div className="container-page py-8">
         <Breadcrumbs
@@ -81,7 +122,9 @@ export default async function StateLicensePlatePage({
                 {s.name} license plate lookup
               </h1>
               <p className="mt-3 text-base text-muted">
-                {`Plate-holder information in ${s.name} is regulated by the federal Driver’s Privacy Protection Act and the state’s own privacy rules. Here’s what you can actually look up, where, and for what purpose.`}
+                {profile
+                  ? `Plate-holder information in ${s.name}, ${profile.nickname}, is regulated by the federal Driver’s Privacy Protection Act and rules set by the ${s.dmvName} out of ${profile.capital}. Here’s what you can actually look up, where, and for what purpose.`
+                  : `Plate-holder information in ${s.name} is regulated by the federal Driver’s Privacy Protection Act and the state’s own privacy rules. Here’s what you can actually look up, where, and for what purpose.`}
               </p>
             </div>
           </header>
@@ -151,6 +194,38 @@ export default async function StateLicensePlatePage({
               </p>
             </section>
 
+            {profile ? (
+              <section>
+                <h2 className="text-h2 text-slate-950">
+                  {`${s.name} title-brand & VIN-inspection rules`}
+                </h2>
+                <p className="mt-2 text-base leading-relaxed">
+                  {`${s.name}, ${profile.nickname}, administers vehicle titling out of ${profile.capital} (the state capital) with the bulk of registrations concentrated around ${profile.largestCity}. ${profile.titleBrandNote}`}
+                </p>
+                <p className="mt-2 text-base leading-relaxed">
+                  {profile.vinInspectionRequired
+                    ? `Bringing a vehicle into ${s.name} from another state typically requires a physical VIN verification by ${s.dmvName} or a law-enforcement officer before a ${s.abbr} title can be issued. Schedule this before you start any registration paperwork — the inspection card is a prerequisite for almost every retitling path.`
+                    : `${s.name} does not require a physical VIN inspection for most clean out-of-state title transfers — the prior title and the ${s.dmvName} retitling form are usually sufficient. Check current ${s.abbr} titling instructions before assuming, though, as branded titles and rebuilt vehicles still need an in-person inspection.`}
+                </p>
+                <p className="mt-2 text-base leading-relaxed">
+                  Owner complaints about dealer fraud, odometer rollback, or
+                  undisclosed title brands in {s.name} are handled by the state
+                  Attorney General&rsquo;s consumer-protection division:{" "}
+                  <a
+                    href={profile.agConsumerUrl}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    className="underline hover:text-slate-950"
+                  >
+                    {profile.agConsumerUrl.replace(/^https?:\/\//, "").replace(/\/$/, "")}
+                  </a>
+                  . File a complaint there before paying for a private
+                  attorney &mdash; the AG&rsquo;s office often resolves
+                  motor-vehicle disputes at no cost to the consumer.
+                </p>
+              </section>
+            ) : null}
+
             <section>
               <h2 className="text-h2 text-slate-950">
                 If you only have a plate and need the VIN
@@ -199,6 +274,24 @@ export default async function StateLicensePlatePage({
               </p>
             </section>
           </div>
+
+          <section className="mt-10">
+            <h2 className="text-h2 text-slate-950">
+              {`${s.name} plate-lookup FAQ`}
+            </h2>
+            <dl className="mt-4 divide-y divide-border overflow-hidden rounded-card border border-border bg-surface">
+              {faqs.map((f) => (
+                <div key={f.question} className="p-4">
+                  <dt className="text-base font-semibold text-slate-950">
+                    {f.question}
+                  </dt>
+                  <dd className="mt-2 text-base leading-relaxed text-muted">
+                    {f.answer}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </section>
 
           <Card className="mt-10">
             <h3 className="text-h3 text-slate-950">

@@ -53,11 +53,23 @@ export async function generateMetadata({
     `${data.complaints.length} Complaint${data.complaints.length === 1 ? "" : "s"}`,
   ];
   if (star && /^[1-5]$/.test(star)) bits.push(`${star}-Star Safety`);
+  // Thin-content guard: if NHTSA returned no recalls, no complaints, no
+  // safety rating, no investigations, no mfr comms, and no EPA data, the
+  // page is essentially a navigation shell with no unique value. Tell
+  // Google not to index it so the property isn't dragged down by empty
+  // long-tail vehicles (e.g., obscure model years).
+  const isEmpty =
+    data.recalls.length === 0 &&
+    data.complaints.length === 0 &&
+    data.safetyRatings.length === 0 &&
+    data.investigations.length === 0 &&
+    data.mfrComms.length === 0 &&
+    !data.epa;
   return {
     title: `${year} ${m.name} ${display} — ${bits.join(", ")}`,
     description: `${year} ${m.name} ${display}: ${data.recalls.length} NHTSA recalls, ${data.complaints.length} owner complaints${star && /^[1-5]$/.test(star) ? `, ${star}-star safety rating` : ""}. Free reliability report.`,
     alternates: { canonical: `/makes/${m.slug}/${model}/${year}` },
-    robots: { index: true, follow: true },
+    robots: { index: !isEmpty, follow: true },
   };
 }
 
