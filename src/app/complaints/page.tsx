@@ -6,7 +6,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbJsonLd } from "@/lib/seo";
 import { getRecentComplaintsFromCache } from "@/lib/db";
 import { ALL_US_MAKES } from "@/lib/makes";
-import { formatNhtsaComponent, formatNhtsaDate, slugify } from "@/lib/utils";
+import { formatNhtsaComponent, formatNhtsaDate, slugify, titleCase } from "@/lib/utils";
 
 const SITE = "https://vindecoder.site";
 
@@ -80,7 +80,7 @@ export default async function ComplaintsIndexPage() {
                     </time>
                   </div>
                   <p className="mt-1 text-sm font-semibold text-slate-950">
-                    {c.modelYear} {c.make} {c.model}
+                    {c.modelYear} {titleCase(c.make)} {titleCase(c.model)}
                     {c.components ? (
                       <span className="font-normal text-muted">
                         {" "}

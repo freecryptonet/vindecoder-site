@@ -7,7 +7,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { TOP_US_MAKES } from "@/lib/makes";
 import { getHomepageRecentRecalls } from "@/lib/nhtsa";
 import { websiteJsonLd, organizationJsonLd } from "@/lib/seo";
-import { formatNhtsaDate } from "@/lib/utils";
+import { formatNhtsaDate, formatNhtsaComponent, titleCase } from "@/lib/utils";
 
 export const revalidate = 3600;
 
@@ -65,7 +65,7 @@ export default async function HomePage() {
                 <RecallItem
                   recall={{
                     campaignId: r.NHTSACampaignNumber,
-                    title: `${r.ModelYear} ${r.Make} ${r.Model} — ${r.Component}`,
+                    title: `${r.ModelYear} ${titleCase(r.Make)} ${titleCase(r.Model)} — ${formatNhtsaComponent(r.Component)}`,
                     components: r.Component ? [r.Component] : undefined,
                     date: formatNhtsaDate(r.ReportReceivedDate),
                     href: `/recalls/${r.NHTSACampaignNumber}`,

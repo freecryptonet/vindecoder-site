@@ -370,7 +370,7 @@ export default async function VinResultPage({
                 { label: "Seats", value: vinDecode.seats },
                 { label: "GVWR", value: vinDecode.gvwr },
                 { label: "Series", value: vinDecode.series },
-                { label: "Manufacturer", value: vinDecode.manufacturer },
+                { label: "Manufacturer", value: vinDecode.manufacturer ? titleCase(vinDecode.manufacturer) : vinDecode.manufacturer },
                 {
                   label: "Plant",
                   value:
@@ -378,6 +378,7 @@ export default async function VinResultPage({
                       countryFlag(vinDecode.plantCountry),
                       [vinDecode.plantCity, vinDecode.plantState, vinDecode.plantCountry]
                         .filter(Boolean)
+                        .map((s) => titleCase(s as string))
                         .join(", "),
                     ]
                       .filter(Boolean)

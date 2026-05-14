@@ -119,11 +119,15 @@ export default async function RecallDetailPage({
         <div className="mt-6 grid gap-3 md:grid-cols-3">
           <Card>
             <p className="text-xs uppercase tracking-wider text-muted">Affected makes</p>
-            <p className="mt-1 text-sm font-semibold text-slate-950">{c.makes.join(", ")}</p>
+            <p className="mt-1 text-sm font-semibold text-slate-950">
+              {c.makes.map(titleCase).join(", ")}
+            </p>
           </Card>
           <Card>
             <p className="text-xs uppercase tracking-wider text-muted">Models</p>
-            <p className="mt-1 text-sm font-semibold text-slate-950">{c.models.join(", ")}</p>
+            <p className="mt-1 text-sm font-semibold text-slate-950">
+              {c.models.map(titleCase).join(", ")}
+            </p>
           </Card>
           <Card>
             <p className="text-xs uppercase tracking-wider text-muted">Model years</p>
@@ -210,7 +214,7 @@ export default async function RecallDetailPage({
                       href={l.slug!}
                       className="block rounded-card border border-border bg-surface p-3 text-sm font-medium text-slate-950 transition-shadow hover:shadow-md"
                     >
-                      {l.year} {l.make} {l.model}
+                      {l.year} {titleCase(l.make)} {titleCase(l.model)}
                     </Link>
                   </li>
                 ))}
