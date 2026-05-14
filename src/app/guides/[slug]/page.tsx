@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import type { Metadata } from "next";
+import { Fragment } from "react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { Card } from "@/components/Card";
 import { JsonLd } from "@/components/JsonLd";
@@ -8,6 +9,35 @@ import { breadcrumbJsonLd } from "@/lib/seo";
 import { findGuide, GUIDES } from "@/lib/guides";
 
 const SITE = "https://vindecoder.site";
+
+// Turn plain-text internal path references in guide bodies (e.g.
+// "/guides/odometer-fraud-explained", "/vin-year-chart") into real <Link>s.
+// Scoped to known top-level routes so we never accidentally match a year
+// like "/1980" or a fragment that just looks like a path.
+const INTERNAL_PATH_RE =
+  /(\/(?:guides|recalls|complaints|makes|wmi|vin-decoder|license-plate|vehicle-types|vin-year-chart)(?:\/[a-z0-9-]+)*)/g;
+
+function renderBody(body: string) {
+  const nodes: React.ReactNode[] = [];
+  let lastIndex = 0;
+  let i = 0;
+  for (const match of body.matchAll(INTERNAL_PATH_RE)) {
+    const start = match.index ?? 0;
+    if (start > lastIndex) nodes.push(body.slice(lastIndex, start));
+    nodes.push(
+      <Link
+        key={`l${i++}`}
+        href={match[0]}
+        className="font-medium text-brand-blue underline underline-offset-2 hover:text-slate-950"
+      >
+        {match[0]}
+      </Link>,
+    );
+    lastIndex = start + match[0].length;
+  }
+  if (lastIndex < body.length) nodes.push(body.slice(lastIndex));
+  return nodes.map((n, idx) => <Fragment key={idx}>{n}</Fragment>);
+}
 
 type Params = { slug: string };
 
@@ -87,7 +117,7 @@ export default async function GuidePage({
               <section key={s.heading}>
                 <h2 className="text-h2 text-slate-950">{s.heading}</h2>
                 <p className="mt-2 text-base text-slate-950 leading-relaxed">
-                  {s.body}
+                  {renderBody(s.body)}
                 </p>
               </section>
             ))}

@@ -1,6 +1,6 @@
 # TODO — vindecoder.site (post-rebuild baseline)
 
-Today: **2026-05-13** (session 2). Baseline: `f408ca6` + post-session commits.
+Last refreshed: **2026-05-14**. Baseline: `f408ca6` + post-session commits.
 Previous TODO list (in `C:\outrank-vindecoderz-archive-2026\TODO.md`) is **retired** —
 it referenced admin/plate/corpus features that no longer exist on prod.
 
@@ -17,7 +17,7 @@ it referenced admin/plate/corpus features that no longer exist on prod.
 
 ---
 
-## Done this session (2026-05-13)
+## Shipped earlier (2026-05-13 session)
 
 - [x] VPS health check (10.35d uptime confirmed)
 - [x] **Legacy Business app decommissioned** via hPanel Playwright
@@ -35,25 +35,33 @@ it referenced admin/plate/corpus features that no longer exist on prod.
 
 ---
 
+## Shipped since last refresh (2026-05-13 → 2026-05-14)
+
+- [x] **All 20 guides written** (verified in `src/lib/guides.ts` — 20 slugs from `how-to-read-a-vin` through `title-washing-explained`).
+- [x] **51 state plate-lookup pages** built at `/license-plate/[state]` (commit `a9d695c`). Different URL shape than vindecoderz's `/EN/{State}/license-plate-lookup`, same surface area.
+- [x] AdSense readiness: cookie banner, mobile nav, headers, title fixes, state-page differentiation, noindex empty year hubs (commits `bb86691` → `4376017`).
+- [x] Tier 1 + Tier 2 visuals: country flags, state badges, NHTSA footer badge, brand logos, fuel/severity icons (commits `92173e4` → `93f7aa5`).
+- [x] Favicon + branded OG images wired explicitly (commits `b94304f` → `172b349`).
+- [x] NHTSA hygiene: title-case ALL-CAPS leaks, dates not rendering in the future, null-guarded `Summary` in metadata, JSX whitespace fixes.
+- [x] Pre-push typecheck hook (`.githooks/pre-push`) committed (commit `55ed939`).
+
 ## Ship (still pending)
 
 ### SEO / content (validated strategy — invest here)
 
-- [ ] **Backfill guides 6–20.** Only 5 of 20 planned guides exist. Each is long-tail SEO + AdSense surface area. Write fresh.
-- [ ] **Pre-warm `vehicle_cache`** for high-traffic make/model/year combos. Sitemap pulls from `getCachedVehicles(5000)` — with cold cache it ships only static + make pages. Cache warmup script could iterate top 200 make/model/year combos.
+- [ ] **Pre-warm `vehicle_cache`** for high-traffic make/model/year combos. Sitemap pulls from `getCachedVehicles(5000)` — with cold cache it ships only static + make pages. Cache warmup script could iterate top 200 make/model/year combos. Needs MariaDB tunnel.
 - [ ] **Submit fresh sitemap to GSC** after the pre-warm.
-- [ ] **Build URL templates we're missing.** Per the vindecoderz audit, big gaps:
-  - `/{state}/license-plate-lookup` — vindecoderz has 50 of these (one per state). We don't have plate lookup at all; this is the single biggest URL-surface gap.
-  - Per-make root-level landing pages (vindecoderz uses `/EN/{Make}` not `/makes/{make}` — they get the make name in the URL closer to root).
-  - Multi-language variants (vindecoderz indexes in DE/FR/ES/etc.) — only consider if AdSense data justifies the build cost.
+- [ ] **Per-make root-level landing pages.** Vindecoderz uses `/EN/{Make}` not `/makes/{make}` — make name closer to root may help ranking. Tradeoff: redirects + canonical churn.
+- [ ] **Multi-language variants** (vindecoderz indexes in DE/FR/ES/etc.). Defer until AdSense data justifies the build cost.
+- [ ] **Re-check GSC indexing** ~2 weeks after the pre-warm + sitemap resubmit (target: 2026-05-27+).
 
 ### Bugs / dead code
 
-(All previous items completed this session.)
+(Nothing currently flagged.)
 
 ### Cosmetic / hygiene
 
-- [ ] **Prod DB is named `vindecoder_staging`** not `vindecoder` (per the VPS `.env` — `DATABASE_URL=mysql://vindecoder_staging:...@127.0.0.1/vindecoder_staging`). A `vindecoder` DB also exists but appears unused. Verify, then either rename or document. Risk: low; confusion only.
+- [ ] **Prod DB is named `vindecoder_staging`** not `vindecoder` (per the VPS `.env` — `DATABASE_URL=mysql://vindecoder_staging:...@127.0.0.1/vindecoder_staging`). A `vindecoder` DB also exists but appears unused. Verify, then either rename or document. Risk: low; confusion only. (AGENTS.md already notes the naming is intentional — could just close this.)
 
 ---
 

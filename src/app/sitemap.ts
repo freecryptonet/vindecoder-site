@@ -4,6 +4,7 @@ import { GUIDES } from "@/lib/guides";
 import { US_STATES } from "@/lib/states";
 import { getCachedVehicles } from "@/lib/db";
 import { slugify } from "@/lib/utils";
+import { UNIVERSAL_WMI_MAP } from "@/lib/universalWmi";
 
 export const dynamic = "force-static";
 export const revalidate = 86400;
@@ -69,11 +70,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // keep the file focused. The full registry stays discoverable from /wmi.
   const cached = await getCachedVehicles(5000).catch(() => []);
   const seen = new Set<string>();
+  const modelSeen = new Map<string, Date>();
   for (const v of cached) {
     const makeSlug = ALL_US_MAKES.find((m) => m.name.toLowerCase() === v.make.toLowerCase())?.slug;
     if (!makeSlug) continue;
     if (!/^\d{4}$/.test(v.year)) continue;
-    const path = `/makes/${makeSlug}/${slugify(v.model)}/${v.year}`;
+    const modelKey = `/makes/${makeSlug}/${slugify(v.model)}`;
+    const prev = modelSeen.get(modelKey);
+    if (!prev || v.lastFetched > prev) modelSeen.set(modelKey, v.lastFetched);
+    const path = `${modelKey}/${v.year}`;
     if (seen.has(path)) continue;
     seen.add(path);
     out.push({
@@ -81,6 +86,34 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: v.lastFetched,
       changeFrequency: "weekly",
       priority: 0.6,
+    });
+  }
+
+  // Model hubs (/makes/[make]/[model]). One entry per (make,model) seen above;
+  // the model page lists all years and links to each. Indexable parent of the
+  // year hubs and currently missing from the sitemap.
+  for (const [path, lastModified] of modelSeen) {
+    out.push({
+      url: `${SITE}${path}`,
+      lastModified,
+      changeFrequency: "weekly",
+      priority: 0.65,
+    });
+  }
+
+  // WMI detail pages — every code where the manufacturer matches one of our
+  // make names. The full UNIVERSAL_WMI_MAP carries 2.2k entries, mostly
+  // commercial-truck/bus makers we don't have model coverage for; surfacing
+  // only the WMIs that tie back to a make hub keeps the sitemap focused on
+  // pages where Google can find related internal links.
+  const makeNames = new Set(ALL_US_MAKES.map((m) => m.name.toLowerCase()));
+  for (const [code, manufacturer] of Object.entries(UNIVERSAL_WMI_MAP)) {
+    if (!makeNames.has(manufacturer.toLowerCase())) continue;
+    out.push({
+      url: `${SITE}/wmi/${code}`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.4,
     });
   }
 
