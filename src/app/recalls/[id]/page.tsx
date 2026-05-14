@@ -152,10 +152,11 @@ export default async function RecallDetailPage({
           </h2>
           <p className="mt-1 text-sm text-slate-950">
             Take your VIN to any franchised{" "}
-            <strong>{c.makes[0] || "manufacturer"}</strong> dealer. The repair
-            is <strong className="text-brand-red">free</strong> under federal
-            law (49 U.S.C. § 30120) regardless of how old the vehicle is or
-            whether you&rsquo;re the original owner.
+            <strong>{titleCase(c.makes[0] || "manufacturer")}</strong>{" "}
+            dealer. The repair is{" "}
+            <strong className="text-brand-red">free</strong>{" "}
+            under federal law (49 U.S.C. § 30120) regardless of how old
+            the vehicle is or whether you&rsquo;re the original owner.
           </p>
           <p className="mt-2 text-xs text-muted">
             Confirm your specific VIN is in this campaign at{" "}
