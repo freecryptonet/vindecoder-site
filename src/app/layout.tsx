@@ -54,8 +54,8 @@ export default function RootLayout({
         <main className="flex-1">{children}</main>
         <Footer />
         <CookieBanner />
+        {process.env.NODE_ENV === "production" ? <GoogleAnalytics gaId={GA_ID} /> : null}
       </body>
-      {process.env.NODE_ENV === "production" ? <GoogleAnalytics gaId={GA_ID} /> : null}
     </html>
   );
 }
