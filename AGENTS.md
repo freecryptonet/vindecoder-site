@@ -42,8 +42,9 @@ emergency with `git push --no-verify`. Hook degrades gracefully when
 - pm2 error log: `sudo -u deploy pm2 logs vd --lines N --err --nostream`.
 - Prewarm script lives on VPS at `/tmp/prewarm.sh`. Run with `PARALLEL=2` or lower — concurrent load on the 2-CPU VPS triggers 502/503 cascades.
 - `gh` CLI is not installed on the dev machine. Use PowerShell `Invoke-RestMethod` against api.github.com for unauthenticated GitHub REST calls.
-- GSC MCP `submit_sitemap` returns 403 on `sc-domain:` properties (read-only scope). Drive Playwright at `https://search.google.com/search-console/sitemaps?resource_id=sc-domain%3A<domain>` instead.
+- GSC MCP write OK after 2026-05-16 OAuth bump (`submit_sitemap`, GA4 admin). Indexing API still needs a service account — keep using Playwright on GSC URL Inspector for "Request Indexing".
 - GA4 property `533032010` reports in `America/Los_Angeles` — GA4 day boundaries are offset 7–8 h from UTC nginx logs when correlating spikes.
+- **Git push uses SSH** (`git@github.com:freecryptonet/vindecoder-site.git`). PAT auth retired 2026-05-16; key is `~/.ssh/github_ed25519`.
 
 ## Policy decisions (2026-05-13)
 
