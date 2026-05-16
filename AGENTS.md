@@ -11,12 +11,15 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Prod MariaDB DB is **`vindecoder_staging`** (intentional naming, NOT a misconfig). A `vindecoder` DB exists but is unused.
 - Push to `main` fires `.github/workflows/deploy.yml` → npm ci + next build + pm2 reload vd. Concurrency is queued, not cancelled.
 - Hostinger MCP subscription ID for the VPS: `AzZgUtVIXdE50FjqF`.
+- Block scrapers in `/etc/nginx/conf.d/bot-blocklist.conf` — defines `$bad_bot` map + `$bad_ip` geo, referenced from every vhost via `if ($bad_bot|$bad_ip) { return 429; }`. Edit this file, not the vhosts.
+- `/etc/nginx/sites-enabled/*` is scanned by nginx for any file — leaving `*.bak` there breaks `nginx -t` with "duplicate default server". Stash backups in `/root/nginx-backups/`.
 
 ## Code gotchas
 
 - Root layout sets `title.template = "%s | VinDecoder"`. Child page metadata `title` strings must NOT end in "| VinDecoder" (doubles to 79+ chars, past Google's snippet cutoff). Use `title: { absolute: "…" }` to override the template.
 - NHTSA fields are nullable. `c.summary`, `r.Summary`, complaint fields can be null — null-guard before `.slice(...)`. Crashes propagate through `generateMetadata` and produce 503s.
 - JSX strips whitespace between `{expr}` and adjacent text inside an element. Use a template literal `` {`${expr} text`} `` when you need a guaranteed space.
+- `<GoogleAnalytics>` from `@next/third-parties/google` must render inside `<body>`. Placing it between `</body>` and `</html>` is invalid HTML5 and confuses GA4 Tag Diagnostics into flagging pages as "Not tagged".
 
 ## Pre-push hook
 
@@ -39,6 +42,8 @@ emergency with `git push --no-verify`. Hook degrades gracefully when
 - pm2 error log: `sudo -u deploy pm2 logs vd --lines N --err --nostream`.
 - Prewarm script lives on VPS at `/tmp/prewarm.sh`. Run with `PARALLEL=2` or lower — concurrent load on the 2-CPU VPS triggers 502/503 cascades.
 - `gh` CLI is not installed on the dev machine. Use PowerShell `Invoke-RestMethod` against api.github.com for unauthenticated GitHub REST calls.
+- GSC MCP `submit_sitemap` returns 403 on `sc-domain:` properties (read-only scope). Drive Playwright at `https://search.google.com/search-console/sitemaps?resource_id=sc-domain%3A<domain>` instead.
+- GA4 property `533032010` reports in `America/Los_Angeles` — GA4 day boundaries are offset 7–8 h from UTC nginx logs when correlating spikes.
 
 ## Policy decisions (2026-05-13)
 
