@@ -6,6 +6,11 @@ name: Deploy production
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - '**.md'
+      - '.gitignore'
+      - '.gitattributes'
+      - '.githooks/**'
   workflow_dispatch:
 
 concurrency:
