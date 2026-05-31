@@ -1,8 +1,14 @@
 # TODO — vindecoder.site (post-rebuild baseline)
 
-Last refreshed: **2026-05-14**. Baseline: `f408ca6` + post-session commits.
+Last refreshed: **2026-05-31**. Baseline: `f408ca6` + post-session commits.
 Previous TODO list (in `C:\outrank-vindecoderz-archive-2026\TODO.md`) is **retired** —
 it referenced admin/plate/corpus features that no longer exist on prod.
+
+---
+
+## Scheduled
+
+- [ ] **2026-06-30 — SEO recovery check-in (30-day).** Re-run the 2026-05-31 analysis: pull fresh GSC (impressions/clicks/position trend, top queries/pages, index status of `/wmi` + `/license-plate/florida`, sitemap indexed count) and GA4 (channel mix, US-vs-bot, key events) for the trailing ~14 days; compare against the 2026-05-31 baseline in `gsc-timeline.md` / `ga4-timeline.md` (in the project memory dir) and append dated entries to both. Question: is the young-domain trust climb progressing — impressions rising, any clicks yet, has `/wmi` been discovered, did the sitemap re-fetch on its own. **Do NOT resubmit the sitemap** (no SEO value, confirmed 2026-05-31). Note: needs a live local session — GSC/GA4 MCP + memory files are local-only, so this can't be auto-scheduled.
 
 ---
 
