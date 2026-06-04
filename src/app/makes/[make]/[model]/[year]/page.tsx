@@ -14,6 +14,7 @@ import { findMake } from "@/lib/makes";
 import { getYearPageData } from "@/lib/nhtsa";
 import { getModelYearAggregates } from "@/lib/db";
 import { breadcrumbJsonLd, vehicleJsonLd } from "@/lib/seo";
+import { COMPARISONS } from "@/lib/comparisons";
 import {
   faqPageJsonLd,
   yearEditorialIntro,
@@ -108,6 +109,15 @@ export default async function YearReliabilityPage({
   };
   const intro = yearEditorialIntro(editorialInput);
   const faqs = yearFaqs(editorialInput);
+
+  // Contextual head-to-head: if this model appears in a curated comparison,
+  // deep-link it. Loose match on make name + model display.
+  const norm = (s: string) => s.toLowerCase().replace(/[\s.\-_]+/g, "");
+  const relatedCompare = COMPARISONS.find(
+    (c) =>
+      (norm(c.a.make) === norm(m.name) && norm(c.a.model) === norm(display)) ||
+      (norm(c.b.make) === norm(m.name) && norm(c.b.model) === norm(display)),
+  );
 
   return (
     <>
@@ -345,6 +355,47 @@ export default async function YearReliabilityPage({
               </div>
             ))}
           </dl>
+        </section>
+
+        <section className="mt-12 border-t border-border pt-8">
+          <h2 className="text-h2 text-slate-950">Related research &amp; guides</h2>
+          <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+            {relatedCompare ? (
+              <li>
+                <Link
+                  href={`/compare/${relatedCompare.slug}`}
+                  className="text-sm text-slate-950 underline hover:text-brand-red"
+                >
+                  {relatedCompare.a.model} vs {relatedCompare.b.model}: compared head-to-head →
+                </Link>
+              </li>
+            ) : null}
+            <li>
+              <Link href={`/makes/${m.slug}`} className="text-sm text-slate-950 underline hover:text-brand-red">
+                All {m.name} reliability reports →
+              </Link>
+            </li>
+            <li>
+              <Link href="/recalls/most-recalled-cars" className="text-sm text-slate-950 underline hover:text-brand-red">
+                Most recalled cars, ranked →
+              </Link>
+            </li>
+            <li>
+              <Link href="/guides/nhtsa-recall-lookup-explained" className="text-sm text-slate-950 underline hover:text-brand-red">
+                How NHTSA recall lookups work →
+              </Link>
+            </li>
+            <li>
+              <Link href="/guides/buying-used-car-checklist" className="text-sm text-slate-950 underline hover:text-brand-red">
+                Used-car buying checklist →
+              </Link>
+            </li>
+            <li>
+              <Link href="/guides/nhtsa-5-star-safety-ratings" className="text-sm text-slate-950 underline hover:text-brand-red">
+                What NHTSA 5-star ratings mean →
+              </Link>
+            </li>
+          </ul>
         </section>
 
         <section className="mt-16 border-t border-border pt-10 text-center">

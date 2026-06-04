@@ -57,6 +57,11 @@ export default async function RecallsIndexPage() {
             . Each campaign affects a specific year/make/model and lists the
             component, the safety risk, and the dealer remedy.
           </p>
+          <p className="mt-4 text-sm">
+            <Link href="/recalls/most-recalled-cars" className="font-semibold text-slate-950 underline hover:text-brand-red">
+              See which popular 2021–2025 models have the most recalls →
+            </Link>
+          </p>
         </header>
 
         {entries.length === 0 ? (

@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { ALL_US_MAKES } from "@/lib/makes";
 import { GUIDES } from "@/lib/guides";
+import { COMPARISONS } from "@/lib/comparisons";
 import { US_STATES } from "@/lib/states";
 import { getCachedVehicles } from "@/lib/db";
 import { slugify } from "@/lib/utils";
@@ -19,6 +20,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { path: "/", pri: 1, freq: "daily" },
     { path: "/makes", pri: 0.9, freq: "weekly" },
     { path: "/recalls", pri: 0.8, freq: "daily" },
+    { path: "/recalls/most-recalled-cars", pri: 0.8, freq: "weekly" },
+    { path: "/compare", pri: 0.7, freq: "weekly" },
     { path: "/complaints", pri: 0.8, freq: "daily" },
     { path: "/license-plate", pri: 0.7, freq: "monthly" },
     { path: "/wmi", pri: 0.7, freq: "monthly" },
@@ -40,6 +43,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${SITE}/guides/${g.slug}`,
       lastModified: new Date(g.publishedAt),
       changeFrequency: "monthly",
+      priority: 0.6,
+    });
+  }
+
+  // Head-to-head comparison pages (curated rivalries).
+  for (const c of COMPARISONS) {
+    out.push({
+      url: `${SITE}/compare/${c.slug}`,
+      lastModified: now,
+      changeFrequency: "weekly",
       priority: 0.6,
     });
   }

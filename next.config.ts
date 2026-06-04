@@ -35,9 +35,9 @@ const nextConfig: NextConfig = {
       { source: "/admin", destination: "/", permanent: true },
       { source: "/admin/:path*", destination: "/", permanent: true },
 
-      // /compare: feature was abandoned in the rebuild, no equivalent. Home.
-      { source: "/compare", destination: "/", permanent: true },
-      { source: "/compare/:path*", destination: "/", permanent: true },
+      // /compare: REVIVED 2026-06-04 as model-vs-model head-to-head pages
+      // (src/app/compare). The old abandoned-feature redirect to home was
+      // removed so the new routes resolve instead of 308'ing to /.
 
       // /specs root: no dedicated landing yet; punt to homepage.
       { source: "/specs", destination: "/", permanent: true },

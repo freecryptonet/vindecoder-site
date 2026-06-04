@@ -14,6 +14,8 @@ const cols: { heading: string; links: { href: string; label: string }[] }[] = [
     heading: "Safety",
     links: [
       { href: "/recalls", label: "Recalls" },
+      { href: "/recalls/most-recalled-cars", label: "Most Recalled Cars" },
+      { href: "/compare", label: "Compare Cars" },
       { href: "/vehicle-types", label: "Vehicle Types" },
     ],
   },

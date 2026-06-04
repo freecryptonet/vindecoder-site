@@ -359,6 +359,7 @@ export default async function VinResultPage({
               rows={[
                 { label: "Engine", value: engineSpec(vinDecode) },
                 { label: "Drivetrain", value: vinDecode.driveType },
+                { label: "EV drive unit", value: vinDecode.evDriveUnit },
                 { label: "Transmission", value: vinDecode.transmissionStyle },
                 {
                   label: "Fuel",

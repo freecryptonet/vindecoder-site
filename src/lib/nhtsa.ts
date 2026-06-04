@@ -37,6 +37,7 @@ export interface VinDecodeResult {
   doors: string;
   seats: string;
   series: string;
+  evDriveUnit: string;
   manufacturer: string;
   plantCity: string;
   plantState: string;
@@ -223,6 +224,9 @@ export async function decodeVin(vin: string): Promise<VinDecodeResult> {
     doors: r.Doors || "",
     seats: r.Seats || "",
     series: r.Series || "",
+    // vPIC 4.06 (2026-06-13) added Triple/Quad motor values to this variable.
+    // Empty for non-EVs; SpecsGrid hides empty rows so it only shows for EVs.
+    evDriveUnit: r.EVDriveUnit || "",
     manufacturer: r.Manufacturer || "",
     plantCity: r.PlantCity || "",
     plantState: r.PlantState || "",
@@ -242,12 +246,15 @@ export async function getRecalls(
   make: string,
   model: string,
   modelYear: string | number,
+  revalidateSeconds?: number,
 ): Promise<RecallResult[]> {
   const url = `${RECALLS_BASE}?make=${encodeURIComponent(make)}&model=${encodeURIComponent(
     model,
   )}&modelYear=${encodeURIComponent(String(modelYear))}`;
   try {
-    const data = await fetchJson<{ results: RecallResult[] }>(url);
+    const data = await fetchJson<{ results: RecallResult[] }>(url, {
+      revalidate: revalidateSeconds,
+    });
     return data.results ?? [];
   } catch {
     return [];
