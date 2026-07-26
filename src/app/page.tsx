@@ -7,9 +7,46 @@ import { JsonLd } from "@/components/JsonLd";
 import { TOP_US_MAKES } from "@/lib/makes";
 import { getHomepageRecentRecalls } from "@/lib/nhtsa";
 import { websiteJsonLd, organizationJsonLd } from "@/lib/seo";
+import { faqPageJsonLd } from "@/lib/yearEditorial";
 import { formatNhtsaDate, formatNhtsaComponent, titleCase } from "@/lib/utils";
 
 export const revalidate = 3600;
+
+// Question-intent content NHTSA's bare decoder tool never answers. Targets
+// long-tail question queries and the "nhtsa vin decoder" branded intent by
+// honestly positioning the one-page aggregation advantage.
+const HOMEPAGE_FAQS = [
+  {
+    question: "Is this VIN decoder free?",
+    answer:
+      "Yes. Every decode, recall lookup, complaint history, and safety rating is free with no signup, no paywall, and no account. The data comes from the U.S. government's official NHTSA databases, which are public.",
+  },
+  {
+    question: "How is this different from the NHTSA VIN decoder?",
+    answer:
+      "It uses the same official NHTSA data, but NHTSA splits it across four separate tools — the vPIC decoder, the recalls lookup, the complaints database, and the safety-ratings site. We query all of them at once and show the decode, open recalls, owner complaints, and 5-Star ratings together on one page for a given VIN.",
+  },
+  {
+    question: "What information does a VIN decode show?",
+    answer:
+      "Year, make, model, trim, body class, engine, drivetrain, fuel type, plant of manufacture, and GVWR from the NHTSA vPIC database — plus every open recall campaign, owner-complaint patterns clustered by component, and the NHTSA 5-Star crash-test rating for that vehicle.",
+  },
+  {
+    question: "Where do I find my VIN?",
+    answer:
+      "The 17-character VIN is stamped on the driver's-side dashboard where it meets the windshield, on the driver's door jamb sticker, and printed on your title, registration, and insurance card.",
+  },
+  {
+    question: "Can I look up recalls by VIN?",
+    answer:
+      "Yes. Decoding a VIN returns every open NHTSA recall campaign that affects that specific vehicle, including the affected component, the manufacturer's remedy, and the campaign number — the same authoritative recall data NHTSA publishes.",
+  },
+  {
+    question: "What years and vehicles are supported?",
+    answer:
+      "Any U.S.-market vehicle with a standardized 17-character VIN, which covers model year 1981 and newer. Pre-1981 vehicles used manufacturer-specific formats that the NHTSA database does not decode.",
+  },
+];
 
 export default async function HomePage() {
   const recentRecalls = await getHomepageRecentRecalls(5);
@@ -18,6 +55,7 @@ export default async function HomePage() {
     <>
       <JsonLd data={websiteJsonLd()} />
       <JsonLd data={organizationJsonLd()} />
+      <JsonLd data={faqPageJsonLd(HOMEPAGE_FAQS)} />
 
       <section className="border-b border-border bg-surface-alt">
         <div className="container-page py-14 md:py-20">
@@ -146,6 +184,18 @@ export default async function HomePage() {
             </li>
           ))}
         </ol>
+      </section>
+
+      <section className="container-page py-12">
+        <h2 className="text-h2 text-slate-950">Frequently asked questions</h2>
+        <dl className="mt-6 divide-y divide-border overflow-hidden rounded-card border border-border bg-surface">
+          {HOMEPAGE_FAQS.map((f) => (
+            <div key={f.question} className="p-5">
+              <dt className="text-h3 text-slate-950">{f.question}</dt>
+              <dd className="mt-2 text-sm text-muted">{f.answer}</dd>
+            </div>
+          ))}
+        </dl>
       </section>
 
       <section className="border-t border-border bg-surface-alt">
