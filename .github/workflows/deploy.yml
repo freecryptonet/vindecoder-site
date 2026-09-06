@@ -62,7 +62,12 @@ jobs:
             echo "===> nuke .next"
             rm -rf .next
             echo "===> next build"
-            NODE_OPTIONS=--max-old-space-size=6144 npm run build
+            # Heap ceiling kept at 4096, NOT higher: the VPS has ~3GB free and
+            # (until 2026-09-06) no swap. A 6144 ceiling let V8 defer GC until
+            # RSS grew past available RAM and the kernel OOM-killed the build —
+            # which silently broke every deploy for ~39 days (git reset landed
+            # but build+reload never ran). A lower ceiling forces earlier GC.
+            NODE_OPTIONS=--max-old-space-size=4096 npm run build
             if [ ! -f .next/BUILD_ID ]; then
               echo "ERROR: .next/BUILD_ID missing after build"
               exit 1

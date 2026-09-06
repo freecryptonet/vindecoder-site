@@ -54,7 +54,9 @@ jobs:
             echo "===> nuke .next"
             rm -rf .next
             echo "===> next build"
-            NODE_OPTIONS=--max-old-space-size=6144 npm run build
+            # See deploy.yml: 4096 heap ceiling forces earlier GC so the build
+            # stays under the VPS's available RAM and doesn't get OOM-killed.
+            NODE_OPTIONS=--max-old-space-size=4096 npm run build
             if [ ! -f .next/BUILD_ID ]; then
               echo "ERROR: .next/BUILD_ID missing after build"
               exit 1
