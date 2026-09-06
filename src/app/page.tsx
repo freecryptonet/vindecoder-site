@@ -198,12 +198,48 @@ export default async function HomePage() {
         </dl>
       </section>
 
+      <section className="container-page py-12">
+        <div className="flex items-baseline justify-between gap-4">
+          <h2 className="text-h2 text-slate-950">Popular guides</h2>
+          <Link
+            href="/guides"
+            className="text-sm font-medium text-brand-blue hover:underline"
+          >
+            All guides →
+          </Link>
+        </div>
+        <p className="mt-1 text-sm text-muted">
+          Plain-English answers to the questions a bare VIN decoder never covers.
+        </p>
+        <ul className="mt-6 grid gap-2 sm:grid-cols-2 md:grid-cols-3">
+          {[
+            { href: "/guides/how-to-read-a-vin", label: "How to read a VIN" },
+            { href: "/guides/buying-used-car-checklist", label: "Used-car buying checklist" },
+            { href: "/guides/nhtsa-recall-lookup-explained", label: "NHTSA recall lookup explained" },
+            { href: "/guides/vin-check-vs-carfax", label: "VIN check vs Carfax" },
+            { href: "/guides/what-is-a-salvage-title", label: "What is a salvage title" },
+            { href: "/guides/odometer-fraud-explained", label: "Odometer fraud explained" },
+          ].map((l) => (
+            <li key={l.href}>
+              <Link
+                href={l.href}
+                className="block rounded-card border border-border bg-surface p-4 text-sm font-medium text-slate-950 transition-shadow hover:shadow-md"
+              >
+                {l.label} →
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+
       <section className="border-t border-border bg-surface-alt">
         <div className="container-page py-10">
           <h2 className="text-h2 text-slate-950">More to explore</h2>
-          <ul className="mt-4 grid gap-2 sm:grid-cols-2 md:grid-cols-4">
+          <ul className="mt-4 grid gap-2 sm:grid-cols-2 md:grid-cols-3">
             {[
+              { href: "/recalls/most-recalled-cars", label: "Most recalled cars, ranked" },
               { href: "/recalls", label: "Recall index" },
+              { href: "/compare", label: "Compare vehicles" },
               { href: "/wmi", label: "WMI directory" },
               { href: "/vin-year-chart", label: "VIN year chart" },
               { href: "/guides", label: "Buyer's guides" },
